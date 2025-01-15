@@ -1,0 +1,6 @@
+boşluk cümle olucak
+o kelimeyi bulmaya çalışıcak
+hinte basınca kelimenin ilk harfi gözükücek
+ikinci hintte kaç harfli olduğunu göstericek
+kelimeler 
+cümle oluşturmayı gpt ile yap

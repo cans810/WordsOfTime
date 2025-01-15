@@ -1,0 +1,34 @@
+[
+    {
+        "era": "Ancient Egypt",
+        "words": ["PHARAOH", "PYRAMID", "SPHINX", "MUMMY", "SCARAB", "HIEROGLYPH", "ANKH", "RA", "NILE", "PAPYRUS"]
+    },
+    {
+        "era": "Medieval Europe",
+        "words": ["CASTLE", "KNIGHT", "JESTER", "SERF", "FEUDAL", "PLAGUE", "CRUSADE", "HERALD", "ARMOR", "BISHOP"]
+    },
+    {
+        "era": "Renaissance",
+        "words": ["LEONARDO", "DA VINCI", "MICHELANGELO", "GUTENBERG", "REBIRTH", "HUMANISM", "SONNET", "VENICE", "MONA LISA", "GALILEO"]
+    },
+    {
+        "era": "Industrial Revolution",
+        "words": ["STEAM", "LOCOMOTIVE", "FACTORY", "INVENTION", "TELEGRAPH", "COAL", "ENGINE", "SPINNING JENNY", "RAILWAY", "STEEL"]
+    },
+    {
+        "era": "Roaring Twenties",
+        "words": ["JAZZ", "FLAPPER", "PROHIBITION", "BOOTLEGGER", "CHARLESTON", "RADIO", "SPEAKEASY", "STOCK MARKET", "GREAT GATSBY", "MODEL T"]
+    },
+    {
+        "era": "World War II",
+        "words": ["BLITZ", "ALLIES", "AXIS", "BATTLESHIP", "ENIGMA", "HOLOCAUST", "D-DAY", "RATION", "ATOMIC", "NAZI"]
+    },
+    {
+        "era": "Space Race",
+        "words": ["ROCKET", "SPUTNIK", "APOLLO", "MOON", "ASTRONAUT", "NASA", "COSMONAUT", "LAUNCH", "LUNAR", "SPACECRAFT"]
+    },
+    {
+        "era": "Modern Era",
+        "words": ["INTERNET", "SMARTPHONE", "SOCIAL MEDIA", "MEME", "AI", "YOUTUBE", "INFLUENCER", "STREAMING", "DRONE", "BITCOIN"]
+    }
+]

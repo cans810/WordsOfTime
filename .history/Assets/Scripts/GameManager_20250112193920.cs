@@ -1,0 +1,38 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class GameManager : MonoBehaviour
+{
+    // Static instance of GameManager
+    public static GameManager Instance { get; private set; }
+
+    // Awake is called when the script instance is being loaded
+    private void Awake()
+    {
+        // Check if another instance already exists
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject); // Destroy this instance if another already exists
+            return;
+        }
+
+        // Set the instance to this instance
+        Instance = this;
+
+        // Optional: Make this instance persistent across scenes
+        DontDestroyOnLoad(gameObject);
+    }
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        // Initialize your GameManager logic here
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        // Update your GameManager logic here
+    }
+}
