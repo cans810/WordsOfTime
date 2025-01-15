@@ -184,11 +184,11 @@ public class WordGameManager : MonoBehaviour
     private void UpdateSentenceDisplay()
     {
         if (sentenceText != null && !string.IsNullOrEmpty(originalSentence))
+    {
+        if (solvedWordsInCurrentEra.Contains(currentWordIndex))
         {
-            if (solvedWordsInCurrentEra.Contains(currentWordIndex))
-            {
-                sentenceText.text = originalSentence.Replace("_____", targetWord); // Reveal the word
-            }
+            sentenceText.text = originalSentence.Replace("_____", targetWord); // Reveal the word
+        }
             else
             {
                 string displaySentence = originalSentence;

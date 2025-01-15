@@ -81,6 +81,12 @@ public class WordGameManager : MonoBehaviour
         UpdateSentenceDisplay();
     }
 
+    public bool IsWordSolved(string word)
+    {
+        int index = currentEraWords.IndexOf(word);
+        return index != -1 && solvedWordsInCurrentEra.Contains(index);
+    }
+
     private void CreateProgressBar()
     {
         if (progressImagePrefab == null || progressBarContainer == null)
@@ -112,32 +118,26 @@ public class WordGameManager : MonoBehaviour
         UpdateScore(correctWordPoints);
         ShowMessage("Correct!", correctWordColor);
 
-        solvedWordsInCurrentEra.Add(currentWordIndex); // Add the *index* to the HashSet
+        solvedWordsInCurrentEra.Add(currentWordIndex);
         solvedWordCountInCurrentEra = solvedWordsInCurrentEra.Count;
 
+        // Check if we've solved ALL words in the current era
         if (solvedWordsInCurrentEra.Count == currentEraWords.Count)
         {
             Debug.Log("All words in current era solved! Moving to next era...");
             GameManager.Instance.MoveToNextEra();
             return;
         }
-
+        
+        // If there are still unsolved words, move to the next word
         if (currentWordIndex < currentEraWords.Count - 1)
         {
             currentWordIndex++;
             LoadWord(currentWordIndex);
-            GridManager.Instance.ResetGridForNewWord(); // Call ResetGridForNewWord after LoadWord()
-        }
-        else
-        {
-            Debug.Log("End of current Era!");
-            GameManager.Instance.MoveToNextEra();
-            return;
         }
 
         UpdateProgressBar();
         UpdateSentenceDisplay();
-
 
         if (GridManager.Instance != null)
         {
@@ -185,20 +185,21 @@ public class WordGameManager : MonoBehaviour
     {
         if (sentenceText != null && !string.IsNullOrEmpty(originalSentence))
         {
+            string displaySentence = originalSentence;
+            
+            // If this word has been solved, show the complete word
             if (solvedWordsInCurrentEra.Contains(currentWordIndex))
             {
-                sentenceText.text = originalSentence.Replace("_____", targetWord); // Reveal the word
+                displaySentence = originalSentence.Replace("_____", targetWord);
             }
-            else
+            // If there's a current word being typed/selected
+            else if (!string.IsNullOrEmpty(currentWord))
             {
-                string displaySentence = originalSentence;
-                if (!string.IsNullOrEmpty(currentWord))
-                {
-                    string displayWord = currentWord.PadRight(targetWord.Length, '_');
-                    displaySentence = originalSentence.Replace("_____", displayWord);
-                }
-                sentenceText.text = displaySentence;
+                string displayWord = currentWord.PadRight(targetWord.Length, '_');
+                displaySentence = originalSentence.Replace("_____", displayWord);
             }
+
+            sentenceText.text = displaySentence;
         }
     }
 
@@ -247,89 +248,82 @@ public class WordGameManager : MonoBehaviour
     }
 
     public bool IsWordSolved(string word)
-    {
-        if (currentEraWords == null) return false;
+{
+    if (currentEraWords == null) return false;
+    int wordIndex = currentEraWords.IndexOf(word);
+    return wordIndex != -1 && solvedWordsInCurrentEra.Contains(wordIndex);
+}
 
-        int wordIndex = currentEraWords.IndexOf(word);
-        return wordIndex != -1 && solvedWordsInCurrentEra.Contains(wordIndex); // Check index in HashSet
+// Modify LoadWord to not reset the grid for solved words
+public void LoadWord(int index)
+{
+    if (currentEraWords == null || index < 0 || index >= currentEraWords.Count)
+    {
+        Debug.LogWarning("Invalid word index or no words available.");
+        return;
     }
 
-    // Modify LoadWord to not reset the grid for solved words
-    public void LoadWord(int index)
+    currentWordIndex = index;
+    targetWord = currentEraWords[currentWordIndex];
+    string sentence = WordValidator.GetSentenceForWord(targetWord, GameManager.Instance.CurrentEra);
+    
+    if (sentence == null)
     {
-        if (currentEraWords == null || index < 0 || index >= currentEraWords.Count)
-        {
-            Debug.LogWarning("Invalid word index or no words available.");
-            return;
-        }
-
-        currentWordIndex = index;
-        targetWord = currentEraWords[currentWordIndex];
-        string sentence = WordValidator.GetSentenceForWord(targetWord, GameManager.Instance.CurrentEra);
-
-        if (sentence == null)
-        {
-            Debug.LogError($"Sentence is null for {targetWord}");
-            return;
-        }
-
-        try
-        {
-            SetupGame(targetWord, sentence);
-
-            if (GridManager.Instance != null)
-            {
-                GridManager.Instance.SetupNewPuzzle(targetWord);
-            }
-            else
-            {
-                Debug.LogError("GridManager.Instance is null!");
-            }
-        }
-        catch (System.Exception e)
-        {
-            Debug.LogError($"Error in LoadWord: {e.Message}\n{e.StackTrace}");
-        }
-
-        UpdateSentenceDisplay();  // Make sure to update the sentence!
+        Debug.LogError($"Sentence is null for {targetWord}");
+        return;
     }
 
-    // Modify NextWord and PreviousWord to not reset grid for solved words
-    public void NextWord()
+    try
     {
-        if (currentEraWords == null)
-        {
-            Debug.LogError("currentEraWords is null! Cannot navigate.");
-            return;
-        }
+        SetupGame(targetWord, sentence);
 
-        if (currentWordIndex < currentEraWords.Count - 1)
+        if (GridManager.Instance != null)
         {
-            currentWordIndex++;
-            LoadWord(currentWordIndex); // This now handles solved/unsolved grid setup
-            UpdateProgressBar();
-            UpdateSentenceDisplay();
+            GridManager.Instance.SetupNewPuzzle(targetWord);
         }
         else
         {
-            Debug.Log("Already at the last word in this era.");
+            Debug.LogError("GridManager.Instance is null!");
         }
+    }
+    catch (System.Exception e)
+    {
+        Debug.LogError($"Error in LoadWord: {e.Message}\n{e.StackTrace}");
+    }
+}
+
+// Modify NextWord and PreviousWord to not reset grid for solved words
+public void NextWord()
+{
+    if (currentEraWords == null)
+    {
+        Debug.LogError("currentEraWords is null! Cannot navigate.");
+        return;
     }
 
-    public void PreviousWord()
+    if (currentWordIndex < currentEraWords.Count - 1)
     {
-        if (currentWordIndex > 0)
-        {
-            currentWordIndex--;
-            LoadWord(currentWordIndex); // This now handles solved/unsolved grid setup
-            UpdateProgressBar();
-            UpdateSentenceDisplay();
-        }
-        else
-        {
-            Debug.Log("Already at the first word in this era.");
-        }
+        currentWordIndex++;
+        LoadWord(currentWordIndex);
+        UpdateProgressBar();
+        UpdateSentenceDisplay();
     }
+    else
+    {
+        Debug.Log("Already at the last word in this era.");
+    }
+}
+
+public void PreviousWord()
+{
+    if (currentWordIndex > 0)
+    {
+        currentWordIndex--;
+        LoadWord(currentWordIndex);
+        UpdateProgressBar();
+        UpdateSentenceDisplay();
+    }
+}
 
     private void UpdateProgressBar()
     {
@@ -356,9 +350,9 @@ public class WordGameManager : MonoBehaviour
                 continue;
             }
 
-            if (solvedWordsInCurrentEra.Contains(i)) // Check against indices
+            if (solvedWordsInCurrentEra.Contains(i))
             {
-                image.color = Color.green;
+                image.color = Color.green;  // Completed words
             }
             else if (i == currentWordIndex)
             {

@@ -126,13 +126,6 @@ public class WordGameManager : MonoBehaviour
         {
             currentWordIndex++;
             LoadWord(currentWordIndex);
-            GridManager.Instance.ResetGridForNewWord(); // Call ResetGridForNewWord after LoadWord()
-        }
-        else
-        {
-            Debug.Log("End of current Era!");
-            GameManager.Instance.MoveToNextEra();
-            return;
         }
 
         UpdateProgressBar();
@@ -187,7 +180,7 @@ public class WordGameManager : MonoBehaviour
         {
             if (solvedWordsInCurrentEra.Contains(currentWordIndex))
             {
-                sentenceText.text = originalSentence.Replace("_____", targetWord); // Reveal the word
+                sentenceText.text = originalSentence.Replace("_____", targetWord);
             }
             else
             {

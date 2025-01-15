@@ -30,9 +30,6 @@ public class GridManager : MonoBehaviour
 
     private Dictionary<string, List<Vector2Int>> solvedWordPositions = new Dictionary<string, List<Vector2Int>>();
 
-    private Dictionary<string, List<char>> initialGrids = new Dictionary<string, List<char>>();
-
-
     private void Awake()
     {
         if (Instance == null)
@@ -66,142 +63,26 @@ public class GridManager : MonoBehaviour
 
     public void SetupNewPuzzle(string word)
     {
-        targetWord = word;
+        targetWord = word;  // Set the target word
 
         if (WordGameManager.Instance.IsWordSolved(word))
         {
-            //ClearGridForSolvedWord(); //  No clearing if solved
-            if (initialGrids.ContainsKey(targetWord))
-            {
-                RestoreInitialGrid(targetWord); // Restore the initial grid layout
-            }
-            else
-            {
-                Debug.LogWarning($"Initial grid for '{targetWord}' not found. Generating a new one.");
-                GenerateAndStoreInitialGrid(); // Generate a new initial grid if not found
-            }
-
-
+            HighlightSolvedWord();
+            Debug.Log("Word already solved. Highlighting.");
         }
         else
         {
-
-            if (!initialGrids.ContainsKey(targetWord))
-            {
-                GenerateAndStoreInitialGrid(); // Store initial grid for unsolved words
-            }
-
             try
             {
                 ClearLetters();
                 PlaceWordAdjacent();
                 FillRemainingSpaces();
+                Debug.Log("Setting up a new unsolved puzzle.");
             }
             catch (System.Exception e)
             {
                 Debug.LogError($"Error setting up puzzle: {e.Message}\n{e.StackTrace}");
             }
-        }
-    }
-
-    private void ClearGridForSolvedWord()
-    {
-        for (int x = 0; x < gridSize; x++)
-        {
-            for (int y = 0; y < gridSize; y++)
-            {
-                grid[x, y].SetLetter('\0', new Vector2Int(x, y)); // Clear the letter
-                grid[x, y].ResetTile();       // Reset tile state (color, etc.)
-            }
-        }
-    }
-
-    private void RestoreInitialGrid(string word)
-    {
-        if (!initialGrids.TryGetValue(word, out var initialLetters))
-        {
-            Debug.LogError($"Initial grid for '{word}' not found.");
-            return;
-        }
-
-        int index = 0;
-        for (int x = 0; x < gridSize; x++)
-        {
-            for (int y = 0; y < gridSize; y++)
-            {
-                grid[x, y].SetLetter(initialLetters[index], new Vector2Int(x, y));
-
-                if (word.Contains(initialLetters[index].ToString()))
-                {
-                    grid[x,y].SetSolvedColor();
-                }
-
-                index++;
-
-
-            }
-        }
-    }
-
-    private void GenerateAndStoreInitialGrid()
-    {
-        ClearLetters();
-        PlaceWordAdjacent();
-        FillRemainingSpaces();
-
-        List<char> initialLetters = new List<char>();
-        for (int x = 0; x < gridSize; x++)
-        {
-            for (int y = 0; y < gridSize; y++)
-            {
-                initialLetters.Add(grid[x, y].Letter);
-            }
-        }
-
-
-        if (initialGrids.ContainsKey(targetWord))
-        {
-            initialGrids[targetWord] = initialLetters; // Update existing entry if present
-        }
-        else
-        {
-            initialGrids.Add(targetWord, initialLetters);
-        }
-
-    }
-
-    private void RestoreSolvedWord(string word)
-    {
-        if (solvedWordPositions.TryGetValue(word, out List<Vector2Int> positions))
-        {
-            // IMPORTANT: Sort the positions based on their index in the word
-            positions.Sort((a, b) => {
-                int indexA = -1;
-                int indexB = -1;
-
-                for (int x = 0; x < gridSize; x++)
-                {
-                    for (int y = 0; y < gridSize; y++)
-                    {
-                        if (new Vector2Int(x, y) == a) indexA = word.IndexOf(grid[x,y].Letter);
-                        if (new Vector2Int(x, y) == b) indexB = word.IndexOf(grid[x,y].Letter);
-                    }
-                }
-
-                return indexA.CompareTo(indexB);
-            });
-
-
-            for (int i = 0; i < positions.Count; i++)
-            {
-                Vector2Int pos = positions[i];
-                grid[pos.x, pos.y].SetLetter(word[i], pos, word); // Set the correct letter from the word
-                grid[pos.x, pos.y].SetSolvedColor();
-            }
-        }
-        else
-        {
-            Debug.LogError($"Solved word '{word}' not found in the dictionary!");
         }
     }
 
@@ -313,47 +194,26 @@ public class GridManager : MonoBehaviour
             }
         }
 
-        Shuffle(potentialStartPositions); // Shuffle for randomness
+        // Shuffle the list for truly random starting positions
+        Shuffle(potentialStartPositions);
 
+        int maxAttempts = 50; // Or adjust as needed
         bool wordPlaced = false;
-        foreach (Vector2Int startPos in potentialStartPositions)
+
+
+        for (int attempt = 0; attempt < maxAttempts; attempt++)
         {
+            // Get a random empty position or use shuffled positions
+            Vector2Int startPos = potentialStartPositions[attempt % potentialStartPositions.Count]; //Fixes the issue when attempts exceed available start positions
+
+
             if (TryPlaceWord(startPos))
             {
                 wordPlaced = true;
-
-                // Store solved word positions:
-                if (solvedWordPositions.ContainsKey(targetWord))
-                {
-                    solvedWordPositions[targetWord].Clear(); // Clear old positions if word was reset
-                }
-                else
-                {
-                    solvedWordPositions.Add(targetWord, new List<Vector2Int>());
-                }
-
-
-                List<Vector2Int> currentWordPositions = new List<Vector2Int>();
-                for (int i = 0; i < targetWord.Length; i++)
-                {
-                    for (int x = 0; x < gridSize; x++)
-                    {
-                        for (int y = 0; y < gridSize; y++)
-                        {
-                            if (grid[x, y].Letter == targetWord[i])
-                            {
-                                currentWordPositions.Add(new Vector2Int(x, y));
-                                break; // Letter found, move to next letter in word
-                            }
-                        }
-                    }
-                }
-                solvedWordPositions[targetWord] = currentWordPositions;
-
-
-
-                break; // Exit loop once word is placed
+                break;
             }
+
+            ClearLetters(); // Clear placed letters before next attempt
         }
 
         if (!wordPlaced)
@@ -386,42 +246,22 @@ public class GridManager : MonoBehaviour
         }
 
         Vector2Int currentPos = startPos;
+        grid[currentPos.x, currentPos.y].SetLetter(targetWord[0], currentPos);
 
-
-        for (int i = 0; i < targetWord.Length; i++) // Iterate through each letter of the target word
+        for (int i = 1; i < targetWord.Length; i++)
         {
-            //Check bounds and if the current grid position is available
-            if (currentPos.x < 0 || currentPos.x >= gridSize || currentPos.y < 0 || currentPos.y >= gridSize || grid[currentPos.x, currentPos.y].Letter != '\0')
+            List<Vector2Int> validPositions = GetValidAdjacentPositions(currentPos);
+            if (validPositions.Count == 0)
             {
-
-                //Placement failed. Clear placed letters and return false.
-
+                ClearLetters(); // Clear and retry
                 return false;
             }
 
+            currentPos = validPositions[Random.Range(0, validPositions.Count)];
             grid[currentPos.x, currentPos.y].SetLetter(targetWord[i], currentPos);
-
-
-            if (i < targetWord.Length - 1)
-            {
-
-                List<Vector2Int> validPositions = GetValidAdjacentPositions(currentPos);
-
-                if (validPositions.Count == 0)
-                {
-
-                    return false;
-                }
-
-                currentPos = validPositions[UnityEngine.Random.Range(0, validPositions.Count)];
-
-            }
-
-
         }
 
         return true;
-
     }
 
     private void FillRemainingSpaces()
@@ -563,7 +403,8 @@ public class GridManager : MonoBehaviour
             {
                 for (int y = 0; y < gridSize; y++)
                 {
-                    grid[x, y].ResetTile(); // Use the new ResetTile method.  This will clear SolvedWord as well
+                    grid[x, y].SetLetter('\0', new Vector2Int(x, y));
+                    grid[x, y].SetSelected(false);
                 }
             }
 

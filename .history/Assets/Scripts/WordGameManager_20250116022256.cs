@@ -126,13 +126,6 @@ public class WordGameManager : MonoBehaviour
         {
             currentWordIndex++;
             LoadWord(currentWordIndex);
-            GridManager.Instance.ResetGridForNewWord(); // Call ResetGridForNewWord after LoadWord()
-        }
-        else
-        {
-            Debug.Log("End of current Era!");
-            GameManager.Instance.MoveToNextEra();
-            return;
         }
 
         UpdateProgressBar();
@@ -187,7 +180,7 @@ public class WordGameManager : MonoBehaviour
         {
             if (solvedWordsInCurrentEra.Contains(currentWordIndex))
             {
-                sentenceText.text = originalSentence.Replace("_____", targetWord); // Reveal the word
+                sentenceText.text = originalSentence.Replace("_____", targetWord);
             }
             else
             {
@@ -249,9 +242,8 @@ public class WordGameManager : MonoBehaviour
     public bool IsWordSolved(string word)
     {
         if (currentEraWords == null) return false;
-
         int wordIndex = currentEraWords.IndexOf(word);
-        return wordIndex != -1 && solvedWordsInCurrentEra.Contains(wordIndex); // Check index in HashSet
+        return wordIndex != -1 && solvedWordsInCurrentEra.Contains(wordIndex);
     }
 
     // Modify LoadWord to not reset the grid for solved words
@@ -357,9 +349,9 @@ public class WordGameManager : MonoBehaviour
             }
 
             if (solvedWordsInCurrentEra.Contains(i)) // Check against indices
-            {
-                image.color = Color.green;
-            }
+        {
+            image.color = Color.green;
+        }
             else if (i == currentWordIndex)
             {
                 image.color = Color.red;    // Current word

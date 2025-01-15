@@ -9,14 +9,13 @@ public class LetterTile : MonoBehaviour, IPointerEnterHandler, IPointerDownHandl
     private Image backgroundImage;
     public char Letter { get; private set; }
     private Vector2Int gridPosition;
+    private bool isSolved = false;
 
     [SerializeField] private Color defaultColor = Color.white;
     [SerializeField] private Color selectedColor = Color.yellow;
 
     [SerializeField] private Color solvedColor = Color.yellow;
     private bool isSolved = false;
-
-    public string SolvedWord { get; private set; } = "";  // Add this
 
     public void SetSolvedColor()
     {
@@ -27,12 +26,11 @@ public class LetterTile : MonoBehaviour, IPointerEnterHandler, IPointerDownHandl
     }
 
     // Modify SetLetter to reset the state
-    public void SetLetter(char letter, Vector2Int position,string solvedWord = "")
+    public void SetLetter(char letter, Vector2Int position)
     {
         Letter = letter;
         gridPosition = position;
         letterText.text = letter.ToString();
-        SolvedWord = solvedWord;
         isSolved = false;
         backgroundImage.color = defaultColor;
         GetComponent<Image>().raycastTarget = true;
@@ -65,15 +63,6 @@ public class LetterTile : MonoBehaviour, IPointerEnterHandler, IPointerDownHandl
         {
             GridManager.Instance.StartWordSelection(this);
         }
-    }
-
-    public void ResetTile()
-    {
-        Letter = '\0';
-        letterText.text = "";
-        SolvedWord = ""; // Clear solved word
-
-        // ... (other code)
     }
 
     public void OnPointerEnter(PointerEventData eventData)

@@ -67,15 +67,6 @@ public class LetterTile : MonoBehaviour, IPointerEnterHandler, IPointerDownHandl
         }
     }
 
-    public void ResetTile()
-    {
-        Letter = '\0';
-        letterText.text = "";
-        SolvedWord = ""; // Clear solved word
-
-        // ... (other code)
-    }
-
     public void OnPointerEnter(PointerEventData eventData)
     {
         if (!isSolved && GridManager.Instance.IsSelecting)

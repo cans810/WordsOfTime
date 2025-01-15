@@ -144,31 +144,31 @@ public class GridManager : MonoBehaviour
     }
 
     private void GenerateAndStoreInitialGrid()
+{
+    ClearLetters();
+    PlaceWordAdjacent();
+    FillRemainingSpaces();
+
+    List<char> initialLetters = new List<char>();
+    for (int x = 0; x < gridSize; x++)
     {
-        ClearLetters();
-        PlaceWordAdjacent();
-        FillRemainingSpaces();
-
-        List<char> initialLetters = new List<char>();
-        for (int x = 0; x < gridSize; x++)
+        for (int y = 0; y < gridSize; y++)
         {
-            for (int y = 0; y < gridSize; y++)
-            {
-                initialLetters.Add(grid[x, y].Letter);
-            }
+            initialLetters.Add(grid[x, y].Letter);
         }
-
-
-        if (initialGrids.ContainsKey(targetWord))
-        {
-            initialGrids[targetWord] = initialLetters; // Update existing entry if present
-        }
-        else
-        {
-            initialGrids.Add(targetWord, initialLetters);
-        }
-
     }
+
+
+    if (initialGrids.ContainsKey(targetWord))
+    {
+        initialGrids[targetWord] = initialLetters; // Update existing entry if present
+    }
+    else
+    {
+        initialGrids.Add(targetWord, initialLetters);
+    }
+
+}
 
     private void RestoreSolvedWord(string word)
     {

@@ -187,7 +187,7 @@ public class WordGameManager : MonoBehaviour
         {
             if (solvedWordsInCurrentEra.Contains(currentWordIndex))
             {
-                sentenceText.text = originalSentence.Replace("_____", targetWord); // Reveal the word
+                sentenceText.text = originalSentence.Replace("_____", targetWord);
             }
             else
             {

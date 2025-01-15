@@ -27,12 +27,11 @@ public class LetterTile : MonoBehaviour, IPointerEnterHandler, IPointerDownHandl
     }
 
     // Modify SetLetter to reset the state
-    public void SetLetter(char letter, Vector2Int position,string solvedWord = "")
+    public void SetLetter(char letter, Vector2Int position)
     {
         Letter = letter;
         gridPosition = position;
         letterText.text = letter.ToString();
-        SolvedWord = solvedWord;
         isSolved = false;
         backgroundImage.color = defaultColor;
         GetComponent<Image>().raycastTarget = true;
@@ -65,15 +64,6 @@ public class LetterTile : MonoBehaviour, IPointerEnterHandler, IPointerDownHandl
         {
             GridManager.Instance.StartWordSelection(this);
         }
-    }
-
-    public void ResetTile()
-    {
-        Letter = '\0';
-        letterText.text = "";
-        SolvedWord = ""; // Clear solved word
-
-        // ... (other code)
     }
 
     public void OnPointerEnter(PointerEventData eventData)
