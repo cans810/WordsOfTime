@@ -1,0 +1,11 @@
+//boşluk cümle olucak
+//o kelimeyi bulmaya çalışıcak
+//bilinmesi gereken kelime harflerin arasında harfleri birbirine bitişik olucak şekilde olucak
+
+
+
+>hinte basınca kelimenin ilk harfi gözükücek
+>ikinci hintte kaç harfli olduğunu göstericek
+
+
+cümle oluşturmayı gpt ile yap

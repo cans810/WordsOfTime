@@ -1,0 +1,14 @@
+//boşluk cümle olucak
+//o kelimeyi bulmaya çalışıcak
+//bilinmesi gereken kelime harflerin arasında harfleri birbirine bitişik olucak şekilde olucak
+
+//json oyun başlayınca okunulup, daha sonra doldurulacak grid için, bütün kelimeler için bütün gridler dummy olarak bir dictionary'e 
+konulmalı, daha sonra da, oyuncu oyuna girdiğinde gerçek gridler bu dictionary'e göre doldurulmalı.
+
+>eralar değiştirilince progress gidiyor
+
+>hinte basınca kelimenin ilk harfi gözükücek
+>ikinci hintte kaç harfli olduğunu göstericek
+
+
+cümle oluşturmayı gpt ile yap

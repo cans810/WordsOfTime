@@ -1,0 +1,89 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using TMPro;
+
+public class EraSelectionManager : MonoBehaviour
+{
+    public SpriteRenderer BackgroundImage;
+    [SerializeField] private Dictionary<string, Button> eraButtons;
+    private Dictionary<string, TextMeshProUGUI> eraPointTexts = new Dictionary<string, TextMeshProUGUI>();
+
+    void Start()
+    {
+        BackgroundImage.sprite = GameManager.Instance.getEraImage(GameManager.Instance.CurrentEra);
+        FindPointTexts();
+        UpdateEraButtons();
+        UpdateAllPointTexts();
+    }
+
+    private void Update()
+    {
+        UpdateAllPointTexts();
+    }
+
+    private void FindPointTexts()
+    {
+        // Find all Points TextMeshProUGUI components under each era button
+        foreach (var era in GameManager.Instance.EraList)
+        {
+            Transform eraTransform = transform.Find(era);
+            if (eraTransform != null)
+            {
+                TextMeshProUGUI pointText = eraTransform.Find("Points")?.GetComponent<TextMeshProUGUI>();
+                if (pointText != null)
+                {
+                    eraPointTexts[era] = pointText;
+                }
+            }
+        }
+    }
+
+    private void UpdateAllPointTexts()
+    {
+        foreach (var pointText in eraPointTexts.Values)
+        {
+            pointText.text = GameManager.Instance.CurrentPoints.ToString();
+        }
+    }
+
+    private void UpdateEraButtons()
+    {
+        foreach (var era in GameManager.Instance.EraList)
+        {
+            if (eraButtons.ContainsKey(era))
+            {
+                bool isUnlocked = GameManager.Instance.IsEraUnlocked(era);
+                eraButtons[era].interactable = isUnlocked;
+                
+                // Update button text to show required points if locked
+                TextMeshProUGUI buttonText = eraButtons[era].GetComponentInChildren<TextMeshProUGUI>();
+                if (buttonText != null && !isUnlocked)
+                {
+                    int requiredPoints = GameManager.Instance.GetEraUnlockRequirement(era);
+                    buttonText.text = $"{era}\n({requiredPoints} points)";
+                }
+            }
+        }
+    }
+
+    public void SelectEra(string eraName)
+    {
+        if (!GameManager.Instance.IsEraUnlocked(eraName))
+        {
+            // Show message that era is locked
+            return;
+        }
+
+        GameManager.Instance.SelectEra(eraName);
+        WordGameManager.Instance.StartNewGameInEra();
+        BackgroundImage.sprite = GameManager.Instance.getEraImage(GameManager.Instance.CurrentEra);
+    }
+
+    public void ReturnButton()
+    {
+        SceneManager.LoadScene("MainMenuScene");
+    }
+}
