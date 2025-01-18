@@ -5,12 +5,17 @@
 //json oyun başlayınca okunulup, daha sonra doldurulacak grid için, bütün kelimeler için bütün gridler dummy olarak bir dictionary'e 
 konulmalı, daha sonra da, oyuncu oyuna girdiğinde gerçek gridler bu dictionary'e göre doldurulmalı.
 
->eralar değiştirilince progress gidiyor
+//eralar değiştirilince progress gidiyor
 
->hinte basınca kelimenin ilk harfi gözükücek
->ikinci hintte kaç harfli olduğunu göstericek
+//hinte basınca kelimenin ilk harfi gözükücek
+//ikinci hintte kaç harfli olduğunu göstericek
 
->puan kazandıkça eralar açılsın
+//puan kazandıkça eralar açılsın
+
+//buton fontları değişsin
+//hint 2. defa kullanılmama sorununu çöz
+
+>cevabın olduğu ilk harfler gösterilsin sadece
 
 
 
