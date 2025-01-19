@@ -43,15 +43,11 @@ public static class WordValidator
 
     public static string GetSentenceForWord(string word, string era)
     {
-        if (wordSetsWithSentences == null || !wordSetsWithSentences.ContainsKey(era)) 
-            return null;
-
-        string upperWord = word.ToUpper();
-        if (!wordSetsWithSentences[era].ContainsKey(upperWord)) 
-            return null;
-
-        var sentences = wordSetsWithSentences[era][upperWord];
-        return sentences.Count > 0 ? sentences[Random.Range(0, sentences.Count)] : null;
+        if (GameManager.Instance != null)
+        {
+            return GameManager.Instance.GetRandomSentenceForWord(word, era);
+        }
+        return null;
     }
 
     public static List<string> GetWordsForEra(string era)

@@ -21,10 +21,11 @@ public class GameManager : MonoBehaviour
     private HashSet<string> solvedWords = new HashSet<string>();
     private int currentPoints = 0;
 
-    // Dictionary to store words and sentences for each era
-    private Dictionary<string, List<string>> eraWords = new Dictionary<string, List<string>>();
-    private Dictionary<string, Dictionary<string, List<string>>> wordSentences = 
+    // Dictionary to store words and sentences for each language and era
+    private Dictionary<string, Dictionary<string, List<string>>> eraWordsPerLanguage = 
         new Dictionary<string, Dictionary<string, List<string>>>();
+    private Dictionary<string, Dictionary<string, Dictionary<string, List<string>>>> wordSentencesPerLanguage = 
+        new Dictionary<string, Dictionary<string, Dictionary<string, List<string>>>>();
 
     private Dictionary<string, HashSet<int>> solvedWordsPerEra = new Dictionary<string, HashSet<int>>();
 
@@ -65,6 +66,10 @@ public class GameManager : MonoBehaviour
     // Dictionary to store used hints: <Era_Word, HintLevel>
     private Dictionary<string, HashSet<int>> usedHints = new Dictionary<string, HashSet<int>>();
 
+    // Add language-related fields
+    private string currentLanguage = "en"; // Default to English
+    public string CurrentLanguage => currentLanguage;
+
     private void Awake()
     {
         if (Instance == null)
@@ -84,6 +89,12 @@ public class GameManager : MonoBehaviour
             // Start with Ancient Egypt
             CurrentEra = "Ancient Egypt";
             Debug.Log($"Starting with era: {CurrentEra}");
+
+            // Start playing music for the current era
+            if (SoundManager.Instance != null)
+            {
+                SoundManager.Instance.PlayEraMusic(CurrentEra);
+            }
         }
         else
         {
@@ -95,44 +106,24 @@ public class GameManager : MonoBehaviour
     {
         try
         {
-            string filePath = Path.Combine(Application.dataPath, "words.json");
-            if (File.Exists(filePath))
+            // Load English words
+            string enFilePath = Path.Combine(Application.dataPath, "words.json");
+            if (File.Exists(enFilePath))
             {
-                string jsonContent = File.ReadAllText(filePath);
-                WordSetList wordSetList = JsonUtility.FromJson<WordSetList>(jsonContent);
-
-                eraList.Clear(); // Clear default values
-                eraWords.Clear();
-                wordSentences.Clear();
-
-                foreach (var set in wordSetList.sets)
-                {
-                    string era = set.era;
-                    eraList.Add(era);
-                    
-                    List<string> words = new List<string>();
-                    Dictionary<string, List<string>> sentences = new Dictionary<string, List<string>>();
-
-                    foreach (var wordEntry in set.words)
-                    {
-                        string word = wordEntry.word.ToUpper();
-                        words.Add(word);
-                        sentences[word] = new List<string>(wordEntry.sentences);
-                    }
-
-                    eraWords[era] = words;
-                    wordSentences[era] = sentences;
-                }
-
-                Debug.Log($"Successfully loaded {eraList.Count} eras from JSON");
-                if (string.IsNullOrEmpty(currentEra) && eraList.Count > 0)
-                {
-                    currentEra = eraList[0];
-                }
+                LoadLanguageWords(enFilePath, "en");
             }
-            else
+
+            // Load Turkish words
+            string trFilePath = Path.Combine(Application.dataPath, "words_tr.json");
+            if (File.Exists(trFilePath))
             {
-                Debug.LogError($"words.json not found at path: {filePath}");
+                LoadLanguageWords(trFilePath, "tr");
+            }
+
+            Debug.Log($"Successfully loaded words for {eraWordsPerLanguage.Count} languages");
+            if (string.IsNullOrEmpty(currentEra) && eraList.Count > 0)
+            {
+                currentEra = eraList[0];
             }
         }
         catch (System.Exception e)
@@ -141,12 +132,73 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void LoadLanguageWords(string filePath, string language)
+    {
+        try 
+        {
+            string jsonContent = File.ReadAllText(filePath);
+            WordSetList wordSetList = JsonUtility.FromJson<WordSetList>(jsonContent);
+            
+            if (!eraWordsPerLanguage.ContainsKey(language))
+            {
+                eraWordsPerLanguage[language] = new Dictionary<string, List<string>>();
+                wordSentencesPerLanguage[language] = new Dictionary<string, Dictionary<string, List<string>>>();
+            }
+
+            foreach (var set in wordSetList.sets)
+            {
+                // Use original era name for storage
+                string era = set.era;
+                
+                // Map Turkish era names to English ones for internal use
+                string internalEra = language == "tr" ? MapTurkishEraName(era) : era;
+                
+                if (!eraWordsPerLanguage[language].ContainsKey(internalEra))
+                {
+                    eraWordsPerLanguage[language][internalEra] = new List<string>();
+                    wordSentencesPerLanguage[language][internalEra] = new Dictionary<string, List<string>>();
+                }
+
+                foreach (var wordEntry in set.words)
+                {
+                    string word = wordEntry.word.ToUpper();
+                    eraWordsPerLanguage[language][internalEra].Add(word);
+                    wordSentencesPerLanguage[language][internalEra][word] = new List<string>(wordEntry.sentences);
+                    Debug.Log($"Loaded {language} word: {word} with {wordEntry.sentences.Count()} sentences for era {internalEra}");
+                }
+            }
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError($"Error loading {language} words from {filePath}: {e.Message}");
+        }
+    }
+
+    private string MapTurkishEraName(string turkishEra)
+    {
+        Dictionary<string, string> eraMapping = new Dictionary<string, string>
+        {
+            {"Antik Mısır", "Ancient Egypt"},
+            {"Antik Yunan", "Ancient Greece"},
+            {"Orta Çağ Avrupası", "Medieval Europe"},
+            {"Rönesans", "Renaissance"},
+            {"Sanayi Devrimi", "Industrial Revolution"}
+        };
+
+        if (eraMapping.ContainsKey(turkishEra))
+        {
+            Debug.Log($"Mapped Turkish era '{turkishEra}' to '{eraMapping[turkishEra]}'");
+            return eraMapping[turkishEra];
+        }
+        return turkishEra;
+    }
+
     private void GenerateAllGrids()
     {
         initialGrids.Clear();
-        foreach (var era in eraWords.Keys)
+        foreach (var era in eraWordsPerLanguage[currentLanguage].Keys)
         {
-            foreach (var word in eraWords[era])
+            foreach (var word in eraWordsPerLanguage[currentLanguage][era])
             {
                 if (!initialGrids.ContainsKey(word))
                 {
@@ -284,9 +336,9 @@ public class GameManager : MonoBehaviour
     private void ShuffleAllEraWords()
     {
         System.Random rng = new System.Random();
-        foreach (var era in eraWords.Keys)
+        foreach (var era in eraWordsPerLanguage[currentLanguage].Keys)
         {
-            List<string> words = new List<string>(eraWords[era]);
+            List<string> words = new List<string>(eraWordsPerLanguage[currentLanguage][era]);
             int n = words.Count;
             
             // Fisher-Yates shuffle
@@ -306,21 +358,38 @@ public class GameManager : MonoBehaviour
 
     public List<string> GetCurrentEraWords()
     {
-        if (shuffledEraWords.ContainsKey(currentEra))
+        if (eraWordsPerLanguage.ContainsKey(currentLanguage) && 
+            eraWordsPerLanguage[currentLanguage].ContainsKey(currentEra))
         {
-            return new List<string>(shuffledEraWords[currentEra]);
+            return new List<string>(eraWordsPerLanguage[currentLanguage][currentEra]);
         }
         return new List<string>();
     }
 
-    public List<string> GetSentencesForWord(string word)
+    public List<string> GetSentencesForWord(string word, string era)
     {
-        if (wordSentences.ContainsKey(currentEra) && 
-            wordSentences[currentEra].ContainsKey(word))
+        if (wordSentencesPerLanguage.ContainsKey(currentLanguage) && 
+            wordSentencesPerLanguage[currentLanguage].ContainsKey(era) && 
+            wordSentencesPerLanguage[currentLanguage][era].ContainsKey(word))
         {
-            return wordSentences[currentEra][word];
+            var sentences = wordSentencesPerLanguage[currentLanguage][era][word];
+            Debug.Log($"Found {sentences.Count} sentences for word {word} in {currentLanguage}");
+            return sentences;
         }
+        Debug.LogError($"No sentences found for word {word} in {currentLanguage} for era {era}");
         return new List<string>();
+    }
+
+    public string GetRandomSentenceForWord(string word, string era)
+    {
+        var sentences = GetSentencesForWord(word, era);
+        if (sentences.Count > 0)
+        {
+            int randomIndex = UnityEngine.Random.Range(0, sentences.Count);
+            return sentences[randomIndex];
+        }
+        Debug.LogError($"No sentences available for word {word}");
+        return $"_____ {(currentLanguage == "tr" ? "için cümle bulunamadı" : "sentence not found")}";
     }
 
     public Sprite getEraImage(string era)
@@ -413,6 +482,9 @@ public class GameManager : MonoBehaviour
     public void SwitchEra(string newEra)
     {
         CurrentEra = newEra;
+        // Play the corresponding era music
+        SoundManager.Instance.PlayEraMusic(newEra);
+        
         if (!solvedWordsPerEra.ContainsKey(newEra))
         {
             solvedWordsPerEra[newEra] = new HashSet<int>();
@@ -484,4 +556,34 @@ public class GameManager : MonoBehaviour
         
         return false;
     }
+
+    // Add method to change language
+    public void SetLanguage(string language)
+    {
+        if (eraWordsPerLanguage.ContainsKey(language))
+        {
+            currentLanguage = language;
+            Debug.Log($"Switching to language: {language}");
+            
+            // Regenerate grids for the new language
+            GenerateAllGrids();
+            
+            // Notify WordGameManager to refresh the current word and grid
+            if (WordGameManager.Instance != null)
+            {
+                WordGameManager.Instance.StartNewGameInEra();
+            }
+            
+            // Notify any listeners that language has changed
+            OnLanguageChanged?.Invoke();
+        }
+        else
+        {
+            Debug.LogError($"Language {language} not found in loaded languages");
+        }
+    }
+
+    // Add event for language changes
+    public delegate void LanguageChangedHandler();
+    public event LanguageChangedHandler OnLanguageChanged;
 }

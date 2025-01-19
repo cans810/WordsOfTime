@@ -1,0 +1,78 @@
+{
+  "sets": [
+    {
+      "era": "Ancient Egypt",
+      "words": [
+        {
+          "word": "OBELISK",
+          "sentences": [
+            "The tall stone _____ pointed towards the sky in ancient Egypt.",
+            "The _____ was carved with hieroglyphs telling stories of the pharaohs.",
+            "The _____ cast long shadows across the temple grounds."
+          ]
+        },
+        {
+          "word": "VIZIER",
+          "sentences": [
+            "The _____ served as the pharaoh's chief advisor.",
+            "As _____, they helped manage the kingdom's affairs.",
+            "The _____ was one of the most powerful officials in ancient Egypt."
+          ]
+        },
+        {
+          "word": "HORUS",
+          "sentences": [
+            "_____ was the falcon-headed god of the sky.",
+            "The pharaoh was seen as the living embodiment of _____.",
+            "_____ was one of Egypt's most important deities."
+          ]
+        },
+        {
+          "word": "OSIRIS",
+          "sentences": [
+            "_____ was the god of the afterlife and resurrection.",
+            "_____ ruled over the realm of the dead.",
+            "The myth of _____ was central to Egyptian beliefs about death."
+          ]
+        }
+      ]
+    },
+    {
+      "era": "Medieval Europe",
+      "words": [
+        {
+          "word": "SQUIRE",
+          "sentences": [
+            "A _____ trained for years to become a knight.",
+            "The young _____ served an experienced knight as part of their training.",
+            "The _____ learned combat skills and chivalric code."
+          ]
+        },
+        {
+          "word": "GUILD",
+          "sentences": [
+            "The craftsmen's _____ controlled the quality of goods produced.",
+            "Each trade had its own _____ to protect its interests.",
+            "The _____ system regulated apprenticeships and trade practices."
+          ]
+        },
+        {
+          "word": "JOUST",
+          "sentences": [
+            "Knights would _____ against each other in tournaments.",
+            "The _____ was a popular form of entertainment.",
+            "During a _____, knights charged at each other with lances."
+          ]
+        },
+        {
+          "word": "MANOR",
+          "sentences": [
+            "The lord's _____ was the center of feudal life.",
+            "The _____ included farmland worked by peasants.",
+            "Each _____ was like a small, self-sufficient community."
+          ]
+        }
+      ]
+    }
+  ]
+} 

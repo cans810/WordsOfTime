@@ -716,6 +716,8 @@ public class WordGameManager : MonoBehaviour
         int startPoints = GameManager.Instance.CurrentPoints;
         GameManager.Instance.AddPoints(GameManager.POINTS_PER_WORD);
         pointAnimationCoroutine = StartCoroutine(AnimatePointsChange(startPoints, GameManager.Instance.CurrentPoints));
+
+        SoundManager.Instance.PlaySound("PointGain");
         
         solvedWordsInCurrentEra.Add(currentWordIndex);
         GameManager.Instance.StoreSolvedWordIndex(GameManager.Instance.CurrentEra, currentWordIndex);

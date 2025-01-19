@@ -15,8 +15,12 @@ konulmalı, daha sonra da, oyuncu oyuna girdiğinde gerçek gridler bu dictionar
 //buton fontları değişsin
 //hint 2. defa kullanılmama sorununu çöz
 
->cevabın olduğu ilk harfler gösterilsin sadece
 
+>sceneler arası geçişlerde smooth bir geçiş olsun
+>daha çok kelime ekle
+>daha çok era ekle
+>puan barına basınca market sayfasına gidilsin
+>market sayfasında puan satın alınabilir, reklam kaldırma seçeneği satın alınabilir
 
 
 cümle oluşturmayı gpt ile yap

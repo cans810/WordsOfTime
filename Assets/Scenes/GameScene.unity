@@ -984,7 +984,7 @@ PrefabInstance:
     - target: {fileID: 5671988847166839953, guid: a5f6482dfed40c740a0aa7301fb11cb7, type: 3}
       propertyPath: m_sharedMaterial
       value: 
-      objectReference: {fileID: -2291846987492929786, guid: d4e1f0fdce79a874fab05abb0ac1ed00, type: 2}
+      objectReference: {fileID: -5931116662492375901, guid: d4e1f0fdce79a874fab05abb0ac1ed00, type: 2}
     - target: {fileID: 5671988847166839953, guid: a5f6482dfed40c740a0aa7301fb11cb7, type: 3}
       propertyPath: m_fontColor32.rgba
       value: 4292913490
@@ -1213,7 +1213,7 @@ MonoBehaviour:
   m_text: 50
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d4e1f0fdce79a874fab05abb0ac1ed00, type: 2}
-  m_sharedMaterial: {fileID: -2291846987492929786, guid: d4e1f0fdce79a874fab05abb0ac1ed00, type: 2}
+  m_sharedMaterial: {fileID: -5931116662492375901, guid: d4e1f0fdce79a874fab05abb0ac1ed00, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1237,8 +1237,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 60
-  m_fontSizeBase: 60
+  m_fontSize: 70
+  m_fontSizeBase: 70
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1640,6 +1640,7 @@ GameObject:
   - component: {fileID: 1681015714}
   - component: {fileID: 1681015713}
   - component: {fileID: 1681015717}
+  - component: {fileID: 1681015718}
   m_Layer: 5
   m_Name: GameSceneCanvas
   m_TagString: Untagged
@@ -1754,6 +1755,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hintButton: {fileID: 0}
   hintButtonText: {fileID: 0}
+--- !u!95 &1681015718
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1681015712}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: d1dc69262d2a0fc4ebcd69b24e35b5de, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1798153014
 GameObject:
   m_ObjectHideFlags: 0
@@ -1811,10 +1833,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: ADGDFGDA
+  m_text: SDFDADFG
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d4e1f0fdce79a874fab05abb0ac1ed00, type: 2}
-  m_sharedMaterial: {fileID: -2291846987492929786, guid: d4e1f0fdce79a874fab05abb0ac1ed00, type: 2}
+  m_sharedMaterial: {fileID: -5931116662492375901, guid: d4e1f0fdce79a874fab05abb0ac1ed00, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

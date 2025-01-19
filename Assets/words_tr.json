@@ -1,0 +1,62 @@
+{
+  "sets": [
+    {
+      "era": "Antik Mısır",
+      "words": [
+        {
+          "word": "FİRAVUN",
+          "sentences": ["_____ antik Mısır'ı yönetti."]
+        },
+        {
+          "word": "PİRAMİT",
+          "sentences": ["_____ mezar olarak inşa edildi."]
+        },
+        {
+          "word": "SFENKS",
+          "sentences": ["_____ piramitleri korur."]
+        },
+        {
+          "word": "MUMYA",
+          "sentences": ["_____ ahiret için korundu."]
+        },
+        {
+          "word": "SKARABE",
+          "sentences": ["_____ kutsal bir semboldu."]
+        },
+        {
+          "word": "HİYEROGLİF",
+          "sentences": ["_____ antik yazıydı."]
+        },
+        {
+          "word": "ANK",
+          "sentences": ["_____ sonsuz yaşamı simgeledi."]
+        },
+        {
+          "word": "RA",
+          "sentences": ["_____ güneş tanrısıydı."]
+        },
+        {
+          "word": "NİL",
+          "sentences": ["_____ Nehri Mısır'a hayat getirdi."]
+        },
+        {
+          "word": "PAPİRÜS",
+          "sentences": ["_____ yazı yazmak için kullanıldı."]
+        }
+      ]
+    },
+    {
+      "era": "Orta Çağ Avrupası",
+      "words": [
+        {
+          "word": "KALE",
+          "sentences": ["_____ savunma için inşa edildi."]
+        },
+        {
+          "word": "ŞÖVALYE",
+          "sentences": ["_____ onur için savaştı."]
+        }
+      ]
+    }
+  ]
+}
