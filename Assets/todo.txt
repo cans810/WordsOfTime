@@ -21,6 +21,8 @@ konulmalı, daha sonra da, oyuncu oyuna girdiğinde gerçek gridler bu dictionar
 >daha çok era ekle
 >puan barına basınca market sayfasına gidilsin
 >market sayfasında puan satın alınabilir, reklam kaldırma seçeneği satın alınabilir
+>boşluk doldurma yerine soru cevaplama olabilir
+
 
 
 cümle oluşturmayı gpt ile yap
