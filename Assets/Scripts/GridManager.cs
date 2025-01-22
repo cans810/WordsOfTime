@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
+using UnityEngine.UI;
 
 public class GridManager : MonoBehaviour
 {
@@ -130,6 +131,16 @@ public class GridManager : MonoBehaviour
                         grid[pos.x, pos.y].SetSolvedColor();
                     }
                 }
+            }
+        }
+
+        // Check if word was already guessed
+        if (GameManager.Instance.IsWordGuessed(word))
+        {
+            List<Vector2Int> wordPath = GameManager.Instance.GetWordPath(word);
+            if (wordPath != null)
+            {
+                ShowSolvedWord(word, wordPath);
             }
         }
     }
@@ -441,6 +452,21 @@ public class GridManager : MonoBehaviour
             }
         }
         highlightedTiles.Clear();
+    }
+
+    public void ShowSolvedWord(string word, List<Vector2Int> path)
+    {
+        if (word == currentWord && path != null)
+        {
+            foreach (Vector2Int pos in path)
+            {
+                int index = pos.y * gridSize + pos.x;
+                if (grid[pos.x, pos.y] != null)
+                {
+                    grid[pos.x, pos.y].GetComponent<Image>().color = Color.yellow;
+                }
+            }
+        }
     }
 
     // ... rest of your existing methods remain the same ...

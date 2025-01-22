@@ -4,7 +4,8 @@ using System.Collections.Generic;
 
 public class SoundManager : MonoBehaviour
 {
-    public static SoundManager Instance { get; private set; }
+    private static SoundManager instance;
+    public static SoundManager Instance => instance;
 
     [System.Serializable]
     public class Sound
@@ -39,15 +40,12 @@ public class SoundManager : MonoBehaviour
     private Dictionary<string, Sound> soundDictionary = new Dictionary<string, Sound>();
     private Dictionary<string, EraMusic> musicDictionary = new Dictionary<string, EraMusic>();
     private Coroutine fadeCoroutine;
+    private EraMusic currentEraMusic;
 
-    public bool IsSoundOn 
-    { 
+    public bool IsSoundOn
+    {
         get => isSoundOn;
-        set 
-        {
-            isSoundOn = value;
-            effectsSource.mute = !value;
-        }
+        set => isSoundOn = value;
     }
 
     public bool IsMusicOn
@@ -60,19 +58,34 @@ public class SoundManager : MonoBehaviour
             {
                 StopMusic();
             }
-            else if (musicSource.clip != null)
+            else
             {
-                musicSource.Play();
+                if (currentEraMusic != null && musicSource != null)
+                {
+                    musicSource.clip = currentEraMusic.musicClip;
+                    musicSource.Play();
+                }
             }
         }
     }
 
+    public float MusicVolume => musicSource ? musicSource.volume : 1f;
+    public float SoundVolume => effectsSource ? effectsSource.volume : 1f;
+
     private void Awake()
     {
-        if (Instance == null)
+        if (instance == null)
         {
-            Instance = this;
+            instance = this;
             DontDestroyOnLoad(gameObject);
+            
+            // Don't start music automatically
+            if (musicSource != null)
+            {
+                musicSource.playOnAwake = false;
+                musicSource.Stop();
+            }
+            
             InitializeSounds();
             InitializeMusic();
         }
@@ -128,8 +141,19 @@ public class SoundManager : MonoBehaviour
         }
 
         EraMusic newMusic = musicDictionary[eraName];
+        currentEraMusic = newMusic;
         
-        if (musicSource.clip == newMusic.musicClip)
+        // Don't play if music is disabled
+        if (!IsMusicOn)
+        {
+            if (musicSource != null && musicSource.isPlaying)
+            {
+                musicSource.Stop();
+            }
+            return;
+        }
+
+        if (musicSource != null && musicSource.clip == newMusic.musicClip && musicSource.isPlaying)
             return;
 
         if (fadeCoroutine != null)
@@ -140,39 +164,62 @@ public class SoundManager : MonoBehaviour
 
     private IEnumerator FadeMusic(EraMusic newMusic)
     {
-        float startVolume = musicSource.volume;
-        float timer = 0;
-
-        while (timer < fadeTime)
+        // Don't start fading if music is disabled
+        if (!IsMusicOn)
         {
-            timer += Time.deltaTime;
-            musicSource.volume = Mathf.Lerp(startVolume, 0, timer / fadeTime);
-            yield return null;
+            yield break;
         }
 
+        float fadeTime = 1f;
+        float elapsed = 0;
+
+        // Fade out current music
+        if (musicSource != null && musicSource.isPlaying)
+        {
+            float startVolume = musicSource.volume;
+            while (elapsed < fadeTime)
+            {
+                elapsed += Time.deltaTime;
+                musicSource.volume = Mathf.Lerp(startVolume, 0, elapsed / fadeTime);
+                yield return null;
+            }
+            musicSource.Stop();
+        }
+
+        // Only proceed if music is still enabled
+        if (!IsMusicOn)
+        {
+            yield break;
+        }
+
+        // Change clip and start playing
         musicSource.clip = newMusic.musicClip;
-        musicSource.pitch = newMusic.pitch;
-        
-        if (isMusicOn)
-            musicSource.Play();
+        musicSource.Play();
 
-        timer = 0;
-        while (timer < fadeTime)
+        // Fade in new music
+        elapsed = 0;
+        while (elapsed < fadeTime && IsMusicOn)
         {
-            timer += Time.deltaTime;
-            musicSource.volume = Mathf.Lerp(0, newMusic.volume, timer / fadeTime);
+            elapsed += Time.deltaTime;
+            musicSource.volume = Mathf.Lerp(0, 1, elapsed / fadeTime);
             yield return null;
         }
 
-        musicSource.volume = newMusic.volume;
+        // If music was disabled during fade in, stop playing
+        if (!IsMusicOn)
+        {
+            musicSource.Stop();
+        }
+
+        fadeCoroutine = null;
     }
 
     public void StopMusic()
     {
-        if (fadeCoroutine != null)
-            StopCoroutine(fadeCoroutine);
-        
-        musicSource.Stop();
+        if (musicSource != null)
+        {
+            musicSource.Stop();
+        }
     }
 
     public void StopAllSounds()
@@ -188,5 +235,34 @@ public class SoundManager : MonoBehaviour
     public void ToggleMusic()
     {
         IsMusicOn = !IsMusicOn;
+    }
+
+    public void SetMusicVolume(float volume)
+    {
+        if (musicSource != null)
+        {
+            musicSource.volume = Mathf.Clamp01(volume);
+        }
+    }
+
+    public void SetSoundVolume(float volume)
+    {
+        if (effectsSource != null)
+        {
+            effectsSource.volume = Mathf.Clamp01(volume);
+        }
+    }
+
+    private void LoadEraMusic(string eraName, string resourcePath)
+    {
+        AudioClip musicClip = Resources.Load<AudioClip>(resourcePath);
+        if (musicClip != null)
+        {
+            musicDictionary[eraName] = new EraMusic { musicClip = musicClip };
+        }
+        else
+        {
+            Debug.LogError($"Failed to load music for era {eraName} from path {resourcePath}");
+        }
     }
 } 

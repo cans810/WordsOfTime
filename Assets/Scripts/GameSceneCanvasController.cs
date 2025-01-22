@@ -9,8 +9,34 @@ public class GameSceneCanvasController : MonoBehaviour
 {
     [SerializeField] private Button hintButton;
     [SerializeField] private TextMeshProUGUI hintButtonText;
+    [SerializeField] private TextMeshProUGUI pointsText;
     private int hintLevel = 1;
     private int lastCheckedPoints = 0;
+
+    private void OnEnable()
+    {
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.OnPointsChanged += OnPointsChanged;
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.OnPointsChanged -= OnPointsChanged;
+        }
+    }
+
+    private void OnPointsChanged(int points)
+    {
+        if (pointsText != null)
+        {
+            pointsText.text = $"Points: {points}";
+        }
+        UpdateHintButtonText();
+    }
 
     private void Awake()
     {
@@ -49,12 +75,6 @@ public class GameSceneCanvasController : MonoBehaviour
         {
             GameManager.Instance.OnPointsChanged -= OnPointsChanged;
         }
-    }
-
-    private void OnPointsChanged()
-    {
-        Debug.Log("Points changed, updating hint button"); // Debug log
-        UpdateHintButtonText();
     }
 
     // Update is called once per frame

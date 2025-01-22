@@ -59,6 +59,11 @@ public class WordGameManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI hintButtonText;
     private Coroutine showLengthCoroutine;
 
+    private GridManager gridManager;
+
+    [SerializeField] private int numberOfPreGeneratedGrids = 5; // Number of grids per era
+    private List<GridData> preGeneratedGrids = new List<GridData>();
+
     private void Awake()
     {
         if (Instance == null)
@@ -80,6 +85,7 @@ public class WordGameManager : MonoBehaviour
 
     private void Start()
     {
+        gridManager = FindFirstObjectByType<GridManager>();
         Debug.Log("WordGameManager starting"); // Debug log
         
         // Find hint button in scene if not assigned
@@ -695,6 +701,10 @@ public class WordGameManager : MonoBehaviour
             AddPoints();
             solvedWords.Add(word);
             OnWordSolved?.Invoke(word);
+            
+            // Add this line to save the guessed word
+            GameManager.Instance.OnWordGuessed(word);
+            
         }
         else
         {
@@ -785,5 +795,128 @@ public class WordGameManager : MonoBehaviour
         {
             GameManager.Instance.OnLanguageChanged -= OnLanguageChanged;
         }
+    }
+
+    public List<GridData> GetPreGeneratedGrids()
+    {
+        return preGeneratedGrids;
+    }
+
+    public void LoadPreGeneratedGrids(List<GridData> grids)
+    {
+        preGeneratedGrids = grids;
+        Debug.Log($"Loaded {grids.Count} pre-generated grids");
+    }
+
+    public void GenerateNewGrids()
+    {
+        preGeneratedGrids.Clear();
+        // Generate new grids for each era
+        foreach (string era in GameManager.Instance.GetAllEras())
+        {
+            for (int i = 0; i < numberOfPreGeneratedGrids; i++)
+            {
+                GridData grid = GenerateGridForEra(era);
+                preGeneratedGrids.Add(grid);
+            }
+        }
+        Debug.Log($"Generated {preGeneratedGrids.Count} new grids");
+        SaveManager.Instance.SaveGame();
+    }
+
+    private GridData GenerateGridForEra(string era)
+    {
+        GridData grid = new GridData();
+        grid.era = era;
+        grid.gridSize = 5; // Or whatever size you use
+        
+        // Get a random word for this era
+        grid.targetWord = GetRandomWordForEra(era);
+        
+        // Generate the grid letters and positions
+        GenerateGridLettersAndPositions(grid);
+        
+        return grid;
+    }
+
+    private string GetRandomWordForEra(string era)
+    {
+        if (GameManager.Instance != null)
+        {
+            var eraWords = GameManager.Instance.GetCurrentEraWords();
+            if (eraWords != null && eraWords.Count > 0)
+            {
+                int randomIndex = UnityEngine.Random.Range(0, eraWords.Count);
+                return eraWords[randomIndex];
+            }
+        }
+        
+        Debug.LogError($"No words found for era: {era}");
+        return string.Empty;
+    }
+
+    private void GenerateGridLettersAndPositions(GridData grid)
+    {
+        grid.letters = new List<string>();
+        grid.correctWordPositions = new List<Vector2IntSerializable>();
+
+        // Create a 2D array to track letter placement
+        string[,] gridArray = new string[grid.gridSize, grid.gridSize];
+        
+        // Convert target word to char array
+        char[] wordChars = grid.targetWord.ToCharArray();
+        
+        // Random starting position
+        int startX = UnityEngine.Random.Range(0, grid.gridSize);
+        int startY = UnityEngine.Random.Range(0, grid.gridSize);
+        
+        // Random direction (horizontal or vertical)
+        bool isHorizontal = UnityEngine.Random.value > 0.5f;
+        
+        // Place the word
+        for (int i = 0; i < wordChars.Length; i++)
+        {
+            int x = isHorizontal ? (startX + i) % grid.gridSize : startX;
+            int y = isHorizontal ? startY : (startY + i) % grid.gridSize;
+            
+            gridArray[x, y] = wordChars[i].ToString();
+            grid.correctWordPositions.Add(new Vector2IntSerializable(x, y));
+        }
+        
+        // Fill remaining spaces with random letters
+        string alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        for (int x = 0; x < grid.gridSize; x++)
+        {
+            for (int y = 0; y < grid.gridSize; y++)
+            {
+                if (string.IsNullOrEmpty(gridArray[x, y]))
+                {
+                    gridArray[x, y] = alphabet[UnityEngine.Random.Range(0, alphabet.Length)].ToString();
+                }
+            }
+        }
+        
+        // Convert 2D array to linear list
+        for (int y = 0; y < grid.gridSize; y++)
+        {
+            for (int x = 0; x < grid.gridSize; x++)
+            {
+                grid.letters.Add(gridArray[x, y]);
+            }
+        }
+    }
+
+    // Method to get a grid for a specific era
+    public GridData GetGridForEra(string era)
+    {
+        var availableGrids = preGeneratedGrids.FindAll(g => g.era == era);
+        if (availableGrids.Count > 0)
+        {
+            int randomIndex = UnityEngine.Random.Range(0, availableGrids.Count);
+            return availableGrids[randomIndex];
+        }
+        
+        // If no grid found, generate a new one
+        return GenerateGridForEra(era);
     }
 }

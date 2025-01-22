@@ -2,10 +2,23 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using UnityEngine.SceneManagement;
+using System;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager Instance { get; private set; }
+    private static GameManager _instance;
+    public static GameManager Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                _instance = FindFirstObjectByType<GameManager>();
+            }
+            return _instance;
+        }
+    }
 
     [SerializeField] private List<string> eraList = new List<string>() { "Ancient Egypt", "Ancient Greece", "Medieval Europe", "Renaissance", "Industrial Revolution" };
     [SerializeField] private List<Sprite> eraImages = new List<Sprite>();
@@ -13,13 +26,25 @@ public class GameManager : MonoBehaviour
     private string currentEra;
     public string CurrentEra 
     { 
-        get { return currentEra; }
-        private set { currentEra = value; }
+        get => currentEra;
+        set
+        {
+            if (currentEra != value)
+            {
+                currentEra = value;
+                OnEraChanged?.Invoke();
+                // If we have a SoundManager, update the music
+                if (SoundManager.Instance != null)
+                {
+                    SoundManager.Instance.PlayEraMusic(value);
+                }
+            }
+        }
     }
     private Dictionary<string, List<char>> initialGrids = new Dictionary<string, List<char>>();
     private Dictionary<string, List<Vector2Int>> solvedWordPositions = new Dictionary<string, List<Vector2Int>>();
     private HashSet<string> solvedWords = new HashSet<string>();
-    private int currentPoints = 0;
+    private int currentPoints;
 
     // Dictionary to store words and sentences for each language and era
     private Dictionary<string, Dictionary<string, List<string>>> eraWordsPerLanguage = 
@@ -36,19 +61,11 @@ public class GameManager : MonoBehaviour
 
     public List<string> EraList => eraList;
     public List<Sprite> EraImages => eraImages;
-    public int CurrentPoints
-    {
-        get { return currentPoints; }
-        private set 
-        { 
-            currentPoints = value;
-            OnPointsChanged?.Invoke();
-        }
-    }
+    public int CurrentPoints => currentPoints;
     public Dictionary<string, List<char>> InitialGrids => initialGrids;
     public Dictionary<string, List<Vector2Int>> SolvedWordPositions => solvedWordPositions;
 
-    public delegate void PointsChangedHandler();
+    public delegate void PointsChangedHandler(int points);
     public event PointsChangedHandler OnPointsChanged;
 
     private Dictionary<string, List<string>> shuffledEraWords = new Dictionary<string, List<string>>();
@@ -77,35 +94,104 @@ public class GameManager : MonoBehaviour
     public delegate void LanguageChangeHandler();
     public event LanguageChangeHandler OnLanguageChanged;
 
+    public event System.Action OnEraChanged;
+
+    private GameSettings currentSettings;
+
+    private readonly List<string> allEras = new List<string>
+    {
+        "Ancient Egypt",
+        "Medieval Europe",
+        "Industrial Revolution"
+        // Add any other eras you have
+    };
+
+    private HashSet<string> guessedWords = new HashSet<string>();
+
     private void Awake()
     {
-        if (Instance == null)
+        if (_instance != null && _instance != this)
         {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-            LoadWordsFromJson();
-            GenerateAllGrids();
-            
-            // Shuffle words only once when game starts
-            if (!hasShuffledWords)
-            {
-                ShuffleAllEraWords();
-                hasShuffledWords = true;
-            }
-            
-            // Start with Ancient Egypt
-            CurrentEra = "Ancient Egypt";
-            Debug.Log($"Starting with era: {CurrentEra}");
+            Destroy(gameObject);
+            return;
+        }
+        _instance = this;
+        DontDestroyOnLoad(gameObject);
+        LoadWordsFromJson();
+        GenerateAllGrids();
+        
+        // Shuffle words only once when game starts
+        if (!hasShuffledWords)
+        {
+            ShuffleAllEraWords();
+            hasShuffledWords = true;
+        }
+        
+        // Start with Ancient Egypt
+        CurrentEra = "Ancient Egypt";
+        Debug.Log($"Starting with era: {CurrentEra}");
 
-            // Start playing music for the current era
-            if (SoundManager.Instance != null)
-            {
-                SoundManager.Instance.PlayEraMusic(CurrentEra);
-            }
+        // Start playing music for the current era
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlayEraMusic(CurrentEra);
+        }
+
+        // Initialize default settings
+        currentSettings = new GameSettings();
+    }
+
+    private void Start()
+    {
+        Debug.Log("GameManager Start");
+        
+        // Load save file if it exists
+        if (SaveManager.Instance != null)
+        {
+            Debug.Log("SaveManager instance found, loading game...");
+            SaveManager.Instance.LoadGame();
         }
         else
         {
-            Destroy(gameObject);
+            Debug.LogWarning("SaveManager instance not found!");
+        }
+        
+        // Debug print current guessed words
+        Debug.Log($"Guessed words after load: {string.Join(", ", guessedWords)}");
+        
+        // If no grids were loaded from save, generate new ones
+        if (initialGrids.Count == 0)
+        {
+            Debug.Log("No grids found, generating new ones...");
+            GenerateAllGrids();
+            SaveManager.Instance.SaveGame();
+        }
+
+        Debug.Log($"Initial grids count: {initialGrids.Count}");
+        Debug.Log($"Solved positions count: {solvedWordPositions.Count}");
+
+        // Apply loaded or generated state
+        ApplyGuessedWordsState();
+    }
+
+    private void ApplyGuessedWordsState()
+    {
+        Debug.Log($"Applying guessed words state. Count: {guessedWords.Count}");
+        if (guessedWords.Count > 0 && GridManager.Instance != null)
+        {
+            foreach (string word in guessedWords)
+            {
+                Debug.Log($"Processing guessed word: {word}");
+                if (solvedWordPositions.ContainsKey(word))
+                {
+                    Debug.Log($"Found positions for word: {word}");
+                    GridManager.Instance.ShowSolvedWord(word, solvedWordPositions[word]);
+                }
+                else
+                {
+                    Debug.LogWarning($"No positions found for guessed word: {word}");
+                }
+            }
         }
     }
 
@@ -209,9 +295,8 @@ public class GameManager : MonoBehaviour
             {
                 if (!initialGrids.ContainsKey(word))
                 {
-                    // Initialize grid with dots
                     List<char> grid = new List<char>(new char[GRID_SIZE * GRID_SIZE]);
-                    for (int i = 0; i < GRID_SIZE * GRID_SIZE; i++)
+                    for (int i = 0; i < grid.Capacity; i++)
                     {
                         grid[i] = '.';
                     }
@@ -237,7 +322,7 @@ public class GameManager : MonoBehaviour
 
                                 for (int i = possibleStarts.Count - 1; i > 0; i--)
                                 {
-                                    int rnd = Random.Range(0, i + 1);
+                                    int rnd = UnityEngine.Random.Range(0, i + 1);
                                     var temp = possibleStarts[i];
                                     possibleStarts[i] = possibleStarts[rnd];
                                     possibleStarts[rnd] = temp;
@@ -252,8 +337,8 @@ public class GameManager : MonoBehaviour
 
                                     for (int i = 1; i < word.Length; i++)
                                     {
-                                        List<Vector2Int> possibleMoves = new List<Vector2Int>();
-                                        Vector2Int[] directions = new Vector2Int[] {
+                                        Vector2Int[] directions = new Vector2Int[]
+                                        {
                                             new Vector2Int(0, -1),  // up
                                             new Vector2Int(1, 0),   // right
                                             new Vector2Int(0, 1),   // down
@@ -262,7 +347,7 @@ public class GameManager : MonoBehaviour
 
                                         for (int j = directions.Length - 1; j > 0; j--)
                                         {
-                                            int rnd = Random.Range(0, j + 1);
+                                            int rnd = UnityEngine.Random.Range(0, j + 1);
                                             var temp = directions[j];
                                             directions[j] = directions[rnd];
                                             directions[rnd] = temp;
@@ -329,7 +414,7 @@ public class GameManager : MonoBehaviour
                     {
                         if (grid[i] == '.')
                         {
-                            grid[i] = alphabet[Random.Range(0, alphabet.Length)];
+                            grid[i] = alphabet[UnityEngine.Random.Range(0, alphabet.Length)];
                         }
                     }
 
@@ -412,22 +497,23 @@ public class GameManager : MonoBehaviour
 
     public void AddPoints(int points)
     {
-        CurrentPoints += points;
+        currentPoints += points;
+        OnPointsChanged?.Invoke(currentPoints);
     }
 
     public bool CanUseHint(int hintLevel)
     {
         int cost = hintLevel == 1 ? HINT_COST : SECOND_HINT_COST;
-        return CurrentPoints >= cost;
+        return currentPoints >= cost;
     }
 
     public void UseHint(int hintLevel)
     {
         int cost = hintLevel == 1 ? HINT_COST : SECOND_HINT_COST;
-        if (CurrentPoints >= cost)
+        if (currentPoints >= cost)
         {
-            CurrentPoints -= cost;
-            OnPointsChanged?.Invoke();
+            currentPoints -= cost;
+            OnPointsChanged?.Invoke(currentPoints);
             Debug.Log($"Used hint level {hintLevel}. Deducted {cost} points");
         }
     }
@@ -510,7 +596,7 @@ public class GameManager : MonoBehaviour
 
     public bool IsEraUnlocked(string era)
     {
-        return CurrentPoints >= GetEraPrice(era); // Check if the player can afford the era
+        return currentPoints >= GetEraPrice(era); // Check if the player can afford the era
     }
 
     public bool CanUnlockEra(string era)
@@ -607,6 +693,163 @@ public class GameManager : MonoBehaviour
 
         Debug.LogWarning($"Unknown era: {eraName}, returning 0 points");
         return 0;
+    }
+
+    public void SetPoints(int points)
+    {
+        currentPoints = points;
+        OnPointsChanged?.Invoke(currentPoints);
+    }
+
+    public GameSettings GetSettings()
+    {
+        // Create new settings based on current state
+        GameSettings settings = new GameSettings
+        {
+            musicEnabled = SoundManager.Instance.IsMusicOn,
+            soundEnabled = SoundManager.Instance.IsSoundOn,
+            musicVolume = SoundManager.Instance.MusicVolume,
+            soundVolume = SoundManager.Instance.SoundVolume
+        };
+        return settings;
+    }
+
+    public void LoadSettings(GameSettings settings)
+    {
+        currentSettings = settings;
+        ApplySettings();
+    }
+
+    private void ApplySettings()
+    {
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.IsMusicOn = currentSettings.musicEnabled;
+            SoundManager.Instance.IsSoundOn = currentSettings.soundEnabled;
+            SoundManager.Instance.SetMusicVolume(currentSettings.musicVolume);
+            SoundManager.Instance.SetSoundVolume(currentSettings.soundVolume);
+        }
+    }
+
+    public List<string> GetAllEras()
+    {
+        return allEras;
+    }
+
+    // Add these methods for SaveManager to use
+    public void SaveGridData(out List<GridData> gridDataList)
+    {
+        gridDataList = new List<GridData>();
+        
+        foreach (var kvp in initialGrids)
+        {
+            GridData gridData = new GridData
+            {
+                targetWord = kvp.Key,
+                letters = kvp.Value.Select(c => c.ToString()).ToList(),
+                gridSize = GRID_SIZE,
+                isSolved = guessedWords.Contains(kvp.Key)  // Set solved state
+            };
+
+            if (solvedWordPositions.ContainsKey(kvp.Key))
+            {
+                gridData.correctWordPositions = solvedWordPositions[kvp.Key]
+                    .Select(v => new Vector2IntSerializable(v.x, v.y))
+                    .ToList();
+            }
+
+            gridDataList.Add(gridData);
+        }
+    }
+
+    public void LoadGridData(List<GridData> gridDataList)
+    {
+        if (gridDataList == null || gridDataList.Count == 0)
+        {
+            return;
+        }
+
+        initialGrids.Clear();
+        solvedWordPositions.Clear();
+
+        foreach (var gridData in gridDataList)
+        {
+            List<char> charList = gridData.letters.Select(s => s[0]).ToList();
+            initialGrids[gridData.targetWord] = charList;
+
+            List<Vector2Int> positions = gridData.correctWordPositions
+                .Select(v => new Vector2Int(v.x, v.y))
+                .ToList();
+            solvedWordPositions[gridData.targetWord] = positions;
+
+            if (gridData.isSolved)
+            {
+                guessedWords.Add(gridData.targetWord);
+            }
+        }
+
+        Debug.Log($"Loaded {gridDataList.Count} grids from save file");
+    }
+
+    public List<string> GetGuessedWords()
+    {
+        return guessedWords.ToList();
+    }
+
+    public void SetGuessedWords(List<string> words)
+    {
+        Debug.Log($"Setting guessed words. Count: {words?.Count ?? 0}");
+        if (words != null)
+        {
+            Debug.Log($"Words being set: {string.Join(", ", words)}");
+            guessedWords = new HashSet<string>(words);
+            ApplyGuessedWordsState();
+        }
+        else
+        {
+            Debug.LogWarning("Received null words list!");
+            guessedWords = new HashSet<string>();
+        }
+    }
+
+    public void AddGuessedWord(string word)
+    {
+        Debug.Log($"Adding guessed word: {word}");
+        guessedWords.Add(word);
+        Debug.Log($"Current guessed words: {string.Join(", ", guessedWords)}");
+    }
+
+    public bool IsWordGuessed(string word)
+    {
+        return guessedWords.Contains(word);
+    }
+
+    public List<Vector2Int> GetWordPath(string word)
+    {
+        if (solvedWordPositions.ContainsKey(word))
+        {
+            return solvedWordPositions[word];
+        }
+        return null;
+    }
+
+    public void OnWordGuessed(string word)
+    {
+        Debug.Log($"Word guessed: {word}");
+        if (!guessedWords.Contains(word))
+        {
+            AddGuessedWord(word);
+            if (solvedWordPositions.ContainsKey(word))
+            {
+                Debug.Log($"Showing solved word: {word}");
+                GridManager.Instance.ShowSolvedWord(word, solvedWordPositions[word]);
+            }
+            else
+            {
+                Debug.LogWarning($"No positions found for newly guessed word: {word}");
+            }
+            SaveManager.Instance.SaveGame();
+        }
     }
 }
 
