@@ -54,16 +54,18 @@ public class SoundManager : MonoBehaviour
         set
         {
             isMusicOn = value;
-            if (!value)
+            if (musicSource != null)
             {
-                StopMusic();
-            }
-            else
-            {
-                if (currentEraMusic != null && musicSource != null)
+                if (isMusicOn && !musicSource.isPlaying && currentEraMusic != null)
                 {
                     musicSource.clip = currentEraMusic.musicClip;
                     musicSource.Play();
+                    Debug.Log("Resumed era music");
+                }
+                else if (!isMusicOn && musicSource.isPlaying)
+                {
+                    musicSource.Stop();
+                    Debug.Log("Paused era music");
                 }
             }
         }
@@ -93,6 +95,26 @@ public class SoundManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+
+    private void Start()
+    {
+        // Initialize audio sources
+        if (musicSource == null)
+        {
+            musicSource = gameObject.AddComponent<AudioSource>();
+            musicSource.loop = true;  // Ensure music loops
+            musicSource.playOnAwake = false;  // Don't play automatically
+        }
+
+        if (effectsSource == null)
+        {
+            effectsSource = gameObject.AddComponent<AudioSource>();
+            effectsSource.playOnAwake = false;
+        }
+
+        // Load initial settings
+        LoadSettings();
     }
 
     private void InitializeSounds()
@@ -134,6 +156,8 @@ public class SoundManager : MonoBehaviour
 
     public void PlayEraMusic(string eraName)
     {
+        Debug.Log($"Attempting to play music for era: {eraName}");
+
         if (!musicDictionary.ContainsKey(eraName))
         {
             Debug.LogWarning($"No music found for era: {eraName}");
@@ -141,11 +165,13 @@ public class SoundManager : MonoBehaviour
         }
 
         EraMusic newMusic = musicDictionary[eraName];
+        Debug.Log($"Found music for era {eraName}: {(newMusic.musicClip != null ? "clip exists" : "no clip")}");
         currentEraMusic = newMusic;
         
         // Don't play if music is disabled
         if (!IsMusicOn)
         {
+            Debug.Log("Music is disabled, not playing");
             if (musicSource != null && musicSource.isPlaying)
             {
                 musicSource.Stop();
@@ -154,7 +180,10 @@ public class SoundManager : MonoBehaviour
         }
 
         if (musicSource != null && musicSource.clip == newMusic.musicClip && musicSource.isPlaying)
+        {
+            Debug.Log("Same music already playing, skipping");
             return;
+        }
 
         if (fadeCoroutine != null)
             StopCoroutine(fadeCoroutine);
@@ -263,6 +292,19 @@ public class SoundManager : MonoBehaviour
         else
         {
             Debug.LogError($"Failed to load music for era {eraName} from path {resourcePath}");
+        }
+    }
+
+    private void LoadSettings()
+    {
+        if (GameManager.Instance != null)
+        {
+            GameSettings settings = GameManager.Instance.GetSettings();
+            IsMusicOn = settings.musicEnabled;
+            IsSoundOn = settings.soundEnabled;
+            SetMusicVolume(settings.musicVolume);
+            SetSoundVolume(settings.soundVolume);
+            Debug.Log($"Loaded sound settings: Music={IsMusicOn}, Sound={IsSoundOn}");
         }
     }
 } 

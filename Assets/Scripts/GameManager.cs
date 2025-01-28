@@ -47,12 +47,19 @@ public class GameManager : MonoBehaviour
     private int currentPoints;
 
     // Dictionary to store words and sentences for each language and era
-    private Dictionary<string, Dictionary<string, List<string>>> eraWordsPerLanguage = 
+    public Dictionary<string, Dictionary<string, List<string>>> eraWordsPerLanguage { get; private set; } = 
         new Dictionary<string, Dictionary<string, List<string>>>();
     private Dictionary<string, Dictionary<string, Dictionary<string, List<string>>>> wordSentencesPerLanguage = 
         new Dictionary<string, Dictionary<string, Dictionary<string, List<string>>>>();
 
+    // Store solved word indices per era
     private Dictionary<string, HashSet<int>> solvedWordsPerEra = new Dictionary<string, HashSet<int>>();
+
+    // Store solved words per era (for cross-language support)
+    private Dictionary<string, HashSet<string>> solvedBaseWordsPerEra = new Dictionary<string, HashSet<string>>();
+
+    // Store hint usage separately (using English base words)
+    private Dictionary<string, HashSet<int>> usedHints = new Dictionary<string, HashSet<int>>();
 
     public const int POINTS_PER_WORD = 100;
     public const int HINT_COST = 50;
@@ -61,7 +68,11 @@ public class GameManager : MonoBehaviour
 
     public List<string> EraList => eraList;
     public List<Sprite> EraImages => eraImages;
-    public int CurrentPoints => currentPoints;
+    public int CurrentPoints
+    {
+        get { return currentPoints; }
+        set { currentPoints = value; }
+    }
     public Dictionary<string, List<char>> InitialGrids => initialGrids;
     public Dictionary<string, List<Vector2Int>> SolvedWordPositions => solvedWordPositions;
 
@@ -79,9 +90,6 @@ public class GameManager : MonoBehaviour
         { "Industrial Revolution", 2000 }, 
         { "Ancient Greece", 3000 },   
     };
-
-    // Dictionary to store used hints: <Era_Word, HintLevel>
-    private Dictionary<string, HashSet<int>> usedHints = new Dictionary<string, HashSet<int>>();
 
     // Add language-related fields
     private string currentLanguage = "en"; // Default language
@@ -108,6 +116,15 @@ public class GameManager : MonoBehaviour
 
     private HashSet<string> guessedWords = new HashSet<string>();
 
+    private float musicSound;
+    private bool notifications;
+
+    private bool isMusicOn;
+    private bool isSoundOn;
+
+    private bool noAds = false;
+    public bool NoAds => noAds;
+
     private void Awake()
     {
         if (_instance != null && _instance != this)
@@ -117,61 +134,59 @@ public class GameManager : MonoBehaviour
         }
         _instance = this;
         DontDestroyOnLoad(gameObject);
-        LoadWordsFromJson();
-        GenerateAllGrids();
+
+        // Initialize with default settings
+        currentSettings = new GameSettings();
         
-        // Shuffle words only once when game starts
-        if (!hasShuffledWords)
-        {
-            ShuffleAllEraWords();
-            hasShuffledWords = true;
-        }
+        // Don't load words here anymore
         
-        // Start with Ancient Egypt
         CurrentEra = "Ancient Egypt";
         Debug.Log($"Starting with era: {CurrentEra}");
-
-        // Start playing music for the current era
-        if (SoundManager.Instance != null)
-        {
-            SoundManager.Instance.PlayEraMusic(CurrentEra);
-        }
-
-        // Initialize default settings
-        currentSettings = new GameSettings();
     }
 
     private void Start()
     {
         Debug.Log("GameManager Start");
         
-        // Load save file if it exists
+        // Wait for SaveManager to initialize and load save file
         if (SaveManager.Instance != null)
         {
-            Debug.Log("SaveManager instance found, loading game...");
+            Debug.Log("SaveManager instance found");
+            // First load the words from JSON
+            LoadWordsFromJson();
+            // Always shuffle words on load
+            ShuffleAllEraWords();
+            // Then load the save file for other game data
             SaveManager.Instance.LoadGame();
         }
         else
         {
             Debug.LogWarning("SaveManager instance not found!");
+            LoadWordsFromJson();
+            ShuffleAllEraWords();
         }
         
-        // Debug print current guessed words
-        Debug.Log($"Guessed words after load: {string.Join(", ", guessedWords)}");
+        // Generate grids after loading/shuffling words
+        GenerateAllGrids();
         
-        // If no grids were loaded from save, generate new ones
-        if (initialGrids.Count == 0)
+        // Debug print current word order
+        foreach (var language in eraWordsPerLanguage.Keys)
         {
-            Debug.Log("No grids found, generating new ones...");
-            GenerateAllGrids();
-            SaveManager.Instance.SaveGame();
+            foreach (var era in eraWordsPerLanguage[language].Keys)
+            {
+                Debug.Log($"Final word order for {era} in {language}: {string.Join(", ", eraWordsPerLanguage[language][era])}");
+            }
         }
-
-        Debug.Log($"Initial grids count: {initialGrids.Count}");
-        Debug.Log($"Solved positions count: {solvedWordPositions.Count}");
-
+        
         // Apply loaded or generated state
         ApplyGuessedWordsState();
+
+        // Start playing music for current era
+        if (SoundManager.Instance != null && !string.IsNullOrEmpty(CurrentEra))
+        {
+            Debug.Log($"Starting music for era: {CurrentEra}");
+            SoundManager.Instance.PlayEraMusic(CurrentEra);
+        }
     }
 
     private void ApplyGuessedWordsState()
@@ -240,10 +255,7 @@ public class GameManager : MonoBehaviour
 
             foreach (var set in wordSetList.sets)
             {
-                // Use original era name for storage
                 string era = set.era;
-                
-                // Map Turkish era names to English ones for internal use
                 string internalEra = language == "tr" ? MapTurkishEraName(era) : era;
                 
                 if (!eraWordsPerLanguage[language].ContainsKey(internalEra))
@@ -252,13 +264,15 @@ public class GameManager : MonoBehaviour
                     wordSentencesPerLanguage[language][internalEra] = new Dictionary<string, List<string>>();
                 }
 
+                // Just load the words without shuffling
                 foreach (var wordEntry in set.words)
                 {
                     string word = wordEntry.word.ToUpper();
                     eraWordsPerLanguage[language][internalEra].Add(word);
                     wordSentencesPerLanguage[language][internalEra][word] = new List<string>(wordEntry.sentences);
-                    Debug.Log($"Loaded {language} word: {word} with {wordEntry.sentences.Count()} sentences for era {internalEra}");
                 }
+
+                Debug.Log($"Loaded {set.words.Count()} words for {internalEra} in {language}");
             }
         }
         catch (System.Exception e)
@@ -288,10 +302,20 @@ public class GameManager : MonoBehaviour
 
     private void GenerateAllGrids()
     {
+        if (File.Exists(SaveManager.Instance.SavePath))
+        {
+            LoadGridsFromSave();
+            return;
+        }
+
         initialGrids.Clear();
         foreach (var era in eraWordsPerLanguage[currentLanguage].Keys)
         {
-            foreach (var word in eraWordsPerLanguage[currentLanguage][era])
+            List<string> words = new List<string>(eraWordsPerLanguage[currentLanguage][era]);
+            // Remove this shuffle since we want to use the already shuffled order
+            // ShuffleWords(words);
+
+            foreach (var word in words)
             {
                 if (!initialGrids.ContainsKey(word))
                 {
@@ -423,38 +447,59 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
+
+        SaveManager.Instance.SaveGame();
     }
 
-    private void ShuffleAllEraWords()
+    private void ShuffleWords(List<string> words)
     {
         System.Random rng = new System.Random();
-        foreach (var era in eraWordsPerLanguage[currentLanguage].Keys)
+        int n = words.Count;
+        while (n > 1)
         {
-            List<string> words = new List<string>(eraWordsPerLanguage[currentLanguage][era]);
-            int n = words.Count;
-            
-            // Fisher-Yates shuffle
-            while (n > 1)
-            {
-                n--;
-                int k = rng.Next(n + 1);
-                string temp = words[k];
-                words[k] = words[n];
-                words[n] = temp;
-            }
-            
-            shuffledEraWords[era] = words;
-            Debug.Log($"Shuffled words for {era}: {string.Join(", ", words)}");
+            n--;
+            int k = rng.Next(n + 1);
+            string temp = words[k];
+            words[k] = words[n];
+            words[n] = temp;
         }
+    }
+
+    public void ShuffleAllEraWords()
+    {
+        Debug.Log("Performing initial word shuffle for all eras");
+        System.Random rng = new System.Random();
+        foreach (var language in eraWordsPerLanguage.Keys)
+        {
+            foreach (var era in eraWordsPerLanguage[language].Keys)
+            {
+                List<string> words = eraWordsPerLanguage[language][era];
+                int n = words.Count;
+                
+                // Fisher-Yates shuffle
+                while (n > 1)
+                {
+                    n--;
+                    int k = rng.Next(n + 1);
+                    string temp = words[k];
+                    words[k] = words[n];
+                    words[n] = temp;
+                }
+                
+                Debug.Log($"Shuffled words for {era} in {language}: {string.Join(", ", words)}");
+            }
+        }
+        hasShuffledWords = true;
     }
 
     public List<string> GetCurrentEraWords()
     {
-        if (eraWordsPerLanguage.ContainsKey(currentLanguage) && 
-            eraWordsPerLanguage[currentLanguage].ContainsKey(currentEra))
+        if (eraWordsPerLanguage.ContainsKey(CurrentLanguage) && 
+            eraWordsPerLanguage[CurrentLanguage].ContainsKey(CurrentEra))
         {
-            return new List<string>(eraWordsPerLanguage[currentLanguage][currentEra]);
+            return new List<string>(eraWordsPerLanguage[CurrentLanguage][CurrentEra]);
         }
+        Debug.LogError($"No words found for language {CurrentLanguage} and era {CurrentEra}");
         return new List<string>();
     }
 
@@ -560,7 +605,16 @@ public class GameManager : MonoBehaviour
             solvedWordsPerEra[era] = new HashSet<int>();
         }
         solvedWordsPerEra[era].Add(wordIndex);
-        Debug.Log($"Stored solved word index {wordIndex} for era {era}. Total solved in era: {solvedWordsPerEra[era].Count}");
+        
+        // Also store the base word for cross-language support
+        string baseWord = GetBaseWord(eraWordsPerLanguage["en"][era][wordIndex]);
+        if (!solvedBaseWordsPerEra.ContainsKey(era))
+        {
+            solvedBaseWordsPerEra[era] = new HashSet<string>();
+        }
+        solvedBaseWordsPerEra[era].Add(baseWord);
+        
+        Debug.Log($"Stored solved word index {wordIndex} for era {era}");
     }
 
     public HashSet<int> GetSolvedWordsForEra(string era)
@@ -575,12 +629,16 @@ public class GameManager : MonoBehaviour
     public void SwitchEra(string newEra)
     {
         CurrentEra = newEra;
-        // Play the corresponding era music
         SoundManager.Instance.PlayEraMusic(newEra);
         
         if (!solvedWordsPerEra.ContainsKey(newEra))
         {
             solvedWordsPerEra[newEra] = new HashSet<int>();
+        }
+        
+        if (!solvedBaseWordsPerEra.ContainsKey(newEra))
+        {
+            solvedBaseWordsPerEra[newEra] = new HashSet<string>();
         }
     }
 
@@ -607,19 +665,21 @@ public class GameManager : MonoBehaviour
     // Store hint usage for a specific word and level
     public void StoreHintUsage(string word, int hintLevel)
     {
-        string key = $"{CurrentEra}_{word}";
+        string baseWord = GetBaseWord(word);
+        string key = $"{CurrentEra}_{baseWord}";
         if (!usedHints.ContainsKey(key))
         {
             usedHints[key] = new HashSet<int>();
         }
         usedHints[key].Add(hintLevel);
-        Debug.Log($"Stored hint level {hintLevel} for {word}. Total hints: {usedHints[key].Count}");
+        SaveManager.Instance.SaveGame();
     }
 
     // Get current hint level for a word
     public int GetHintLevel(string word)
     {
-        string key = $"{CurrentEra}_{word}";
+        string baseWord = GetBaseWord(word);
+        string key = $"{CurrentEra}_{baseWord}";
         if (!usedHints.ContainsKey(key)) return 0;
         return usedHints[key].Count;
     }
@@ -627,7 +687,8 @@ public class GameManager : MonoBehaviour
     // Check if a specific hint level has been used for a word
     public bool HasUsedHint(string word, int hintLevel)
     {
-        string key = $"{CurrentEra}_{word}";
+        string baseWord = GetBaseWord(word);
+        string key = $"{CurrentEra}_{baseWord}";
         return usedHints.ContainsKey(key) && usedHints[key].Contains(hintLevel);
     }
 
@@ -703,31 +764,37 @@ public class GameManager : MonoBehaviour
 
     public GameSettings GetSettings()
     {
-        // Create new settings based on current state
-        GameSettings settings = new GameSettings
+        // Return current settings state
+        currentSettings.musicEnabled = isMusicOn;
+        currentSettings.soundEnabled = isSoundOn;
+        currentSettings.notificationsEnabled = notifications;
+        if (SoundManager.Instance != null)
         {
-            musicEnabled = SoundManager.Instance.IsMusicOn,
-            soundEnabled = SoundManager.Instance.IsSoundOn,
-            musicVolume = SoundManager.Instance.MusicVolume,
-            soundVolume = SoundManager.Instance.SoundVolume
-        };
-        return settings;
+            currentSettings.musicVolume = SoundManager.Instance.MusicVolume;
+            currentSettings.soundVolume = SoundManager.Instance.SoundVolume;
+        }
+        return currentSettings;
     }
 
     public void LoadSettings(GameSettings settings)
     {
-        currentSettings = settings;
-        ApplySettings();
-    }
-
-    private void ApplySettings()
-    {
-        if (SoundManager.Instance != null)
+        if (settings != null)
         {
-            SoundManager.Instance.IsMusicOn = currentSettings.musicEnabled;
-            SoundManager.Instance.IsSoundOn = currentSettings.soundEnabled;
-            SoundManager.Instance.SetMusicVolume(currentSettings.musicVolume);
-            SoundManager.Instance.SetSoundVolume(currentSettings.soundVolume);
+            currentSettings = settings;
+            isMusicOn = settings.musicEnabled;
+            isSoundOn = settings.soundEnabled;
+            notifications = settings.notificationsEnabled;
+            
+            // Apply settings to SoundManager
+            if (SoundManager.Instance != null)
+            {
+                SoundManager.Instance.IsMusicOn = settings.musicEnabled;
+                SoundManager.Instance.IsSoundOn = settings.soundEnabled;
+                SoundManager.Instance.SetMusicVolume(settings.musicVolume);
+                SoundManager.Instance.SetSoundVolume(settings.soundVolume);
+            }
+            
+            Debug.Log($"Loaded settings: Music={settings.musicEnabled}, Sound={settings.soundEnabled}, Notifications={settings.notificationsEnabled}");
         }
     }
 
@@ -793,23 +860,74 @@ public class GameManager : MonoBehaviour
 
     public List<string> GetGuessedWords()
     {
-        return guessedWords.ToList();
+        List<string> allGuessedWords = new List<string>();
+        foreach (var era in solvedBaseWordsPerEra)
+        {
+            allGuessedWords.AddRange(era.Value);
+        }
+        return allGuessedWords;
     }
 
     public void SetGuessedWords(List<string> words)
     {
-        Debug.Log($"Setting guessed words. Count: {words?.Count ?? 0}");
-        if (words != null)
+        solvedBaseWordsPerEra.Clear();
+        foreach (string word in words)
         {
-            Debug.Log($"Words being set: {string.Join(", ", words)}");
-            guessedWords = new HashSet<string>(words);
-            ApplyGuessedWordsState();
+            string era = GetEraForWord(word);
+            if (!solvedBaseWordsPerEra.ContainsKey(era))
+            {
+                solvedBaseWordsPerEra[era] = new HashSet<string>();
+            }
+            solvedBaseWordsPerEra[era].Add(word);
+            
+            // Also update the index-based tracking
+            if (eraWordsPerLanguage["en"].ContainsKey(era))
+            {
+                int wordIndex = eraWordsPerLanguage["en"][era].IndexOf(word);
+                if (wordIndex >= 0)
+                {
+                    StoreSolvedWordIndex(era, wordIndex);
+                }
+            }
         }
-        else
+    }
+
+    // Helper method to get the base (English) version of a word
+    private string GetBaseWord(string word)
+    {
+        if (string.IsNullOrEmpty(word)) return word;
+        
+        // If we're already in English, return the word as is
+        if (CurrentLanguage == "en") return word;
+        
+        // Find the corresponding English word
+        var englishWords = eraWordsPerLanguage["en"][CurrentEra];
+        var currentLangWords = eraWordsPerLanguage[CurrentLanguage][CurrentEra];
+        
+        // Find the index of the word in the current language
+        int wordIndex = currentLangWords.IndexOf(word);
+        
+        // Return the corresponding English word if found
+        if (wordIndex >= 0 && wordIndex < englishWords.Count)
         {
-            Debug.LogWarning("Received null words list!");
-            guessedWords = new HashSet<string>();
+            return englishWords[wordIndex];
         }
+        
+        // Fallback to original word if not found
+        return word;
+    }
+
+    // Helper method to get era for a word
+    private string GetEraForWord(string word)
+    {
+        foreach (var era in eraList)
+        {
+            if (WordValidator.GetWordsForEra(era).Contains(word))
+            {
+                return era;
+            }
+        }
+        return eraList[0]; // Fallback to first era if not found
     }
 
     public void AddGuessedWord(string word)
@@ -821,7 +939,11 @@ public class GameManager : MonoBehaviour
 
     public bool IsWordGuessed(string word)
     {
-        return guessedWords.Contains(word);
+        if (string.IsNullOrEmpty(word)) return false;
+        
+        string baseWord = GetBaseWord(word);
+        return solvedBaseWordsPerEra.ContainsKey(CurrentEra) && 
+               solvedBaseWordsPerEra[CurrentEra].Contains(baseWord);
     }
 
     public List<Vector2Int> GetWordPath(string word)
@@ -835,20 +957,138 @@ public class GameManager : MonoBehaviour
 
     public void OnWordGuessed(string word)
     {
-        Debug.Log($"Word guessed: {word}");
-        if (!guessedWords.Contains(word))
+        // Get the base word (English version) for storage
+        string baseWord = GetBaseWord(word);
+        string era = CurrentEra;
+        
+        // Store using era and base word
+        if (!solvedBaseWordsPerEra.ContainsKey(era))
         {
-            AddGuessedWord(word);
-            if (solvedWordPositions.ContainsKey(word))
+            solvedBaseWordsPerEra[era] = new HashSet<string>();
+        }
+        solvedBaseWordsPerEra[era].Add(baseWord);
+        
+        // Also update the index-based tracking
+        if (eraWordsPerLanguage["en"].ContainsKey(era))
+        {
+            int wordIndex = eraWordsPerLanguage["en"][era].IndexOf(baseWord);
+            if (wordIndex >= 0)
             {
-                Debug.Log($"Showing solved word: {word}");
-                GridManager.Instance.ShowSolvedWord(word, solvedWordPositions[word]);
+                StoreSolvedWordIndex(era, wordIndex);
             }
-            else
+        }
+        
+        // Save the game
+        SaveManager.Instance.SaveGame();
+    }
+
+    public float GetMusicSound()
+    {
+        return musicSound;
+    }
+
+    public bool IsNotificationsOn()
+    {
+        return notifications;
+    }
+
+    public void SetNotifications(bool value)
+    {
+        notifications = value;
+    }
+
+    public bool IsMusicOn()
+    {
+        Debug.Log($"Getting Music On: {isMusicOn}");
+        return isMusicOn;
+    }
+
+    public void SetMusicOn(bool value)
+    {
+        isMusicOn = value;
+        currentSettings.musicEnabled = value;  // Update settings object
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.IsMusicOn = value;
+        }
+    }
+
+    public bool IsSoundOn()
+    {
+        Debug.Log($"Getting Sound On: {isSoundOn}");
+        return isSoundOn;
+    }
+
+    public void SetSoundOn(bool value)
+    {
+        isSoundOn = value;
+        currentSettings.soundEnabled = value;  // Update settings object
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.IsSoundOn = value;
+        }
+    }
+
+    private void LoadGridsFromSave()
+    {
+        if (SaveManager.Instance.saveData != null && SaveManager.Instance.saveData.preGeneratedGrids != null)
+        {
+            LoadGridData(SaveManager.Instance.saveData.preGeneratedGrids);
+            Debug.Log("Loaded grids from save file.");
+        }
+        else
+        {
+            Debug.LogWarning("No grid data found in save file.");
+        }
+    }
+
+    public List<HintData> GetUsedHintsData()
+    {
+        List<HintData> hintsData = new List<HintData>();
+        foreach (var kvp in usedHints)
+        {
+            hintsData.Add(new HintData(kvp.Key, new List<int>(kvp.Value)));
+        }
+        return hintsData;
+    }
+
+    public void LoadUsedHintsData(List<HintData> hintsData)
+    {
+        usedHints.Clear();
+        if (hintsData != null)
+        {
+            foreach (var data in hintsData)
             {
-                Debug.LogWarning($"No positions found for newly guessed word: {word}");
+                usedHints[data.wordKey] = new HashSet<int>(data.hintLevels);
             }
-            SaveManager.Instance.SaveGame();
+        }
+    }
+
+    public void SetNoAds(bool value)
+    {
+        noAds = value;
+        // Disable ads in your ad manager
+        if (noAds)
+        {
+            // Add code to disable ads
+            // For example: AdManager.Instance.DisableAds();
+        }
+    }
+
+    // Add this to your save/load logic
+    public void SaveNoAdsState()
+    {
+        PlayerPrefs.SetInt("NoAds", noAds ? 1 : 0);
+        PlayerPrefs.Save();
+    }
+
+    public void LoadNoAdsState()
+    {
+        noAds = PlayerPrefs.GetInt("NoAds", 0) == 1;
+        if (noAds)
+        {
+            // Disable ads on game start if previously purchased
+            // AdManager.Instance.DisableAds();
         }
     }
 }

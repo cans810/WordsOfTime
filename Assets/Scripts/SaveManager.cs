@@ -13,7 +13,7 @@ public class SaveManager : MonoBehaviour
         {
             if (_instance == null)
             {
-                _instance = FindFirstObjectByType<SaveManager>();
+                _instance = FindObjectOfType<SaveManager>();
                 if (_instance == null)
                 {
                     GameObject go = new GameObject("SaveManager");
@@ -24,8 +24,8 @@ public class SaveManager : MonoBehaviour
         }
     }
 
-    private SaveData saveData;
-    private string SavePath => Path.Combine(Application.persistentDataPath, "gamesave.json");
+    public SaveData saveData { get; private set; }  // Make it publicly readable but privately settable
+    public string SavePath => Path.Combine(Application.persistentDataPath, "gamesave.json");
 
     private void Awake()
     {
@@ -37,35 +37,52 @@ public class SaveManager : MonoBehaviour
 
         _instance = this;
         DontDestroyOnLoad(gameObject);
+        
+        // Don't load game here anymore, let Start handle it
+    }
+
+    private void Start()
+    {
         LoadGame();
     }
 
     public void SaveGame()
     {
+        Debug.Log($"Saving game to: {SavePath}");
         try
         {
-            Debug.Log("Starting game save...");
             saveData = new SaveData();
             
-            // Save points
+            // Save points and guessed words
             saveData.points = GameManager.Instance.CurrentPoints;
-            
-            // Save settings
-            saveData.settings = GameManager.Instance.GetSettings();
-
-            // Save guessed words
             saveData.guessedWords = GameManager.Instance.GetGuessedWords();
-            Debug.Log($"Saving guessed words: {string.Join(", ", saveData.guessedWords)}");
-
+            
+            // Save hint usage data
+            saveData.usedHintsData = GameManager.Instance.GetUsedHintsData();
+            Debug.Log($"Saving {saveData.usedHintsData.Count} hint records");
+            
             // Save grid data
             List<GridData> gridDataList;
             GameManager.Instance.SaveGridData(out gridDataList);
             saveData.preGeneratedGrids = gridDataList;
 
-            string json = JsonUtility.ToJson(saveData);
+            // Save game settings
+            saveData.settings = GameManager.Instance.GetSettings();
+
+            // Save shuffled words
+            foreach (var language in GameManager.Instance.eraWordsPerLanguage.Keys)
+            {
+                foreach (var era in GameManager.Instance.eraWordsPerLanguage[language].Keys)
+                {
+                    string key = $"{language}_{era}";
+                    saveData.shuffledWords[key] = new List<string>(GameManager.Instance.eraWordsPerLanguage[language][era]);
+                }
+            }
+
+            string json = JsonUtility.ToJson(saveData, true);  // Added true for pretty print
             File.WriteAllText(SavePath, json);
             
-            Debug.Log($"Game saved successfully! Save file: {SavePath}");
+            Debug.Log($"Game saved successfully!");
         }
         catch (Exception e)
         {
@@ -75,43 +92,66 @@ public class SaveManager : MonoBehaviour
 
     public void LoadGame()
     {
+        Debug.Log($"Loading game from: {SavePath}");
         try
         {
-            Debug.Log($"Attempting to load game from: {SavePath}");
             if (File.Exists(SavePath))
             {
                 string json = File.ReadAllText(SavePath);
                 saveData = JsonUtility.FromJson<SaveData>(json);
 
-                Debug.Log($"Loaded save data - Guessed words count: {saveData.guessedWords?.Count ?? 0}");
-                if (saveData.guessedWords != null)
-                {
-                    Debug.Log($"Loaded guessed words: {string.Join(", ", saveData.guessedWords)}");
-                }
-
-                // Load points
                 if (GameManager.Instance != null)
                 {
-                    GameManager.Instance.SetPoints(saveData.points);
-                    GameManager.Instance.SetGuessedWords(saveData.guessedWords);
-                    GameManager.Instance.LoadGridData(saveData.preGeneratedGrids);
-                }
-                else
-                {
-                    Debug.LogError("GameManager instance not found during load!");
+                    // Load hint usage data
+                    if (saveData.usedHintsData != null)
+                    {
+                        Debug.Log($"Loading {saveData.usedHintsData.Count} hint records");
+                        GameManager.Instance.LoadUsedHintsData(saveData.usedHintsData);
+                    }
+                    
+                    // Load saved shuffled words if they exist
+                    if (saveData.shuffledWords != null && saveData.shuffledWords.Count > 0)
+                    {
+                        Debug.Log("Loading saved word order");
+                        foreach (var kvp in saveData.shuffledWords)
+                        {
+                            string[] parts = kvp.Key.Split('_');
+                            if (parts.Length == 2)
+                            {
+                                string language = parts[0];
+                                string era = parts[1];
+                                if (GameManager.Instance.eraWordsPerLanguage.ContainsKey(language) &&
+                                    GameManager.Instance.eraWordsPerLanguage[language].ContainsKey(era))
+                                {
+                                    GameManager.Instance.eraWordsPerLanguage[language][era] = new List<string>(kvp.Value);
+                                    Debug.Log($"Loaded word order for {era} in {language}: {string.Join(", ", kvp.Value)}");
+                                }
+                            }
+                        }
+                    }
                 }
 
-                Debug.Log("Game loaded successfully!");
+                GameManager.Instance.SetPoints(saveData.points);
+                GameManager.Instance.SetGuessedWords(saveData.guessedWords);
+                GameManager.Instance.LoadGridData(saveData.preGeneratedGrids);
+                GameManager.Instance.LoadSettings(saveData.settings);
             }
             else
             {
-                Debug.Log("No save file found, starting new game");
+                Debug.Log("No save file found, starting new game with shuffled words");
                 saveData = new SaveData();
+                // Only shuffle words if this is the first time (no save file exists)
+                if (GameManager.Instance != null)
+                {
+                    GameManager.Instance.ShuffleAllEraWords();
+                    // Immediately save the shuffled order
+                    SaveGame();
+                }
             }
         }
         catch (Exception e)
         {
-            Debug.LogError($"Failed to load game: {e.Message}\nStack trace: {e.StackTrace}");
+            Debug.LogError($"Failed to load game: {e.Message}");
             saveData = new SaveData();
         }
     }

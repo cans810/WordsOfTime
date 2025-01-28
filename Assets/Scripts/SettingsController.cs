@@ -6,6 +6,19 @@ using TMPro;
 
 public class SettingsController : MonoBehaviour
 {
+    private static SettingsController _instance;
+    public static SettingsController Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                _instance = FindFirstObjectByType<SettingsController>();
+            }
+            return _instance;
+        }
+    }
+
     [Header("Language Settings")]
     [SerializeField] private TextMeshProUGUI languageText;
     [SerializeField] private GameObject languageSelectionPanel;
@@ -13,6 +26,7 @@ public class SettingsController : MonoBehaviour
     [Header("Sound Settings")]
     [SerializeField] private Toggle soundToggle;
     [SerializeField] private Toggle musicToggle;
+    [SerializeField] private Toggle notificationsToggle;
     [SerializeField] private Button saveButton;
     [SerializeField] private GameObject settingsPanel;  // Reference to the main settings panel
 
@@ -21,6 +35,8 @@ public class SettingsController : MonoBehaviour
     public GameObject LanguageSelectionPanel;
     public SpriteRenderer BackgroundImage;
 
+    public Toggle NotificationsToggle => notificationsToggle;  // Public getter for the toggle
+
     private List<LanguageOption> languages = new List<LanguageOption>()
     {
         new LanguageOption("en", "English"),
@@ -28,6 +44,16 @@ public class SettingsController : MonoBehaviour
     };
 
     private int currentLanguageIndex = 0;
+
+    private void Awake()
+    {
+        if (_instance != null && _instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        _instance = this;
+    }
 
     void Start()
     {
@@ -39,6 +65,16 @@ public class SettingsController : MonoBehaviour
 
         InitializeLanguageSettings();
         InitializeSoundSettings();
+
+        // Load settings when the scene starts
+        LoadSettings();
+
+        // Add listeners to the toggles
+        musicToggle.onValueChanged.AddListener(OnMusicToggleChanged);
+        soundToggle.onValueChanged.AddListener(OnSoundToggleChanged);
+        notificationsToggle.onValueChanged.AddListener(OnNotificationsToggleChanged);
+
+        BackgroundImage.sprite = GameManager.Instance.getEraImage(GameManager.Instance.CurrentEra);
     }
 
     private void InitializeLanguageSettings()
@@ -63,6 +99,11 @@ public class SettingsController : MonoBehaviour
             musicToggle.onValueChanged.AddListener(OnMusicToggleChanged);
         }
 
+        if (notificationsToggle != null)
+        {
+            notificationsToggle.onValueChanged.AddListener(OnNotificationsToggleChanged);
+        }
+
         if (saveButton != null)
         {
             saveButton.onClick.AddListener(HandleSaveButtonClick);
@@ -71,20 +112,20 @@ public class SettingsController : MonoBehaviour
 
     private void OnSoundToggleChanged(bool isOn)
     {
-        if (SoundManager.Instance != null)
-        {
-            SoundManager.Instance.IsSoundOn = isOn;
-            SaveManager.Instance.SaveGame();
-        }
+        GameManager.Instance.SetSoundOn(isOn);
+        SaveSettings();
     }
 
     private void OnMusicToggleChanged(bool isOn)
     {
-        if (SoundManager.Instance != null)
-        {
-            SoundManager.Instance.IsMusicOn = isOn;
-            SaveManager.Instance.SaveGame();
-        }
+        GameManager.Instance.SetMusicOn(isOn);
+        SaveSettings();
+    }
+
+    private void OnNotificationsToggleChanged(bool isOn)
+    {
+        GameManager.Instance.SetNotifications(isOn);
+        SaveSettings();
     }
 
     private void HandleSaveButtonClick()
@@ -137,28 +178,23 @@ public class SettingsController : MonoBehaviour
     #region UI Methods
     public void ShowSettings()
     {
-        Debug.Log("ShowSettings called, current active state: " + gameObject.activeSelf);
-        
-        // Force activate the GameObject
         gameObject.SetActive(true);
         
-        // Refresh settings state
+        // Refresh all toggle states
         if (SoundManager.Instance != null)
         {
-            if (soundToggle != null)
-            {
-                soundToggle.isOn = SoundManager.Instance.IsSoundOn;
-            }
-            if (musicToggle != null)
-            {
-                musicToggle.isOn = SoundManager.Instance.IsMusicOn;
-            }
+            if (soundToggle != null) soundToggle.isOn = SoundManager.Instance.IsSoundOn;
+            if (musicToggle != null) musicToggle.isOn = SoundManager.Instance.IsMusicOn;
         }
 
-        // Refresh language display
+        // Load saved notification state
+        if (notificationsToggle != null && SaveManager.Instance != null && SaveManager.Instance.saveData != null)
+        {
+            notificationsToggle.isOn = SaveManager.Instance.saveData.settings.notificationsEnabled;
+            Debug.Log($"Loading notifications state: {notificationsToggle.isOn}");
+        }
+
         UpdateLanguageDisplay();
-        
-        Debug.Log("Settings panel should now be visible");
     }
 
     public void OnLanguageButtonClicked()
@@ -201,6 +237,19 @@ public class SettingsController : MonoBehaviour
     }
     #endregion
 
+    private void LoadSettings()
+    {
+        GameSettings settings = GameManager.Instance.GetSettings();
+        musicToggle.isOn = settings.musicEnabled;
+        soundToggle.isOn = settings.soundEnabled;
+        notificationsToggle.isOn = settings.notificationsEnabled;
+    }
+
+    private void SaveSettings()
+    {
+        SaveManager.Instance.SaveGame();
+    }
+
     private void OnDestroy()
     {
         // Remove listeners to prevent memory leaks
@@ -212,7 +261,10 @@ public class SettingsController : MonoBehaviour
         {
             musicToggle.onValueChanged.RemoveListener(OnMusicToggleChanged);
         }
-
+        if (notificationsToggle != null)
+        {
+            notificationsToggle.onValueChanged.RemoveListener(OnNotificationsToggleChanged);
+        }
         if (saveButton != null)
         {
             saveButton.onClick.RemoveListener(HandleSaveButtonClick);

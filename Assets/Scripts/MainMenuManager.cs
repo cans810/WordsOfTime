@@ -12,9 +12,12 @@ public class MainMenuManager : MonoBehaviour
     private SettingsController settingsController;
     public TextMeshProUGUI eraText;
 
+    private string currentLanguage;
+
     // Start is called before the first frame update
     void Start()
     {
+        currentLanguage = PlayerPrefs.GetString("Language", "en");
         BackgroundImage.sprite = GameManager.Instance.getEraImage(GameManager.Instance.CurrentEra);
 
         // Find point text in main menu
@@ -28,6 +31,7 @@ public class MainMenuManager : MonoBehaviour
         settingsController = FindInactiveObjectByType<SettingsController>();
         
         UpdatePointsDisplay();
+        UpdateEraDisplay();
 
         // Subscribe to era change events if GameManager has them
         if (GameManager.Instance != null)
@@ -77,23 +81,16 @@ public class MainMenuManager : MonoBehaviour
         if (eraText != null && GameManager.Instance != null)
         {
             string currentEra = GameManager.Instance.CurrentEra;
+            string translationKey = currentEra.ToLower().Replace(" ", "_"); // Convert era name to key format
+            string translatedEra = TranslationManager.Instance.GetTranslation(translationKey);
             
-            if (string.IsNullOrEmpty(currentEra))
+            if (string.IsNullOrEmpty(translatedEra))
             {
                 eraText.text = "Select Era";
             }
             else
             {
-                // Split the era name into words and capitalize each first letter
-                string[] words = currentEra.Split(' ');
-                for (int i = 0; i < words.Length; i++)
-                {
-                    if (words[i].Length > 0)
-                    {
-                        words[i] = char.ToUpper(words[i][0]) + words[i].Substring(1).ToLower();
-                    }
-                }
-                eraText.text = string.Join(" ", words);
+                eraText.text = translatedEra;
             }
 
             // Update background image
@@ -122,5 +119,17 @@ public class MainMenuManager : MonoBehaviour
         {
             Debug.LogError("Settings Controller not found! Make sure it exists in the scene.");
         }
+    }
+
+    public void OnLanguageChanged(string newLanguage)
+    {
+        currentLanguage = newLanguage;
+        PlayerPrefs.SetString("Language", newLanguage);
+        PlayerPrefs.Save();
+        UpdateEraDisplay();
+    }
+
+    public void OnPointsPressed(){
+        SceneManager.LoadScene("MarketScene");
     }
 }

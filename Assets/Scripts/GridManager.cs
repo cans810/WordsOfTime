@@ -117,32 +117,30 @@ public class GridManager : MonoBehaviour
             }
         }
 
-        // After creating the grid, restore solved states
-        if (GameManager.Instance.IsWordSolved(word))
-        {
-            var solvedPositions = GameManager.Instance.GetSolvedWordPositions(word);
-            if (solvedPositions != null)
-            {
-                foreach (Vector2Int pos in solvedPositions)
-                {
-                    if (pos.x >= 0 && pos.x < gridSize && 
-                        pos.y >= 0 && pos.y < gridSize)
-                    {
-                        grid[pos.x, pos.y].SetSolvedColor();
-                    }
-                }
-            }
-        }
-
-        // Check if word was already guessed
+        // Check if word was already guessed and restore the solved state
         if (GameManager.Instance.IsWordGuessed(word))
         {
             List<Vector2Int> wordPath = GameManager.Instance.GetWordPath(word);
             if (wordPath != null)
             {
-                ShowSolvedWord(word, wordPath);
+                foreach (Vector2Int pos in wordPath)
+                {
+                    if (pos.x >= 0 && pos.x < gridSize && 
+                        pos.y >= 0 && pos.y < gridSize)
+                    {
+                        var tile = grid[pos.x, pos.y];
+                        if (tile != null)
+                        {
+                            tile.SetSolvedColor();
+                            tile.isSolved = true;
+                            tile.GetComponent<Image>().raycastTarget = false;
+                        }
+                    }
+                }
             }
         }
+
+        WordGameManager.Instance.UpdateCurrentWord(currentWord);
     }
 
     private List<char> GenerateGridData(string word)
@@ -308,6 +306,9 @@ public class GridManager : MonoBehaviour
                 lineRendererInstance = Instantiate(lineRendererPrefab);
             }
             UpdateLineRenderer();
+            
+            // Initialize forming word with first letter
+            WordGameManager.Instance.UpdateCurrentWord(currentWord);
         }
     }
 
@@ -329,6 +330,10 @@ public class GridManager : MonoBehaviour
                 selectedTiles.Add(tile);
                 tile.SetSelected(true);
                 UpdateLineRenderer();
+                
+                // Update the forming word with the new letter
+                string currentWord = GetSelectedWord();
+                WordGameManager.Instance.UpdateCurrentWord(currentWord);
             }
         }
     }
@@ -359,6 +364,8 @@ public class GridManager : MonoBehaviour
         foreach (var tile in selectedTiles)
         {
             word += tile.GetLetter();
+            // Update the forming word after each letter is added
+            WordGameManager.Instance.UpdateCurrentWord(word);
         }
         return word;
     }
@@ -389,6 +396,8 @@ public class GridManager : MonoBehaviour
         {
             lineRendererInstance.positionCount = 0;
         }
+        // Reset the forming word
+        WordGameManager.Instance.UpdateCurrentWord("");
     }
 
     public void HighlightFirstLetter(char letter)
@@ -467,6 +476,13 @@ public class GridManager : MonoBehaviour
                 }
             }
         }
+
+        WordGameManager.Instance.UpdateCurrentWord(currentWord);
+    }
+
+    public List<LetterTile> GetSelectedTiles()
+    {
+        return selectedTiles;
     }
 
     // ... rest of your existing methods remain the same ...

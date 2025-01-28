@@ -64,17 +64,22 @@ public class WordGameManager : MonoBehaviour
     [SerializeField] private int numberOfPreGeneratedGrids = 5; // Number of grids per era
     private List<GridData> preGeneratedGrids = new List<GridData>();
 
+    private string currentFormingWord = "";
+
     private void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
-            Debug.Log("WordGameManager initialized"); // Debug log
+            Debug.Log("WordGameManager initialized");
         }
         else
         {
             Destroy(gameObject);
         }
+
+        // Update to use FindFirstObjectByType
+        gridManager = FindFirstObjectByType<GridManager>();
 
         // Find the GameSceneCanvasController
         if (gameSceneCanvasController == null)
@@ -85,7 +90,6 @@ public class WordGameManager : MonoBehaviour
 
     private void Start()
     {
-        gridManager = FindFirstObjectByType<GridManager>();
         Debug.Log("WordGameManager starting"); // Debug log
         
         // Find hint button in scene if not assigned
@@ -267,25 +271,35 @@ public class WordGameManager : MonoBehaviour
 
     public void StartNewGameInEra()
     {
-        Debug.Log("Starting new game in era"); // Debug log
-        if (GameManager.Instance == null) return;
-
-        // Get the pre-shuffled words for the era
-        currentEraWords = GameManager.Instance.GetCurrentEraWords();
-        Debug.Log($"Got {currentEraWords.Count} words for era {GameManager.Instance.CurrentEra}"); // Debug log
-        
-        solvedWordsInCurrentEra = GameManager.Instance.GetSolvedWordsForEra(GameManager.Instance.CurrentEra);
-        currentWordIndex = 0;
-        
-        if (currentEraWords.Count > 0)
+        Debug.Log("Starting new game in era");
+        if (GameManager.Instance != null)
         {
-            LoadWord(currentWordIndex);
+            // PROBLEM: WordValidator.GetWordsForEra might be loading words directly from JSON
+            // Instead, let's get the words from GameManager's shuffled list
+            currentEraWords = new List<string>(GameManager.Instance.eraWordsPerLanguage[GameManager.Instance.CurrentLanguage][GameManager.Instance.CurrentEra]);
+            Debug.Log($"Words order for {GameManager.Instance.CurrentEra}: {string.Join(", ", currentEraWords)}");
+            
+            // Create progress indicators
             CreateProgressBar();
             UpdateProgressBar();
+
+            // Load first unsolved word
+            currentWordIndex = 0;
+            for (int i = 0; i < currentEraWords.Count; i++)
+            {
+                if (!GameManager.Instance.IsWordGuessed(currentEraWords[i]))
+                {
+                    currentWordIndex = i;
+                    break;
+                }
+            }
+
+            LoadWord(currentWordIndex);
+            UpdateSentenceDisplay();
         }
         else
         {
-            Debug.LogError("No words available for current era!");
+            Debug.LogError("GameManager instance not found!");
         }
     }
 
@@ -376,30 +390,66 @@ public class WordGameManager : MonoBehaviour
     {
         if (sentenceText != null && !string.IsNullOrEmpty(originalSentence))
         {
-            if (solvedWordsInCurrentEra.Contains(currentWordIndex))
+            // First, convert all "_____" to "..."
+            string displaySentence = originalSentence.Replace("_____", "...");
+            
+            // Then, only if we have a target word and it's in the original sentence
+            if (targetWord != null && originalSentence.Contains("_____"))
             {
-                sentenceText.text = originalSentence.Replace("_____", targetWord);
-            }
-            else
-            {
-                string displaySentence = originalSentence;
-                if (!string.IsNullOrEmpty(currentWord))
+                // Find the position of "_____" in the original sentence
+                int blankPos = originalSentence.IndexOf("_____");
+                
+                if (GameManager.Instance.IsWordGuessed(targetWord))
                 {
-                    // Show formed word with ... for remaining
-                    string displayWord = currentWord + "...";
-                    displaySentence = originalSentence.Replace("_____", displayWord);
+                    // Show guessed word
+                    displaySentence = displaySentence.Substring(0, blankPos) + 
+                                    targetWord + 
+                                    displaySentence.Substring(blankPos + 3);
                 }
                 else if (GameManager.Instance.HasUsedHint(targetWord, 2))
                 {
+                    // If second hint was used, show underscores
                     string displayWord = new string('_', targetWord.Length);
-                    displaySentence = originalSentence.Replace("_____", displayWord);
+                    
+                    if (GridManager.Instance.IsSelecting() && GridManager.Instance.GetSelectedTiles().Count > 0)
+                    {
+                        // Get currently selected letters
+                        string selectedLetters = string.Join("", GridManager.Instance.GetSelectedTiles().Select(t => t.GetLetter()));
+                        
+                        // Replace underscores with selected letters
+                        char[] displayChars = displayWord.ToCharArray();
+                        for (int i = 0; i < selectedLetters.Length && i < displayWord.Length; i++)
+                        {
+                            displayChars[i] = selectedLetters[i];
+                        }
+                        displayWord = new string(displayChars);
+                    }
+                    
+                    displaySentence = displaySentence.Substring(0, blankPos) + 
+                                    displayWord + 
+                                    displaySentence.Substring(blankPos + 3);
+                }
+                else if (!string.IsNullOrEmpty(currentWord) && 
+                         GridManager.Instance.IsSelecting() &&
+                         GridManager.Instance.GetSelectedTiles().Count > 0)
+                {
+                    // Show word being formed ONLY while actively selecting letters
+                    string selectedLetters = string.Join("", GridManager.Instance.GetSelectedTiles().Select(t => t.GetLetter()));
+                    displaySentence = displaySentence.Substring(0, blankPos) + 
+                                    selectedLetters + 
+                                    "..." + 
+                                    displaySentence.Substring(blankPos + 3);
                 }
                 else
                 {
-                    displaySentence = originalSentence.Replace("_____", "...");
+                    // Ensure we show "..." in all other cases
+                    displaySentence = displaySentence.Substring(0, blankPos) + 
+                                    "..." + 
+                                    displaySentence.Substring(blankPos + 3);
                 }
-                sentenceText.text = displaySentence;
             }
+
+            sentenceText.text = displaySentence;
         }
     }
 
@@ -518,7 +568,9 @@ public class WordGameManager : MonoBehaviour
             
             if (rectTransform == null || image == null) continue;
 
-            if (solvedWordsInCurrentEra.Contains(i))
+            // Check both current session solved words and previously guessed words
+            string wordAtIndex = currentEraWords != null && currentEraWords.Count > i ? currentEraWords[i] : null;
+            if (solvedWordsInCurrentEra.Contains(i) || (wordAtIndex != null && GameManager.Instance.IsWordGuessed(wordAtIndex)))
             {
                 image.color = Color.green;
                 rectTransform.localScale = i == currentWordIndex ? 
@@ -774,18 +826,30 @@ public class WordGameManager : MonoBehaviour
 
     private void UpdateSentence()
     {
-        if (sentenceText != null && !string.IsNullOrEmpty(targetWord))
+        Debug.Log("UpdateSentence called");
+        if (sentenceText == null)
         {
-            string sentence = WordValidator.GetSentenceForWord(targetWord, GameManager.Instance.CurrentEra);
-            if (!string.IsNullOrEmpty(sentence))
-            {
-                sentenceText.text = sentence;
-                Debug.Log($"Updated sentence for word {targetWord}: {sentence}");
-            }
-            else
-            {
-                Debug.LogWarning($"No sentence found for word: {targetWord}");
-            }
+            Debug.LogError("sentenceText is null!");
+            return;
+        }
+        
+        if (string.IsNullOrEmpty(targetWord))
+        {
+            Debug.LogError("targetWord is empty!");
+            return;
+        }
+
+        string sentence = WordValidator.GetSentenceForWord(targetWord, GameManager.Instance.CurrentEra);
+        Debug.Log($"Original sentence: {sentence}");
+        
+        if (!string.IsNullOrEmpty(sentence))
+        {
+            originalSentence = sentence;
+            UpdateSentenceDisplay();
+        }
+        else
+        {
+            Debug.LogWarning($"No sentence found for word: {targetWord}");
         }
     }
 
