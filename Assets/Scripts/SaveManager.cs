@@ -3,6 +3,7 @@ using System;
 using System.IO;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;  // Add this line for ToList()
 
 public class SaveManager : MonoBehaviour
 {
@@ -79,6 +80,9 @@ public class SaveManager : MonoBehaviour
                 }
             }
 
+            // Save unlocked eras
+            saveData.unlockedEras = GameManager.Instance.GetUnlockedEras().ToList();
+
             string json = JsonUtility.ToJson(saveData, true);  // Added true for pretty print
             File.WriteAllText(SavePath, json);
             
@@ -129,6 +133,18 @@ public class SaveManager : MonoBehaviour
                             }
                         }
                     }
+
+                    // Load unlocked eras
+                    if (saveData.unlockedEras != null)
+                    {
+                        GameManager.Instance.SetUnlockedEras(new HashSet<string>(saveData.unlockedEras));
+                    }
+                    else
+                    {
+                        // Initialize with default unlocked eras if none were saved
+                        HashSet<string> defaultEras = new HashSet<string> { "Ancient Egypt", "Medieval Europe" };
+                        GameManager.Instance.SetUnlockedEras(defaultEras);
+                    }
                 }
 
                 GameManager.Instance.SetPoints(saveData.points);
@@ -178,4 +194,4 @@ public class SaveManager : MonoBehaviour
     {
         SaveGame();
     }
-} 
+}

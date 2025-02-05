@@ -130,6 +130,12 @@ public class TranslatedUI : MonoBehaviour
             case "points":
                 translationKey = "points";
                 break;
+            case "buy":
+                translationKey = "buy";
+                break;
+            case "vikingage":
+                translationKey = "viking_age";
+                break;
             default:
                 translationKey = parentName + "_button";
                 break;
@@ -145,18 +151,28 @@ public class TranslatedUI : MonoBehaviour
             if (gameObject.name == "Points")
             {
                 // Get the era name from parent
-                string eraName = transform.parent.gameObject.name.ToLower()
-                    .Replace(" ", "")
-                    .Trim();
+                string eraName = transform.parent.gameObject.name;
+                string eraNameLower = eraName.ToLower().Replace(" ", "").Trim();
 
-                // Get points required for this era
-                int requiredPoints = GameManager.Instance.GetRequiredPointsForEra(eraName);
+                // Check if it's Ancient Egypt or Medieval Europe
+                if (eraName == "Ancient Egypt" || eraName == "Medieval Europe")
+                {
+                    // Get unlocked text based on current language
+                    string unlockedText = GameManager.Instance.CurrentLanguage == "tr" ? "AÇIK" : "UNLOCKED";
+                    textComponent.text = unlockedText;
+                    textComponent.color = Color.green;
+                }
+                else
+                {
+                    // Get points required for this era
+                    int requiredPoints = GameManager.Instance.GetRequiredPointsForEra(eraNameLower);
 
-                // Get the translated "points" text
-                string pointsText = TranslationManager.Instance.GetTranslation("points");
-                
-                // Combine them
-                textComponent.text = $"{requiredPoints} {pointsText}";
+                    // Get the translated "points" text
+                    string pointsText = TranslationManager.Instance.GetTranslation("points");
+                    
+                    // Combine them
+                    textComponent.text = $"{requiredPoints}";
+                }
             }
             else if (translationKey == "hint_button" && GameManager.Instance != null)
             {

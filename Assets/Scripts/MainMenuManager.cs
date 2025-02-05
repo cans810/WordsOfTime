@@ -10,12 +10,14 @@ public class MainMenuManager : MonoBehaviour
     public SpriteRenderer BackgroundImage;
     private TextMeshProUGUI pointText;
     private SettingsController settingsController;
+    private EraSelectionManager eraSelectionManager;
+    private MarketManager marketManager;
     public TextMeshProUGUI eraText;
 
     private string currentLanguage;
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         currentLanguage = PlayerPrefs.GetString("Language", "en");
         BackgroundImage.sprite = GameManager.Instance.getEraImage(GameManager.Instance.CurrentEra);
@@ -29,6 +31,10 @@ public class MainMenuManager : MonoBehaviour
         
         // Find settings controller including inactive objects
         settingsController = FindInactiveObjectByType<SettingsController>();
+        eraSelectionManager = FindInactiveObjectByType<EraSelectionManager>();
+        marketManager = FindInactiveObjectByType<MarketManager>();
+
+        StartCoroutine(InitializeEraSelectionManager());
         
         UpdatePointsDisplay();
         UpdateEraDisplay();
@@ -37,6 +43,33 @@ public class MainMenuManager : MonoBehaviour
         if (GameManager.Instance != null)
         {
             GameManager.Instance.OnEraChanged += UpdateEraDisplay;
+        }
+    }
+
+    private IEnumerator InitializeEraSelectionManager()
+    {
+        if (eraSelectionManager != null)
+        {
+            // Activate the manager
+            eraSelectionManager.gameObject.SetActive(true);
+            
+            // Wait for end of frame to ensure all components are initialized
+            yield return new WaitForEndOfFrame();
+            
+            // Update prices
+            eraSelectionManager.UpdateEraPrices();
+            
+            // Wait another frame to ensure UI is updated
+            yield return new WaitForEndOfFrame();
+            
+            // Deactivate the manager after initialization
+            eraSelectionManager.gameObject.SetActive(false);
+            
+            Debug.Log("EraSelectionManager initialized and deactivated");
+        }
+        else
+        {
+            Debug.LogWarning("EraSelectionManager not found");
         }
     }
 
@@ -106,7 +139,14 @@ public class MainMenuManager : MonoBehaviour
     }
 
     public void SelectEraButton(){
-        SceneManager.LoadScene("EraSelectionScene");
+        if (eraSelectionManager != null)
+        {
+            eraSelectionManager.ShowEraSelectionScreen();
+        }
+        else
+        {
+            Debug.LogError("Era Selection Manager not found! Make sure it exists in the scene.");
+        }
     }
 
     public void SettingsButton()
@@ -121,15 +161,22 @@ public class MainMenuManager : MonoBehaviour
         }
     }
 
+    public void MarketButton(){
+        if (marketManager != null)
+        {
+            marketManager.ShowMarketScreen();
+        }
+        else
+        {
+            Debug.LogError("Era Selection Manager not found! Make sure it exists in the scene.");
+        }
+    }
+
     public void OnLanguageChanged(string newLanguage)
     {
         currentLanguage = newLanguage;
         PlayerPrefs.SetString("Language", newLanguage);
         PlayerPrefs.Save();
         UpdateEraDisplay();
-    }
-
-    public void OnPointsPressed(){
-        SceneManager.LoadScene("MarketScene");
     }
 }

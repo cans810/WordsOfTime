@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using UnityEngine.SceneManagement;
 using System;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -20,7 +21,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    [SerializeField] private List<string> eraList = new List<string>() { "Ancient Egypt", "Ancient Greece", "Medieval Europe", "Renaissance", "Industrial Revolution" };
+    [SerializeField] private List<string> eraList = new List<string>() { "Ancient Egypt", "Ancient Greece", "Medieval Europe", "Renaissance", "Industrial Revolution","Viking Age" };
     [SerializeField] private List<Sprite> eraImages = new List<Sprite>();
     
     private string currentEra;
@@ -71,7 +72,15 @@ public class GameManager : MonoBehaviour
     public int CurrentPoints
     {
         get { return currentPoints; }
-        set { currentPoints = value; }
+        set
+        {
+            if (currentPoints != value)
+            {
+                currentPoints = value;
+                OnPointsChanged?.Invoke(currentPoints);
+                SaveManager.Instance.SaveGame();
+            }
+        }
     }
     public Dictionary<string, List<char>> InitialGrids => initialGrids;
     public Dictionary<string, List<Vector2Int>> SolvedWordPositions => solvedWordPositions;
@@ -88,7 +97,8 @@ public class GameManager : MonoBehaviour
         { "Medieval Europe", 0 },   
         { "Renaissance", 1000 },   
         { "Industrial Revolution", 2000 }, 
-        { "Ancient Greece", 3000 },   
+        { "Ancient Greece", 3000 },
+        { "Viking Age", 4000 },      
     };
 
     // Add language-related fields
@@ -110,8 +120,10 @@ public class GameManager : MonoBehaviour
     {
         "Ancient Egypt",
         "Medieval Europe",
-        "Industrial Revolution"
-        // Add any other eras you have
+        "Industrial Revolution",
+        "Ancient Greece",
+        "Renaissance",
+        "Viking Age"  // Add Viking Age
     };
 
     private HashSet<string> guessedWords = new HashSet<string>();
@@ -124,6 +136,13 @@ public class GameManager : MonoBehaviour
 
     private bool noAds = false;
     public bool NoAds => noAds;
+
+    public HashSet<string> unlockedEras = new HashSet<string>() { "Ancient Egypt","Medieval Europe" }; // Start with Ancient Egypt unlocked
+
+    // Add a dictionary to store word translations
+    private Dictionary<string, Dictionary<string, string>> wordTranslations = new Dictionary<string, Dictionary<string, string>>();
+
+    private Dictionary<string, HashSet<string>> solvedWordsPerLanguage = new Dictionary<string, HashSet<string>>();
 
     private void Awake()
     {
@@ -138,10 +157,47 @@ public class GameManager : MonoBehaviour
         // Initialize with default settings
         currentSettings = new GameSettings();
         
-        // Don't load words here anymore
+        // Initialize default unlocked eras
+        unlockedEras = new HashSet<string>() { "Ancient Egypt", "Medieval Europe" };
+        Debug.Log($"Initialized unlocked eras: {string.Join(", ", unlockedEras)}");
         
-        CurrentEra = "Ancient Egypt";
-        Debug.Log($"Starting with era: {CurrentEra}");
+        // Load saved language preference
+        string savedLanguage = PlayerPrefs.GetString("Language", "en");
+        SetLanguage(savedLanguage);
+    }
+
+    private void SelectRandomUnlockedEra()
+    {
+        List<string> unlockedErasList = new List<string>();
+        
+        Debug.Log("=== SelectRandomUnlockedEra ===");
+        Debug.Log($"eraList contents: {string.Join(", ", eraList)}");
+        Debug.Log($"unlockedEras contents: {string.Join(", ", unlockedEras)}");
+        
+        foreach (string era in eraList)
+        {
+            bool isUnlocked = unlockedEras.Contains(era);
+            Debug.Log($"Checking era: '{era}', IsUnlocked: {isUnlocked}");
+            if (isUnlocked)
+            {
+                unlockedErasList.Add(era);
+            }
+        }
+
+        Debug.Log($"Final unlocked list for selection: {string.Join(", ", unlockedErasList)}");
+        
+        if (unlockedErasList.Count > 0)
+        {
+            int randomIndex = UnityEngine.Random.Range(0, unlockedErasList.Count);
+            string selectedEra = unlockedErasList[randomIndex];
+            Debug.Log($"Selected era at index {randomIndex}: '{selectedEra}'");
+            CurrentEra = selectedEra;
+        }
+        else
+        {
+            Debug.LogWarning("No unlocked eras found! Defaulting to Ancient Egypt");
+            CurrentEra = "Ancient Egypt";
+        }
     }
 
     private void Start()
@@ -158,12 +214,15 @@ public class GameManager : MonoBehaviour
             ShuffleAllEraWords();
             // Then load the save file for other game data
             SaveManager.Instance.LoadGame();
+            // Select random era after loading save data
+            SelectRandomUnlockedEra();
         }
         else
         {
             Debug.LogWarning("SaveManager instance not found!");
             LoadWordsFromJson();
             ShuffleAllEraWords();
+            SelectRandomUnlockedEra();
         }
         
         // Generate grids after loading/shuffling words
@@ -245,7 +304,7 @@ public class GameManager : MonoBehaviour
         try 
         {
             string jsonContent = File.ReadAllText(filePath);
-            WordSetList wordSetList = JsonUtility.FromJson<WordSetList>(jsonContent);
+            var wordData = JsonUtility.FromJson<WordSetList>(jsonContent);
             
             if (!eraWordsPerLanguage.ContainsKey(language))
             {
@@ -253,7 +312,7 @@ public class GameManager : MonoBehaviour
                 wordSentencesPerLanguage[language] = new Dictionary<string, Dictionary<string, List<string>>>();
             }
 
-            foreach (var set in wordSetList.sets)
+            foreach (var set in wordData.sets)
             {
                 string era = set.era;
                 string internalEra = language == "tr" ? MapTurkishEraName(era) : era;
@@ -264,15 +323,25 @@ public class GameManager : MonoBehaviour
                     wordSentencesPerLanguage[language][internalEra] = new Dictionary<string, List<string>>();
                 }
 
-                // Just load the words without shuffling
                 foreach (var wordEntry in set.words)
                 {
                     string word = wordEntry.word.ToUpper();
                     eraWordsPerLanguage[language][internalEra].Add(word);
                     wordSentencesPerLanguage[language][internalEra][word] = new List<string>(wordEntry.sentences);
+
+                    // Store translations for this word
+                    string baseWord = wordEntry.translations.en; // English version is our base
+                    if (!wordTranslations.ContainsKey(baseWord))
+                    {
+                        wordTranslations[baseWord] = new Dictionary<string, string>
+                        {
+                            { "en", wordEntry.translations.en },
+                            { "tr", wordEntry.translations.tr }
+                        };
+                    }
                 }
 
-                Debug.Log($"Loaded {set.words.Count()} words for {internalEra} in {language}");
+                Debug.Log($"Loaded {set.words.Length} words for {internalEra} in {language}");
             }
         }
         catch (System.Exception e)
@@ -289,7 +358,8 @@ public class GameManager : MonoBehaviour
             {"Antik Yunan", "Ancient Greece"},
             {"Orta Çağ Avrupası", "Medieval Europe"},
             {"Rönesans", "Renaissance"},
-            {"Sanayi Devrimi", "Industrial Revolution"}
+            {"Sanayi Devrimi", "Industrial Revolution"},
+            {"Viking Çağı", "Viking Age"}
         };
 
         if (eraMapping.ContainsKey(turkishEra))
@@ -537,13 +607,23 @@ public class GameManager : MonoBehaviour
 
     public void SelectEra(string eraName)
     {
-        currentEra = eraName;
+        Debug.Log($"Attempting to select era: {eraName}");
+        if (IsEraUnlocked(eraName))
+        {
+            Debug.Log($"Era {eraName} is unlocked, switching to it");
+            SwitchEra(eraName);
+        }
+        else
+        {
+            Debug.LogWarning($"Attempted to select locked era: {eraName}");
+        }
     }
 
     public void AddPoints(int points)
     {
-        currentPoints += points;
-        OnPointsChanged?.Invoke(currentPoints);
+        CurrentPoints += points;
+        OnPointsChanged?.Invoke(CurrentPoints);
+        SaveManager.Instance.SaveGame();
     }
 
     public bool CanUseHint(int hintLevel)
@@ -571,7 +651,12 @@ public class GameManager : MonoBehaviour
 
     public bool IsWordSolved(string word)
     {
-        return solvedWords.Contains(word);
+        // Get the base word for the current language
+        string baseWord = GetBaseWord(word);
+        
+        // Check if the base word is solved in any language
+        return solvedBaseWordsPerEra.ContainsKey(CurrentEra) && 
+               solvedBaseWordsPerEra[CurrentEra].Contains(baseWord);
     }
 
     public List<Vector2Int> GetSolvedWordPositions(string word)
@@ -592,7 +677,8 @@ public class GameManager : MonoBehaviour
                 if (pos.x >= 0 && pos.x < grid.GetLength(0) && 
                     pos.y >= 0 && pos.y < grid.GetLength(1))
                 {
-                    grid[pos.x, pos.y].SetSolvedColor();
+                    grid[pos.x, pos.y].isSolved = true;
+                    grid[pos.x, pos.y].GetComponent<Image>().raycastTarget = false;
                 }
             }
         }
@@ -628,8 +714,12 @@ public class GameManager : MonoBehaviour
 
     public void SwitchEra(string newEra)
     {
+        Debug.Log($"Switching to era: {newEra}");
         CurrentEra = newEra;
-        SoundManager.Instance.PlayEraMusic(newEra);
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlayEraMusic(newEra);
+        }
         
         if (!solvedWordsPerEra.ContainsKey(newEra))
         {
@@ -654,12 +744,26 @@ public class GameManager : MonoBehaviour
 
     public bool IsEraUnlocked(string era)
     {
-        return currentPoints >= GetEraPrice(era); // Check if the player can afford the era
+        // Always return true for default eras
+        if (era == "Ancient Egypt" || era == "Medieval Europe")
+        {
+            return true;
+        }
+        return unlockedEras.Contains(era);
+    }
+
+    public void UnlockEra(string era)
+    {
+        if (!unlockedEras.Contains(era))
+        {
+            unlockedEras.Add(era);
+            SaveManager.Instance.SaveGame(); // Save the unlocked status
+        }
     }
 
     public bool CanUnlockEra(string era)
     {
-        return IsEraUnlocked(era); // Reuse the IsEraUnlocked method
+        return !IsEraUnlocked(era) && CurrentPoints >= GetEraPrice(era);
     }
 
     // Store hint usage for a specific word and level
@@ -712,47 +816,46 @@ public class GameManager : MonoBehaviour
     }
 
     // Add method to change language
-    public void SetLanguage(string languageCode)
+    public void SetLanguage(string newLanguage)
     {
-        Debug.Log($"SetLanguage called with: {languageCode}"); // Debug log
-        if (currentLanguage != languageCode)
+        if (currentLanguage != newLanguage)
         {
-            currentLanguage = languageCode;
-            PlayerPrefs.SetString("Language", languageCode);
+            Debug.Log($"Changing language from {currentLanguage} to {newLanguage}");
+            
+            // Update the current language
+            currentLanguage = newLanguage;
+            PlayerPrefs.SetString("Language", newLanguage);
             PlayerPrefs.Save();
             
-            Debug.Log($"Language changed to: {languageCode}, invoking OnLanguageChanged"); // Debug log
-            if (OnLanguageChanged != null)
-            {
-                OnLanguageChanged.Invoke();
-            }
-            else
-            {
-                Debug.LogWarning("OnLanguageChanged has no subscribers!"); // Debug warning
-            }
+            // Update the UI to show solved words in the new language
+            UpdateSolvedWordsDisplay();
+            
+            // Invoke the language changed event
+            OnLanguageChanged?.Invoke();
         }
     }
 
     public int GetRequiredPointsForEra(string eraName)
     {
-        // Convert era name to proper format if needed (e.g., "ancientegypt" to "Ancient Egypt")
-        string formattedEraName = eraName.ToLower() switch
+        string formattedEraName = eraName switch
         {
             "ancientegypt" => "Ancient Egypt",
+            "ancientgreece" => "Ancient Greece",
             "medievaleurope" => "Medieval Europe",
             "renaissance" => "Renaissance",
-            "ındustrialrevolution" => "Industrial Revolution",
-            "ancientgreece" => "Ancient Greece",
+            "industrialrevolution" => "Industrial Revolution",
+            "vikingage" => "Viking Age",  // Add Viking Age
             _ => eraName
         };
 
         // Get price from eraPrices dictionary
         if (eraPrices.ContainsKey(formattedEraName))
         {
+            Debug.Log($"Price for {formattedEraName}: {eraPrices[formattedEraName]}");
             return eraPrices[formattedEraName];
         }
 
-        Debug.LogWarning($"Unknown era: {eraName}, returning 0 points");
+        Debug.LogWarning($"Unknown era: {eraName} (formatted: {formattedEraName}), returning 0 points");
         return 0;
     }
 
@@ -892,28 +995,97 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // Helper method to get the base (English) version of a word
-    private string GetBaseWord(string word)
+    private WordSetList LoadWordSetList()
     {
-        if (string.IsNullOrEmpty(word)) return word;
-        
-        // If we're already in English, return the word as is
-        if (CurrentLanguage == "en") return word;
-        
-        // Find the corresponding English word
-        var englishWords = eraWordsPerLanguage["en"][CurrentEra];
-        var currentLangWords = eraWordsPerLanguage[CurrentLanguage][CurrentEra];
-        
-        // Find the index of the word in the current language
-        int wordIndex = currentLangWords.IndexOf(word);
-        
-        // Return the corresponding English word if found
-        if (wordIndex >= 0 && wordIndex < englishWords.Count)
+        // Try different possible paths
+        string[] possiblePaths = new string[] 
         {
-            return englishWords[wordIndex];
+            "Assets/words.json",
+            "Assets/Data/words.json",
+            "Assets/WordData/words.json"
+        };
+
+        string jsonContent = null;
+        string usedPath = null;
+
+        foreach (string path in possiblePaths)
+        {
+            if (System.IO.File.Exists(path))
+            {
+                jsonContent = System.IO.File.ReadAllText(path);
+                usedPath = path;
+                Debug.Log($"Found words.json at path: {path}");
+                break;
+            }
+        }
+
+        if (jsonContent == null)
+        {
+            Debug.LogError("Could not load words.json file! Current search paths:");
+            foreach (string path in possiblePaths)
+            {
+                Debug.LogError($"- {path}");
+            }
+            return null;
+        }
+
+        try
+        {
+            WordSetList wordSetList = JsonUtility.FromJson<WordSetList>(jsonContent);
+            if (wordSetList == null || wordSetList.sets == null)
+            {
+                Debug.LogError($"Could not parse words.json file at {usedPath}! Content might be invalid.");
+                return null;
+            }
+            return wordSetList;
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError($"Error parsing words.json at {usedPath}: {e.Message}");
+            return null;
+        }
+    }
+
+    public string GetBaseWord(string word)
+    {
+        Debug.Log($"Getting base word for: {word}");
+        
+        WordSetList wordSetList = LoadWordSetList();
+        if (wordSetList == null)
+        {
+            return word;
         }
         
-        // Fallback to original word if not found
+        // First check if it's already an English word
+        foreach (WordSet wordSet in wordSetList.sets)
+        {
+            foreach (WordEntry wordEntry in wordSet.words)
+            {
+                if (string.Equals(wordEntry.translations.en, word, StringComparison.OrdinalIgnoreCase))
+                {
+                    Debug.Log($"Word {word} is already in English");
+                    return word;
+                }
+            }
+        }
+        
+        // If not English, search for Turkish translation
+        foreach (WordSet wordSet in wordSetList.sets)
+        {
+            foreach (WordEntry wordEntry in wordSet.words)
+            {
+                if (string.Equals(wordEntry.translations.tr, word, StringComparison.OrdinalIgnoreCase))
+                {
+                    string baseWord = wordEntry.translations.en;
+                    Debug.Log($"Found exact match base word in {wordSet.era}: {baseWord} for {word}");
+                    Debug.Log($"Matched: '{wordEntry.translations.tr}' with '{word}'");
+                    Debug.Log($"English translation: '{wordEntry.translations.en}'");
+                    return baseWord;
+                }
+            }
+        }
+        
+        Debug.LogWarning($"No base word found for {word}, returning original");
         return word;
     }
 
@@ -939,11 +1111,15 @@ public class GameManager : MonoBehaviour
 
     public bool IsWordGuessed(string word)
     {
-        if (string.IsNullOrEmpty(word)) return false;
-        
         string baseWord = GetBaseWord(word);
-        return solvedBaseWordsPerEra.ContainsKey(CurrentEra) && 
-               solvedBaseWordsPerEra[CurrentEra].Contains(baseWord);
+        foreach (var era in solvedBaseWordsPerEra.Keys)
+        {
+            if (solvedBaseWordsPerEra[era].Contains(baseWord))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     public List<Vector2Int> GetWordPath(string word)
@@ -955,31 +1131,68 @@ public class GameManager : MonoBehaviour
         return null;
     }
 
-    public void OnWordGuessed(string word)
+    public void OnWordGuessed(string baseWord)
     {
-        // Get the base word (English version) for storage
-        string baseWord = GetBaseWord(word);
-        string era = CurrentEra;
+        Debug.Log($"OnWordGuessed called with base word: {baseWord}");
         
-        // Store using era and base word
-        if (!solvedBaseWordsPerEra.ContainsKey(era))
+        // Store the base word for all languages
+        if (!solvedBaseWordsPerEra.ContainsKey(CurrentEra))
         {
-            solvedBaseWordsPerEra[era] = new HashSet<string>();
+            solvedBaseWordsPerEra[CurrentEra] = new HashSet<string>();
         }
-        solvedBaseWordsPerEra[era].Add(baseWord);
+        solvedBaseWordsPerEra[CurrentEra].Add(baseWord);
         
-        // Also update the index-based tracking
-        if (eraWordsPerLanguage["en"].ContainsKey(era))
+        // Store translations for all supported languages
+        foreach (string language in new[] { "en", "tr" })
         {
-            int wordIndex = eraWordsPerLanguage["en"][era].IndexOf(baseWord);
-            if (wordIndex >= 0)
+            string translatedWord = GetTranslation(baseWord, language);
+            Debug.Log($"Storing translation for {language}: {translatedWord}");
+            
+            if (!solvedWordsPerLanguage.ContainsKey(language))
             {
-                StoreSolvedWordIndex(era, wordIndex);
+                solvedWordsPerLanguage[language] = new HashSet<string>();
+            }
+            solvedWordsPerLanguage[language].Add(translatedWord);
+        }
+        
+        Debug.Log($"Solved words in current era: {string.Join(", ", solvedBaseWordsPerEra[CurrentEra])}");
+        SaveManager.Instance.SaveGame();
+    }
+
+    public string GetTranslation(string baseWord, string language)
+    {
+        Debug.Log($"Getting translation for base word: {baseWord} in language: {language}");
+        
+        if (language == "en")
+        {
+            return baseWord;
+        }
+        
+        WordSetList wordSetList = LoadWordSetList();
+        if (wordSetList == null)
+        {
+            return baseWord;
+        }
+        
+        foreach (WordSet wordSet in wordSetList.sets)
+        {
+            foreach (WordEntry wordEntry in wordSet.words)
+            {
+                if (string.Equals(wordEntry.translations.en, baseWord, StringComparison.OrdinalIgnoreCase))
+                {
+                    string translation = language == "tr" ? 
+                        wordEntry.translations.tr : 
+                        wordEntry.translations.en;
+                    Debug.Log($"Found exact match translation in {wordSet.era}: {translation} for {baseWord}");
+                    Debug.Log($"English word: '{wordEntry.translations.en}'");
+                    Debug.Log($"Turkish translation: '{wordEntry.translations.tr}'");
+                    return translation;
+                }
             }
         }
         
-        // Save the game
-        SaveManager.Instance.SaveGame();
+        Debug.LogWarning($"No translation found for {baseWord} in {language}");
+        return baseWord;
     }
 
     public float GetMusicSound()
@@ -1091,6 +1304,183 @@ public class GameManager : MonoBehaviour
             // AdManager.Instance.DisableAds();
         }
     }
+
+    // Add these methods for SaveManager to use
+    public HashSet<string> GetUnlockedEras()
+    {
+        // Ensure default eras are always included
+        HashSet<string> eras = new HashSet<string>(unlockedEras);
+        eras.Add("Ancient Egypt");
+        eras.Add("Medieval Europe");
+        return eras;
+    }
+
+    public void SetUnlockedEras(HashSet<string> eras)
+    {
+        // Ensure default eras are always unlocked
+        unlockedEras = new HashSet<string>(eras);
+        unlockedEras.Add("Ancient Egypt");
+        unlockedEras.Add("Medieval Europe");
+        Debug.Log($"SetUnlockedEras: Current unlocked eras: {string.Join(", ", unlockedEras)}");
+    }
+
+    public HashSet<string> GetSolvedBaseWordsForEra(string era)
+    {
+        if (solvedBaseWordsPerEra.ContainsKey(era))
+        {
+            return solvedBaseWordsPerEra[era];
+        }
+        return new HashSet<string>();
+    }
+
+    private void UpdateSolvedWordsDisplay()
+    {
+        if (GridManager.Instance != null)
+        {
+            // Clear existing solved words display
+            GridManager.Instance.ClearSolvedWords();
+            
+            // Show solved words for the current language
+            foreach (var baseWord in solvedBaseWordsPerEra[CurrentEra])
+            {
+                // Get the word in the current language
+                string currentLanguageWord = GetCurrentLanguageWord(baseWord);
+                
+                if (solvedWordPositions.ContainsKey(currentLanguageWord))
+                {
+                    GridManager.Instance.ShowSolvedWord(currentLanguageWord, solvedWordPositions[currentLanguageWord]);
+                }
+            }
+        }
+    }
+
+    public string GetCurrentLanguageWord(string baseWord)
+    {
+        if (eraWordsPerLanguage.ContainsKey(currentLanguage) && 
+            eraWordsPerLanguage[currentLanguage].ContainsKey(CurrentEra))
+        {
+            var wordList = eraWordsPerLanguage[currentLanguage][CurrentEra];
+            var englishWordList = eraWordsPerLanguage["en"][CurrentEra];
+            
+            int wordIndex = englishWordList.IndexOf(baseWord);
+            if (wordIndex >= 0 && wordIndex < wordList.Count)
+            {
+                return wordList[wordIndex];
+            }
+        }
+        return baseWord;
+    }
+
+    public bool GetSolvedWordPositions(string word, out List<Vector2Int> positions)
+    {
+        if (solvedWordPositions.ContainsKey(word))
+        {
+            positions = solvedWordPositions[word];
+            return true;
+        }
+        positions = null;
+        return false;
+    }
+
+    public void StoreSolvedBaseWord(string era, string baseWord)
+    {
+        Debug.Log($"Storing solved base word: {baseWord} for era: {era}");
+        
+        if (!solvedBaseWordsPerEra.ContainsKey(era))
+        {
+            solvedBaseWordsPerEra[era] = new HashSet<string>();
+        }
+        
+        solvedBaseWordsPerEra[era].Add(baseWord);
+        
+        // Also store translations for all supported languages
+        foreach (string language in new[] { "en", "tr" })
+        {
+            string translatedWord = GetTranslation(baseWord, language);
+            Debug.Log($"Storing translation for {language}: {translatedWord}");
+            
+            if (!solvedWordsPerLanguage.ContainsKey(language))
+            {
+                solvedWordsPerLanguage[language] = new HashSet<string>();
+            }
+            solvedWordsPerLanguage[language].Add(translatedWord);
+        }
+        
+        SaveManager.Instance.SaveGame();
+    }
+
+    // Add this method to find word positions in the grid
+    public List<Vector2Int> FindWordInGrid(string word, LetterTile[,] grid)
+    {
+        Debug.Log($"Searching for word: {word} in grid");
+        int gridSize = grid.GetLength(0); // Assuming square grid
+        
+        // Search for the first letter
+        for (int row = 0; row < gridSize; row++)
+        {
+            for (int col = 0; col < gridSize; col++)
+            {
+                if (grid[row, col] == null) continue;
+                
+                char gridLetter = grid[row, col].GetLetter();
+                char searchLetter = word[0];
+                
+                // Compare first letter (case insensitive)
+                if (char.ToUpperInvariant(gridLetter) == char.ToUpperInvariant(searchLetter))
+                {
+                    // Try all 8 directions
+                    int[][] directions = new int[][]
+                    {
+                        new int[] {-1, -1}, new int[] {-1, 0}, new int[] {-1, 1},
+                        new int[] {0, -1},                      new int[] {0, 1},
+                        new int[] {1, -1},  new int[] {1, 0},  new int[] {1, 1}
+                    };
+                    
+                    foreach (var dir in directions)
+                    {
+                        List<Vector2Int> path = new List<Vector2Int>();
+                        bool found = true;
+                        
+                        // Try to match the entire word in this direction
+                        for (int i = 0; i < word.Length; i++)
+                        {
+                            int newRow = row + dir[0] * i;
+                            int newCol = col + dir[1] * i;
+                            
+                            // Check bounds
+                            if (newRow < 0 || newRow >= gridSize || newCol < 0 || newCol >= gridSize)
+                            {
+                                found = false;
+                                break;
+                            }
+                            
+                            // Check letter match
+                            if (grid[newRow, newCol] == null || 
+                                char.ToUpperInvariant(grid[newRow, newCol].GetLetter()) != 
+                                char.ToUpperInvariant(word[i]))
+                            {
+                                found = false;
+                                break;
+                            }
+                            
+                            path.Add(new Vector2Int(newRow, newCol));
+                        }
+                        
+                        if (found)
+                        {
+                            Debug.Log($"Found word {word} starting at ({row},{col})");
+                            return path;
+                        }
+                    }
+                }
+            }
+        }
+        
+        Debug.Log($"Word {word} not found in grid");
+        return null;
+    }
 }
+
+
 
 

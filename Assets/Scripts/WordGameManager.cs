@@ -7,6 +7,19 @@ using System;
 using System.Collections;
 using System.Linq;
 
+public static class StringExtensions
+{
+    public static string ReplaceFirst(this string text, string search, string replace)
+    {
+        int pos = text.IndexOf(search);
+        if (pos < 0)
+        {
+            return text;
+        }
+        return text.Substring(0, pos) + replace + text.Substring(pos + search.Length);
+    }
+}
+
 public class WordGameManager : MonoBehaviour
 {
     [Header("UI References")]
@@ -66,6 +79,8 @@ public class WordGameManager : MonoBehaviour
 
     private string currentFormingWord = "";
 
+    private List<LetterTile> selectedTiles = new List<LetterTile>();
+
     private void Awake()
     {
         if (Instance == null)
@@ -111,7 +126,7 @@ public class WordGameManager : MonoBehaviour
             Debug.Log($"Current era: {GameManager.Instance.CurrentEra}"); // Debug log
             StartNewGameInEra();
             UpdateHintButton(); // Initialize hint button state
-            GameManager.Instance.OnLanguageChanged += OnLanguageChanged;
+            GameManager.Instance.OnLanguageChanged += HandleLanguageChanged;
         }
         else
         {
@@ -122,11 +137,19 @@ public class WordGameManager : MonoBehaviour
     private void OnEnable()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.OnLanguageChanged += HandleLanguageChanged;
+        }
     }
 
     private void OnDisable()
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.OnLanguageChanged -= HandleLanguageChanged;
+        }
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -181,8 +204,9 @@ public class WordGameManager : MonoBehaviour
     {
         float elapsedTime = 0f;
         Vector3 originalScale = pointText.transform.localScale;
+        Color originalColor = pointText.color;  // Store the original color
         bool isIncreasing = endPoints > startPoints;
-        float animationDuration = 1.1f; // Total animation duration
+        float animationDuration = 1.1f;
         int lastPoints = startPoints;
         Coroutine currentBumpCoroutine = null;
         
@@ -222,12 +246,12 @@ public class WordGameManager : MonoBehaviour
             yield return null;
         }
         
-        // Ensure we end up at the exact final value
+        // Ensure we end up at the exact final value and return to original color
         if (pointText != null)
         {
             pointText.text = endPoints.ToString();
             pointText.transform.localScale = originalScale;
-            pointText.color = Color.white;
+            pointText.color = originalColor;  // Restore the original color
         }
     }
 
@@ -383,10 +407,59 @@ public class WordGameManager : MonoBehaviour
     public void UpdateCurrentWord(string word)
     {
         currentWord = word;
-        UpdateSentenceDisplay();
+        
+        // Check if second hint is active
+        bool isSecondHintActive = GameManager.Instance.HasUsedHint(targetWord, 2);
+        
+        if (isSecondHintActive)
+        {
+            // Always show underscores with current selection when hint 2 is active
+            string displayWord = new string('_', targetWord.Length);
+            if (GridManager.Instance.IsSelecting() && GridManager.Instance.GetSelectedTiles().Count > 0)
+            {
+                // Get currently selected letters
+                string selectedLetters = string.Join("", GridManager.Instance.GetSelectedTiles().Select(t => t.GetLetter()));
+                
+                // Replace underscores with selected letters
+                char[] displayChars = displayWord.ToCharArray();
+                for (int i = 0; i < selectedLetters.Length && i < displayWord.Length; i++)
+                {
+                    displayChars[i] = selectedLetters[i];
+                }
+                displayWord = new string(displayChars);
+            }
+            sentenceText.text = originalSentence.Replace("_____", displayWord);
+        }
+        else
+        {
+            if (GridManager.Instance.IsSelecting())
+            {
+                // Normal mode: show the formed word
+                UpdateSentenceDisplay(word);
+            }
+            else
+            {
+                // Revert to "..." when not selecting
+                ResetSentenceDisplay();
+            }
+        }
     }
 
-    private void UpdateSentenceDisplay()
+    private void UpdateHintSentenceDisplay(string word)
+    {
+        if (sentenceText != null)
+        {
+            // Create the illusion of letters over underscores
+            string displaySentence = originalSentence.Replace("_____", "...");
+            for (int i = 0; i < word.Length; i++)
+            {
+                displaySentence = displaySentence.ReplaceFirst("_", word[i].ToString());
+            }
+            sentenceText.text = displaySentence;
+        }
+    }
+
+    private void UpdateSentenceDisplay(string word = null)
     {
         if (sentenceText != null && !string.IsNullOrEmpty(originalSentence))
         {
@@ -530,6 +603,9 @@ public class WordGameManager : MonoBehaviour
 
     public void NextWord()
     {
+        // Clear the grid to default color
+        ClearGrid();
+
         if (currentEraWords == null) return;
 
         if (currentWordIndex < currentEraWords.Count - 1)
@@ -539,6 +615,103 @@ public class WordGameManager : MonoBehaviour
             UpdateProgressBar();
             UpdateSentenceDisplay();
         }
+
+        // Check if the current word is already solved
+        string baseWord = GameManager.Instance.GetBaseWord(targetWord);
+        if (GameManager.Instance.IsWordSolved(baseWord))
+        {
+            Debug.Log($"Word {baseWord} is solved, finding {targetWord} in grid to highlight");
+            HighlightWordInGrid(targetWord);
+        }
+        else
+        {
+            Debug.Log($"Word {baseWord} is not solved yet.");
+        }
+        
+        UpdateSentenceDisplay(targetWord);
+        UpdateProgressBar();
+    }
+
+    private void ClearGrid()
+    {
+        int gridSize = GridManager.Instance.grid.GetLength(0);
+        for (int i = 0; i < gridSize; i++)
+        {
+            for (int j = 0; j < gridSize; j++)
+            {
+                var tile = GridManager.Instance.grid[i, j];
+                tile.ResetTile();
+                tile.isSolved = false;
+                tile.GetComponent<Image>().raycastTarget = true;
+                tile.GetComponent<Image>().color = tile.defaultColor; // Directly set the color
+            }
+        }
+    }
+
+    private void HighlightWordInGrid(string word)
+    {
+        Debug.Log($"Searching for word: {word}");
+        int gridSize = GridManager.Instance.grid.GetLength(0);
+        bool[,] visited = new bool[gridSize, gridSize];
+
+        // First, clear the entire grid to white
+        for (int row = 0; row < gridSize; row++)
+        {
+            for (int col = 0; col < gridSize; col++)
+            {
+                GridManager.Instance.grid[row, col].ResetTile();
+                GridManager.Instance.grid[row, col].GetComponent<Image>().color = Color.white;
+            }
+        }
+
+        // Then search for the word
+        for (int row = 0; row < gridSize; row++)
+        {
+            for (int col = 0; col < gridSize; col++)
+            {
+                if (DFS(row, col, word, 0, visited))
+                {
+                    Debug.Log($"Found word {word} starting at ({row},{col})");
+                    return;
+                }
+            }
+        }
+        
+        Debug.LogError($"Failed to find word: {word} in grid!");
+    }
+
+    private bool DFS(int row, int col, string word, int index, bool[,] visited)
+    {
+        if (index == word.Length)
+            return true;
+
+        int gridSize = GridManager.Instance.grid.GetLength(0);
+
+        if (row < 0 || row >= gridSize || col < 0 || col >= gridSize || visited[row, col])
+            return false;
+
+        if (char.ToUpperInvariant(GridManager.Instance.grid[row, col].GetLetter()) != char.ToUpperInvariant(word[index]))
+            return false;
+
+        visited[row, col] = true;
+
+        // Check all 8 directions
+        int[] dRow = { -1, -1, -1, 0, 0, 1, 1, 1 };
+        int[] dCol = { -1, 0, 1, -1, 1, -1, 0, 1 };
+
+        for (int dir = 0; dir < 8; dir++)
+        {
+            if (DFS(row + dRow[dir], col + dCol[dir], word, index + 1, visited))
+            {
+                GridManager.Instance.grid[row, col].SetSolvedColor();
+                GridManager.Instance.grid[row, col].isSolved = true;
+                GridManager.Instance.grid[row, col].GetComponent<Image>().raycastTarget = false;
+                return true;
+            }
+        }
+
+        visited[row, col] = false;
+        return false;
     }
 
     public void PreviousWord()
@@ -556,30 +729,29 @@ public class WordGameManager : MonoBehaviour
     {
         if (progressImages == null || progressImages.Count == 0) return;
 
-        // Get solved words for current era
-        solvedWordsInCurrentEra = GameManager.Instance.GetSolvedWordsForEra(GameManager.Instance.CurrentEra);
+        // Get solved base words for current era
+        HashSet<string> solvedBaseWords = GameManager.Instance.GetSolvedBaseWordsForEra(GameManager.Instance.CurrentEra);
 
         for (int i = 0; i < progressImages.Count; i++)
         {
             if (progressImages[i] == null) continue;
 
+            string wordAtIndex = currentEraWords != null && currentEraWords.Count > i ? currentEraWords[i] : null;
+            
+            bool isSolved = false;
+            if (wordAtIndex != null)
+            {
+                // Get the base word for the current word
+                string baseWord = GameManager.Instance.GetBaseWord(wordAtIndex);
+                isSolved = solvedBaseWords.Contains(baseWord);
+            }
+
             RectTransform rectTransform = progressImages[i].GetComponent<RectTransform>();
             Image image = progressImages[i].GetComponent<Image>();
             
-            if (rectTransform == null || image == null) continue;
-
-            // Check both current session solved words and previously guessed words
-            string wordAtIndex = currentEraWords != null && currentEraWords.Count > i ? currentEraWords[i] : null;
-            if (solvedWordsInCurrentEra.Contains(i) || (wordAtIndex != null && GameManager.Instance.IsWordGuessed(wordAtIndex)))
+            if (rectTransform != null && image != null)
             {
-                image.color = Color.green;
-                rectTransform.localScale = i == currentWordIndex ? 
-                    new Vector3(0.39f, 0.39f, 0.39f) : 
-                    new Vector3(0.32f, 0.32f, 0.32f);
-            }
-            else
-            {
-                image.color = Color.white;
+                image.color = isSolved ? Color.green : Color.white;
                 rectTransform.localScale = i == currentWordIndex ? 
                     new Vector3(0.39f, 0.39f, 0.39f) : 
                     new Vector3(0.32f, 0.32f, 0.32f);
@@ -633,6 +805,17 @@ public class WordGameManager : MonoBehaviour
     {
         if (hintButton != null)
         {
+
+            // First check if the word is already guessed
+            if (GameManager.Instance.IsWordGuessed(targetWord))
+            {
+                // Deactivate button if word is already solved
+                hintButton.interactable = false;
+                hintButtonText.text = "Solved";
+                hintButtonText.color = Color.black;
+                return;
+            }
+            
             bool hasUsedHint1 = GameManager.Instance.HasUsedHint(targetWord, 1);
             bool hasUsedHint2 = GameManager.Instance.HasUsedHint(targetWord, 2);
             
@@ -670,16 +853,17 @@ public class WordGameManager : MonoBehaviour
                 if (!hintsAvailable)
                 {
                     hintButtonText.text = "0 Hints";
+                    hintButtonText.color = Color.red;
                 }
                 else if (!canAfford)
                 {
                     hintButtonText.text = $"{hintCost} ({nextHintLevel})";
-                    hintButtonText.color = Color.white;
+                    hintButtonText.color = Color.red;
                 }
                 else
                 {
                     hintButtonText.text = $"{hintCost} ({nextHintLevel})";
-                    hintButtonText.color = Color.white;
+                    hintButtonText.color = Color.red;
                 }
             }
         }
@@ -742,61 +926,116 @@ public class WordGameManager : MonoBehaviour
 
     public void CheckWord(string word, List<LetterTile> selectedTiles)
     {
+        Debug.Log($"Checking word: {word} against target: {targetWord}");
         if (word == targetWord)
         {
             // Word is correct
             foreach (var tile in selectedTiles)
             {
                 tile.SetSolvedColor();
+                tile.isSolved = true;
+                tile.GetComponent<Image>().raycastTarget = false;
             }
-            GameManager.Instance.StoreSolvedWordPositions(word, selectedTiles.Select(t => t.GetGridPosition()).ToList());
-            AddPoints();
-            solvedWords.Add(word);
-            OnWordSolved?.Invoke(word);
             
-            // Add this line to save the guessed word
-            GameManager.Instance.OnWordGuessed(word);
+            // Get the base (English) word
+            string baseWord = GameManager.Instance.GetBaseWord(word);
+            Debug.Log($"Base word: {baseWord}");
             
+            // Store positions for both current word and its translations
+            List<Vector2Int> positions = selectedTiles.Select(t => t.GetGridPosition()).ToList();
+            GameManager.Instance.StoreSolvedWordPositions(word, positions);
+            
+            // Store positions for translations in all supported languages
+            foreach (string language in new[] { "en", "tr" })
+            {
+                string translatedWord = GameManager.Instance.GetTranslation(baseWord, language);
+                Debug.Log($"Storing positions for translation in {language}: {translatedWord}");
+                GameManager.Instance.StoreSolvedWordPositions(translatedWord, positions);
+            }
+            
+            // Mark word as solved
+            GameManager.Instance.OnWordGuessed(baseWord);
+            
+            // Add points and play sound
+            int currentPoints = GameManager.Instance.CurrentPoints;
+            GameManager.Instance.AddPoints(GameManager.POINTS_PER_WORD);
+            pointAnimationCoroutine = StartCoroutine(AnimatePointsChange(currentPoints, GameManager.Instance.CurrentPoints));
+            SoundManager.Instance.PlaySound("PointGain");
+            
+            // Update UI
+            UpdateProgressBar();
+            UpdateSentenceDisplay();
         }
         else
         {
-            // Word is incorrect
-            foreach (var tile in selectedTiles)
-            {
-                tile.ResetTile();
-            }
+            // Word is incorrect - reset the tiles and sentence
+            ResetTiles(selectedTiles);
+            ResetSentenceDisplay();
         }
-        GridManager.Instance.ResetGridForNewWord();
     }
 
-    private void AddPoints()
+    private void ResetTiles(List<LetterTile> tiles)
     {
-        if (pointAnimationCoroutine != null)
+        foreach (var tile in tiles)
         {
-            StopCoroutine(pointAnimationCoroutine);
+            tile.ResetTile();
         }
-        
-        int startPoints = GameManager.Instance.CurrentPoints;
-        GameManager.Instance.AddPoints(GameManager.POINTS_PER_WORD);
-        pointAnimationCoroutine = StartCoroutine(AnimatePointsChange(startPoints, GameManager.Instance.CurrentPoints));
+    }
 
-        SoundManager.Instance.PlaySound("PointGain");
+    private void StoreSolvedWordIndex(string word)
+    {
+        // Get the base word (English version) for the current word
+        string baseWord = GameManager.Instance.GetBaseWord(word);
         
+        // Store both the index and the base word
         solvedWordsInCurrentEra.Add(currentWordIndex);
         GameManager.Instance.StoreSolvedWordIndex(GameManager.Instance.CurrentEra, currentWordIndex);
-        UpdateProgressBar();
-        UpdateSentenceDisplay();
+        
+        // Store the base word for cross-language support
+        GameManager.Instance.StoreSolvedBaseWord(GameManager.Instance.CurrentEra, baseWord);
+        
+        // Store the positions for both the current word and its translation
+        List<Vector2Int> positions = GridManager.Instance.GetSelectedTiles().Select(t => t.GetGridPosition()).ToList();
+        GameManager.Instance.StoreSolvedWordPositions(word, positions);
+        
+        // Also store positions for the translated version
+        string translatedWord = GameManager.Instance.GetTranslation(baseWord, GameManager.Instance.CurrentLanguage);
+        if (translatedWord != word)
+        {
+            GameManager.Instance.StoreSolvedWordPositions(translatedWord, positions);
+        }
     }
 
-    private void OnLanguageChanged()
+    private void HandleLanguageChanged()
     {
-        Debug.Log($"Language changed, current word: {targetWord}");
-        if (!string.IsNullOrEmpty(targetWord))
+        Debug.Log("Language changed, updating grid...");
+        
+        // 1. Reset all tiles to default state
+        int gridSize = GridManager.Instance.grid.GetLength(0);
+        for (int i = 0; i < gridSize; i++)
         {
-            // Preserve the current word and refresh the grid
-            string currentWord = targetWord;
-            SetupWordGame(currentWord);
+            for (int j = 0; j < gridSize; j++)
+            {
+                GridManager.Instance.grid[i, j].ResetTile();
+                GridManager.Instance.grid[i, j].isSolved = false;
+                GridManager.Instance.grid[i, j].GetComponent<Image>().raycastTarget = false;
+            }
         }
+        
+        // 2. Get the current word's translation and check if it's solved
+        string baseWord = GameManager.Instance.GetBaseWord(targetWord);
+        string newWord = GameManager.Instance.GetTranslation(baseWord, GameManager.Instance.CurrentLanguage);
+        targetWord = newWord;
+        
+        if (GameManager.Instance.IsWordSolved(baseWord))
+        {
+            Debug.Log($"Word {baseWord} is solved, finding {newWord} in grid to highlight");
+            HighlightWordInGrid(newWord);
+        }
+        
+        // 3. Update UI
+        UpdateSentenceDisplay(targetWord);
+        UpdateProgressBar();
     }
 
     public void SetupWordGame(string word)
@@ -857,7 +1096,7 @@ public class WordGameManager : MonoBehaviour
     {
         if (GameManager.Instance != null)
         {
-            GameManager.Instance.OnLanguageChanged -= OnLanguageChanged;
+            GameManager.Instance.OnLanguageChanged -= HandleLanguageChanged;
         }
     }
 
@@ -982,5 +1221,50 @@ public class WordGameManager : MonoBehaviour
         
         // If no grid found, generate a new one
         return GenerateGridForEra(era);
+    }
+
+    public void OnTileDragStart(LetterTile tile)
+    {
+        // Don't update the sentence display during drag
+        // Just add the tile to the selection
+        selectedTiles.Add(tile);
+        tile.SetSelected(true);
+    }
+
+    public void OnTileDragEnd()
+    {
+        // Reset the sentence display when drag ends
+        ResetSentenceDisplay();
+    }
+
+    private void ResetSentenceDisplay()
+    {
+        if (sentenceText != null)
+        {
+            // Check if second hint is active
+            bool isSecondHintActive = GameManager.Instance.HasUsedHint(targetWord, 2);
+            
+            if (isSecondHintActive)
+            {
+                // Keep showing underscores if second hint is active
+                string underscores = new string('_', targetWord.Length);
+                sentenceText.text = originalSentence.Replace("_____", underscores);
+            }
+            else
+            {
+                // Otherwise, revert to "..."
+                sentenceText.text = originalSentence.Replace("_____", "...");
+            }
+        }
+    }
+
+    private string GetFormedWord()
+    {
+        return string.Join("", selectedTiles.Select(t => t.GetLetter()));
+    }
+
+    private bool IsValidWord(string word)
+    {
+        return !string.IsNullOrEmpty(word) && word.Length > 0 && word.All(char.IsLetter);
     }
 }

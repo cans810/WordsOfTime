@@ -10,10 +10,10 @@ public class LetterTile : MonoBehaviour, IPointerEnterHandler, IPointerDownHandl
     public char Letter { get; private set; }
     private Vector2Int gridPosition;
 
-    [SerializeField] private Color defaultColor = Color.white;
-    [SerializeField] private Color selectedColor = Color.yellow;
+    [SerializeField] public Color defaultColor = Color.white;
+    [SerializeField] public Color selectedColor = Color.yellow;
 
-    [SerializeField] private Color solvedColor = Color.yellow;
+    [SerializeField] public Color solvedColor = Color.yellow;
     public bool isSolved = false;
 
     public string SolvedWord { get; private set; } = "";  // Add this
@@ -38,10 +38,8 @@ public class LetterTile : MonoBehaviour, IPointerEnterHandler, IPointerDownHandl
     public void ResetTile()
     {
         SetSelected(false);
-        if (!isSolved)
-        {
-            backgroundImage.color = defaultColor;
-        }
+        SetHighlightColor(defaultColor);
+        isSolved = false;
     }
 
     // Modify SetLetter to reset the state
@@ -72,10 +70,13 @@ public class LetterTile : MonoBehaviour, IPointerEnterHandler, IPointerDownHandl
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        // Check if the current word is already solved
-        if (WordGameManager.Instance.IsWordSolved(WordGameManager.Instance.targetWord) || isSolved)
+        string currentWord = WordGameManager.Instance.targetWord;
+        string baseWord = GameManager.Instance.GetBaseWord(currentWord);
+        
+        // Check if the base word is already solved
+        if (GameManager.Instance.IsWordSolved(baseWord) || isSolved)
         {
-            return; // Don't allow selection if word is already solved or tile is solved
+            return; // Don't allow selection if base word is solved or tile is solved
         }
 
         if (!isSolved && GridManager.Instance.IsSelecting())
@@ -90,10 +91,13 @@ public class LetterTile : MonoBehaviour, IPointerEnterHandler, IPointerDownHandl
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        // Check if the current word is already solved
-        if (WordGameManager.Instance.IsWordSolved(WordGameManager.Instance.targetWord) || isSolved)
+        string currentWord = WordGameManager.Instance.targetWord;
+        string baseWord = GameManager.Instance.GetBaseWord(currentWord);
+        
+        // Check if the base word is already solved
+        if (GameManager.Instance.IsWordSolved(baseWord) || isSolved)
         {
-            return; // Don't allow selection if word is already solved or tile is solved
+            return; // Don't allow selection if base word is solved or tile is solved
         }
         
         if (!isSolved && GridManager.Instance.IsSelecting())
@@ -104,10 +108,13 @@ public class LetterTile : MonoBehaviour, IPointerEnterHandler, IPointerDownHandl
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        // Check if the current word is already solved
-        if (WordGameManager.Instance.IsWordSolved(WordGameManager.Instance.targetWord))
+        string currentWord = WordGameManager.Instance.targetWord;
+        string baseWord = GameManager.Instance.GetBaseWord(currentWord);
+        
+        // Check if the base word is already solved
+        if (GameManager.Instance.IsWordSolved(baseWord))
         {
-            return; // Don't allow selection if word is already solved
+            return; // Don't allow selection if base word is solved
         }
         
         if (!isSolved)

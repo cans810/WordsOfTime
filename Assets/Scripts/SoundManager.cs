@@ -81,11 +81,19 @@ public class SoundManager : MonoBehaviour
             instance = this;
             DontDestroyOnLoad(gameObject);
             
-            // Don't start music automatically
-            if (musicSource != null)
+            // Initialize audio sources first
+            if (musicSource == null)
             {
+                musicSource = gameObject.AddComponent<AudioSource>();
+                musicSource.loop = true;
                 musicSource.playOnAwake = false;
                 musicSource.Stop();
+            }
+            
+            if (effectsSource == null)
+            {
+                effectsSource = gameObject.AddComponent<AudioSource>();
+                effectsSource.playOnAwake = false;
             }
             
             InitializeSounds();
@@ -99,21 +107,7 @@ public class SoundManager : MonoBehaviour
 
     private void Start()
     {
-        // Initialize audio sources
-        if (musicSource == null)
-        {
-            musicSource = gameObject.AddComponent<AudioSource>();
-            musicSource.loop = true;  // Ensure music loops
-            musicSource.playOnAwake = false;  // Don't play automatically
-        }
-
-        if (effectsSource == null)
-        {
-            effectsSource = gameObject.AddComponent<AudioSource>();
-            effectsSource.playOnAwake = false;
-        }
-
-        // Load initial settings
+        // Load settings
         LoadSettings();
     }
 

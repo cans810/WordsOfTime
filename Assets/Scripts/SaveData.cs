@@ -25,6 +25,7 @@ public class SaveData
     public bool notifications;
     public Dictionary<string, List<string>> shuffledWords = new Dictionary<string, List<string>>();
     public List<HintData> usedHintsData = new List<HintData>();
+    public List<string> unlockedEras = new List<string>();
 
     public SaveData()
     {
@@ -33,6 +34,7 @@ public class SaveData
         settings = new GameSettings();
         usedHintsData = new List<HintData>();
         shuffledWords = new Dictionary<string, List<string>>();
+        unlockedEras = new List<string>();
     }
 }
 

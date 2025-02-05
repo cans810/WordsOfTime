@@ -5,82 +5,112 @@
       "words": [
         {
           "word": "PHARAOH",
+          "translations": {
+            "en": "PHARAOH",
+            "tr": "FİRAVUN"
+          },
           "sentences": [
             "The _____ ruled over Egypt with great power.",
-            "The _____ built huge pyramids.",
-            "The _____ wore a special crown."
+            "Who built the huge pyramids in ancient Egypt? The _____"
           ]
         },
         {
           "word": "PYRAMID",
+          "translations": {
+            "en": "PYRAMID",
+            "tr": "PİRAMİT"
+          },
           "sentences": [
             "The great _____ was built from stone blocks.",
-            "The _____ was a tomb for the pharaoh.",
-            "Many workers built the huge _____."
+            "What ancient structure served as a tomb for the pharaoh? The _____"
           ]
         },
         {
           "word": "SPHINX",
+          "translations": {
+            "en": "SPHINX",
+            "tr": "SFENKS"
+          },
           "sentences": [
             "The _____ has a lion's body and human head.",
-            "The _____ guards the pyramids.",
-            "The _____ is a famous statue in Egypt."
+            "What famous statue guards the pyramids? The _____"
           ]
         },
         {
           "word": "MUMMY",
+          "translations": {
+            "en": "MUMMY",
+            "tr": "MUMYA"
+          },
           "sentences": [
             "A _____ was wrapped in special cloth.",
-            "The _____ was placed inside the tomb.",
-            "They made a _____ to protect the dead body."
+            "What was placed inside the tomb to preserve the dead? The _____"
           ]
         },
         {
           "word": "GOLD",
+          "translations": {
+            "en": "GOLD",
+            "tr": "ALTIN"
+          },
           "sentences": [
             "The pharaoh's mask was made of _____.",
-            "The tomb was filled with _____.",
-            "They used _____ to make beautiful jewelry."
+            "What precious metal was used to make beautiful jewelry? _____"
           ]
         },
         {
           "word": "TOMB",
+          "translations": {
+            "en": "TOMB",
+            "tr": "MEZAR"
+          },
           "sentences": [
             "The _____ held many treasures.",
-            "They built a _____ for the pharaoh.",
-            "The _____ was hidden to protect it."
+            "What special place was built for the pharaoh? The _____"
           ]
         },
         {
           "word": "NILE",
+          "translations": {
+            "en": "NILE",
+            "tr": "NİL"
+          },
           "sentences": [
             "The _____ River gave water to Egypt.",
-            "Boats sailed on the _____.",
-            "The _____ helped grow food."
+            "Which river helped grow food in ancient Egypt? The _____"
           ]
         },
         {
           "word": "QUEEN",
+          "translations": {
+            "en": "QUEEN",
+            "tr": "KRALİÇE"
+          },
           "sentences": [
             "The _____ helped rule Egypt.",
-            "The _____ lived in the palace.",
-            "The _____ wore fine clothes."
+            "Who lived in the palace alongside the pharaoh? The _____"
           ]
         },
         {
           "word": "SAND",
+          "translations": {
+            "en": "SAND",
+            "tr": "KUM"
+          },
           "sentences": [
             "Hot _____ covered the desert.",
-            "The _____ stretched far and wide.",
-            "The wind blew the _____ around."
+            "What did the wind blow across the desert? _____"
           ]
         },
         {
           "word": "CAT",
+          "translations": {
+            "en": "CAT",
+            "tr": "KEDİ"
+          },
           "sentences": [
             "The Egyptians thought the _____ was special.",
-            "They kept a _____ in their homes.",
-            "The _____ was treated like a god."
+            "Which animal was treated like a god in ancient Egypt? The _____"
           ]
         }
       ]
@@ -90,82 +120,112 @@
       "words": [
         {
           "word": "CASTLE",
+          "translations": {
+            "en": "CASTLE",
+            "tr": "ŞATO"
+          },
           "sentences": [
             "A _____ was built to protect towns and nobles from invaders.",
-            "Medieval _____ walls were often 15 feet thick.",
-            "Most _____ had a moat filled with water for defense."
+            "What structure had walls fifteen feet thick for defense? The _____"
           ]
         },
         {
           "word": "KNIGHT",
+          "translations": {
+            "en": "KNIGHT",
+            "tr": "ŞÖVALYE"
+          },
           "sentences": [
             "A _____ trained from childhood to fight and serve nobles.",
-            "Each _____ followed a code of honor called chivalry.",
-            "A _____ had to earn their title through years of training."
+            "Who followed a code of honor called chivalry? The _____"
           ]
         },
         {
           "word": "KING",
+          "translations": {
+            "en": "KING",
+            "tr": "KRAL"
+          },
           "sentences": [
             "The _____ was believed to rule by divine right.",
-            "A medieval _____ controlled the land and its armies.",
-            "The _____ granted land to nobles in exchange for loyalty."
+            "Who granted land to nobles in exchange for loyalty? The _____"
           ]
         },
         {
           "word": "SWORD",
+          "translations": {
+            "en": "SWORD",
+            "tr": "KILIÇ"
+          },
           "sentences": [
             "A medieval _____ took months to craft by hand.",
-            "The _____ was a symbol of knighthood and nobility.",
-            "Each _____ was made by skilled blacksmiths using iron."
+            "What weapon was a symbol of knighthood? The _____"
           ]
         },
         {
           "word": "CROWN",
+          "translations": {
+            "en": "CROWN",
+            "tr": "TAÇ"
+          },
           "sentences": [
             "The _____ represented the king's power and authority.",
-            "Each royal _____ contained precious gems and metals.",
-            "The _____ was passed down through royal families."
+            "What royal item contained precious gems and metals? The _____"
           ]
         },
         {
           "word": "PEASANT",
+          "translations": {
+            "en": "PEASANT",
+            "tr": "KÖYLÜ"
+          },
           "sentences": [
             "A _____ worked the land to grow food for the kingdom.",
-            "Most people in medieval times were _____.",
-            "The _____ paid taxes to their lord in crops or labor."
+            "Who paid taxes to their lord in crops or labor? The _____"
           ]
         },
         {
           "word": "MONK",
+          "translations": {
+            "en": "MONK",
+            "tr": "KEŞİŞ"
+          },
           "sentences": [
             "A _____ preserved knowledge by copying books by hand.",
-            "The _____ lived and worked in monasteries.",
-            "Many _____ helped teach people to read and write."
+            "Who lived and worked in monasteries? The _____"
           ]
         },
         {
           "word": "GUILD",
+          "translations": {
+            "en": "GUILD",
+            "tr": "LONCA"
+          },
           "sentences": [
             "A _____ trained new craftsmen in specific trades.",
-            "Each _____ protected the secrets of their craft.",
-            "The _____ system ensured quality of goods made."
+            "What organization protected the secrets of their craft? The _____"
           ]
         },
         {
           "word": "ARMOR",
+          "translations": {
+            "en": "ARMOR",
+            "tr": "ZIRH"
+          },
           "sentences": [
             "Medieval _____ was made from iron or steel plates.",
-            "A full suit of _____ could weigh up to 100 pounds.",
-            "Knights wore _____ for protection in battle."
+            "What protection could weigh up to 100 pounds? _____"
           ]
         },
         {
           "word": "TRADE",
+          "translations": {
+            "en": "TRADE",
+            "tr": "TİCARET"
+          },
           "sentences": [
             "Medieval _____ routes connected distant kingdoms.",
-            "_____ brought new goods and ideas to Europe.",
-            "Cities grew where important _____ routes met."
+            "What activity brought new goods and ideas to Europe? _____"
           ]
         }
       ]
@@ -175,82 +235,112 @@
       "words": [
         {
           "word": "MERCHANT",
+          "translations": {
+            "en": "MERCHANT",
+            "tr": "TÜCCAR"
+          },
           "sentences": [
             "The wealthy _____ class helped fund the Renaissance art movement.",
-            "Italian _____ families like the Medici were powerful patrons.",
-            "The _____ trade routes brought exotic goods to European markets."
+            "Who brought exotic goods to European markets? The _____"
           ]
         },
         {
           "word": "ARTIST",
+          "translations": {
+            "en": "ARTIST",
+            "tr": "SANATÇI"
+          },
           "sentences": [
             "An _____ during the Renaissance studied human anatomy.",
-            "Many _____ worked in workshops training apprentices.",
-            "Each _____ mixed their own paint colors from natural materials."
+            "Who mixed their own paint colors from natural materials? The _____"
           ]
         },
         {
           "word": "PAINT",
+          "translations": {
+            "en": "PAINT",
+            "tr": "BOYA"
+          },
           "sentences": [
             "Renaissance artists made _____ from egg yolk and pigments.",
-            "Oil _____ was a new invention that changed art forever.",
-            "The new _____ techniques allowed for richer colors."
+            "What new invention allowed for richer colors in artwork? _____"
           ]
         },
         {
           "word": "PATRON",
+          "translations": {
+            "en": "PATRON",
+            "tr": "HAMİ"
+          },
           "sentences": [
             "A wealthy _____ would support artists and their work.",
-            "The _____ system allowed artists to focus on their craft.",
-            "Many great works were commissioned by a powerful _____."
+            "Who commissioned many great works of art? The _____"
           ]
         },
         {
           "word": "PRINT",
+          "translations": {
+            "en": "PRINT",
+            "tr": "MATBAA"
+          },
           "sentences": [
             "The printing _____ helped spread new ideas quickly.",
-            "Books could be mass-produced using the _____ press.",
-            "The _____ revolution made books more affordable."
+            "What invention made books more affordable? The _____ press"
           ]
         },
         {
           "word": "BANK",
+          "translations": {
+            "en": "BANK",
+            "tr": "BANKA"
+          },
           "sentences": [
             "The first modern _____ system started in Renaissance Italy.",
-            "Merchant families often ran powerful _____ businesses.",
-            "The _____ helped fund trade across Europe."
+            "What institution helped fund trade across Europe? The _____"
           ]
         },
         {
           "word": "TRADE",
+          "translations": {
+            "en": "TRADE",
+            "tr": "TİCARET"
+          },
           "sentences": [
             "_____ routes connected Europe with distant Asia.",
-            "Silk and spice _____ made many merchants wealthy.",
-            "Sea _____ expanded during the Renaissance period."
+            "What activity made many merchants wealthy? _____"
           ]
         },
         {
           "word": "LEARN",
+          "translations": {
+            "en": "LEARN",
+            "tr": "ÖĞRENMEK"
+          },
           "sentences": [
             "People wanted to _____ about the ancient world.",
-            "Scholars would _____ Greek and Latin to read old texts.",
-            "Universities grew as more people wanted to _____."
+            "What did scholars do to read old Greek texts? _____"
           ]
         },
         {
           "word": "SCIENCE",
+          "translations": {
+            "en": "SCIENCE",
+            "tr": "BİLİM"
+          },
           "sentences": [
             "_____ began to challenge old beliefs about the world.",
-            "New _____ tools helped people study nature better.",
-            "Renaissance _____ laid the foundation for modern research."
+            "What field laid the foundation for modern research? _____"
           ]
         },
         {
           "word": "BOOK",
+          "translations": {
+            "en": "BOOK",
+            "tr": "KİTAP"
+          },
           "sentences": [
             "Printed _____ made knowledge available to more people.",
-            "A single _____ once cost as much as a house.",
-            "The first printed _____ in Europe was the Gutenberg Bible."
+            "What once cost as much as a house? A _____"
           ]
         }
       ]
@@ -260,82 +350,112 @@
       "words": [
         {
           "word": "FACTORY",
+          "translations": {
+            "en": "FACTORY",
+            "tr": "FABRİKA"
+          },
           "sentences": [
             "The _____ system revolutionized how goods were produced.",
-            "Workers would gather in a _____ to operate machinery.",
-            "The steam-powered _____ became a symbol of industrialization."
+            "Where did workers gather to operate machinery? The _____"
           ]
         },
         {
           "word": "STEAM",
+          "translations": {
+            "en": "STEAM",
+            "tr": "BUHAR"
+          },
           "sentences": [
             "_____ power drove the engines of the Industrial Revolution.",
-            "The _____ engine transformed transportation and manufacturing.",
-            "_____ locomotives revolutionized railway transportation."
+            "What type of engine transformed transportation? The _____ engine"
           ]
         },
         {
           "word": "COAL",
+          "translations": {
+            "en": "COAL",
+            "tr": "KÖMÜR"
+          },
           "sentences": [
             "_____ mining fueled the Industrial Revolution.",
-            "_____ powered the steam engines in factories and trains.",
-            "_____ was essential for iron and steel production."
+            "What powered the steam engines in factories? _____"
           ]
         },
         {
           "word": "IRON",
+          "translations": {
+            "en": "IRON",
+            "tr": "DEMİR"
+          },
           "sentences": [
             "_____ production increased greatly during this period.",
-            "New _____ making techniques made buildings stronger.",
-            "_____ was used to make machines and railways."
+            "What material was used to make machines and railways? _____"
           ]
         },
         {
           "word": "TRAIN",
+          "translations": {
+            "en": "TRAIN",
+            "tr": "TREN"
+          },
           "sentences": [
             "The _____ network connected cities across countries.",
-            "Steam _____ could transport goods much faster than horses.",
-            "The _____ made travel cheaper and more accessible."
+            "What made travel cheaper and more accessible? The _____"
           ]
         },
         {
           "word": "WORKER",
+          "translations": {
+            "en": "WORKER",
+            "tr": "İŞÇİ"
+          },
           "sentences": [
             "Factory _____ often worked twelve hours each day.",
-            "Many _____ moved from farms to cities for factory jobs.",
-            "_____ unions formed to fight for better conditions."
+            "Who moved from farms to cities for factory jobs? _____"
           ]
         },
         {
           "word": "CITY",
+          "translations": {
+            "en": "CITY",
+            "tr": "ŞEHİR"
+          },
           "sentences": [
             "Industrial _____ grew rapidly as people sought factory work.",
-            "Many new _____ formed near coal mines and factories.",
-            "The _____ population doubled during industrialization."
+            "What doubled in population during industrialization? The _____"
           ]
         },
         {
           "word": "MACHINE",
+          "translations": {
+            "en": "MACHINE",
+            "tr": "MAKİNE"
+          },
           "sentences": [
             "New _____ tools replaced hand production methods.",
-            "Each _____ could do the work of many people.",
-            "The spinning _____ revolutionized textile production."
+            "What could do the work of many people? A _____"
           ]
         },
         {
           "word": "COTTON",
+          "translations": {
+            "en": "COTTON",
+            "tr": "PAMUK"
+          },
           "sentences": [
             "The _____ gin made cleaning cotton much faster.",
-            "_____ mills employed thousands of workers.",
-            "_____ clothing became cheaper to produce."
+            "What type of clothing became cheaper to produce? _____ clothing"
           ]
         },
         {
           "word": "CHILD",
+          "translations": {
+            "en": "CHILD",
+            "tr": "ÇOCUK"
+          },
           "sentences": [
             "_____ workers were common in early factories.",
-            "Many _____ laborers worked in dangerous conditions.",
-            "Laws were passed to protect _____ workers."
+            "Who worked in dangerous factory conditions? _____ workers"
           ]
         }
       ]
@@ -345,82 +465,227 @@
       "words": [
         {
           "word": "DEMOCRACY",
+          "translations": {
+            "en": "DEMOCRACY",
+            "tr": "DEMOKRASİ"
+          },
           "sentences": [
             "Athenian _____ allowed citizens to vote on important matters.",
-            "The concept of _____ was born in ancient Athens.",
-            "_____ gave power to the people rather than a single ruler."
+            "What system gave power to the people rather than a single ruler? _____"
           ]
         },
         {
           "word": "OLYMPICS",
+          "translations": {
+            "en": "OLYMPICS",
+            "tr": "OLİMPİYAT"
+          },
           "sentences": [
             "The ancient _____ were held every four years in Greece.",
-            "Athletes from different city-states competed in the _____.",
-            "The _____ were held in honor of the god Zeus."
+            "What events were held in honor of Zeus? The _____"
           ]
         },
         {
           "word": "THEATER",
+          "translations": {
+            "en": "THEATER",
+            "tr": "TİYATRO"
+          },
           "sentences": [
             "Greek _____ invented tragedy and comedy plays.",
-            "The outdoor _____ could hold thousands of people.",
-            "Actors in Greek _____ wore masks to show emotions."
+            "Where did actors wear masks to show emotions? The _____"
           ]
         },
         {
           "word": "SPARTA",
+          "translations": {
+            "en": "SPARTA",
+            "tr": "SPARTA"
+          },
           "sentences": [
             "_____ was famous for its powerful army.",
-            "Boys in _____ trained to be warriors from age seven.",
-            "_____ focused on military strength and discipline."
+            "Which city trained boys to be warriors from age seven? _____"
           ]
         },
         {
           "word": "ATHENS",
+          "translations": {
+            "en": "ATHENS",
+            "tr": "ATİNA"
+          },
           "sentences": [
             "_____ was the birthplace of democracy.",
-            "_____ was a center of art, learning, and philosophy.",
-            "The Parthenon temple still stands in _____."
+            "Which city was a center of art, learning, and philosophy? _____"
           ]
         },
         {
           "word": "PHILOSOPHER",
+          "translations": {
+            "en": "PHILOSOPHER",
+            "tr": "FİLOZOF"
+          },
           "sentences": [
             "A Greek _____ asked questions about life and truth.",
-            "Socrates was a famous _____ who taught through questions.",
-            "Each _____ had students who studied their ideas."
+            "Who taught their students through asking questions? The _____"
           ]
         },
         {
           "word": "POTTERY",
+          "translations": {
+            "en": "POTTERY",
+            "tr": "ÇÖMLEK"
+          },
           "sentences": [
             "Greek _____ told stories through painted scenes.",
-            "_____ vases showed daily life and myths.",
-            "Ancient _____ helps us learn about Greek culture."
+            "What helps us learn about ancient Greek culture? _____"
           ]
         },
         {
           "word": "TEMPLE",
+          "translations": {
+            "en": "TEMPLE",
+            "tr": "TAPINAK"
+          },
           "sentences": [
             "A Greek _____ was built to honor the gods.",
-            "The _____ had tall columns and marble steps.",
-            "People brought offerings to the _____."
+            "What building had tall columns and marble steps? The _____"
           ]
         },
         {
           "word": "MYTH",
+          "translations": {
+            "en": "MYTH",
+            "tr": "MİT"
+          },
           "sentences": [
             "Greek _____ stories explained the world around them.",
-            "Each _____ taught lessons about life and morals.",
-            "Gods and heroes appeared in Greek _____."
+            "What type of stories featured gods and heroes? _____"
           ]
         },
         {
           "word": "SCIENCE",
+          "translations": {
+            "en": "SCIENCE",
+            "tr": "BİLİM"
+          },
           "sentences": [
             "Greek _____ laid the foundation for modern knowledge.",
-            "Early Greek _____ studied stars and mathematics.",
-            "Greek _____ tried to explain natural events."
+            "What field studied stars and mathematics in ancient Greece? _____"
+          ]
+        }
+      ]
+    },
+    {
+      "era": "Viking Age",
+      "words": [
+        {
+          "word": "RAID",
+          "translations": {
+            "en": "RAID",
+            "tr": "AKIN"
+          },
+          "sentences": [
+            "A Viking _____ was a quick attack on coastal towns.",
+            "What did Vikings do to gather wealth and resources? A _____"
+          ]
+        },
+        {
+          "word": "HELMET",
+          "translations": {
+            "en": "HELMET",
+            "tr": "MİĞFER"
+          },
+          "sentences": [
+            "A Viking warrior's _____ protected his head in battle.",
+            "What armor piece is often shown with horns, though real ones didn't have them? The _____"
+          ]
+        },
+        {
+          "word": "RUNES",
+          "translations": {
+            "en": "RUNES",
+            "tr": "RUNLAR"
+          },
+          "sentences": [
+            "Vikings carved _____ into stone to tell stories.",
+            "What was the Viking writing system called? _____"
+          ]
+        },
+        {
+          "word": "FJORD",
+          "translations": {
+            "en": "FJORD",
+            "tr": "FİYORT"
+          },
+          "sentences": [
+            "A _____ is a long, narrow inlet with steep cliffs.",
+            "What geological feature shaped Viking settlements in Norway? The _____"
+          ]
+        },
+        {
+          "word": "VALHALLA",
+          "translations": {
+            "en": "VALHALLA",
+            "tr": "VALHALLA"
+          },
+          "sentences": [
+            "Vikings believed warriors went to _____ after death.",
+            "What was the great hall of Odin called in Norse mythology? _____"
+          ]
+        },
+        {
+          "word": "THOR",
+          "translations": {
+            "en": "THOR",
+            "tr": "THOR"
+          },
+          "sentences": [
+            "_____ was the Norse god of thunder.",
+            "Which god carried a hammer called Mjölnir? _____"
+          ]
+        },
+        {
+          "word": "BESERKER",
+          "translations": {
+            "en": "BESERKER",
+            "tr": "BESERKER"
+          },
+          "sentences": [
+            "A _____ was a fierce Viking warrior who fought in a trance.",
+            "What type of warrior was known for their wild battle rage? The _____"
+          ]
+        },
+        {
+          "word": "SKALD",
+          "translations": {
+            "en": "SKALD",
+            "tr": "OZAN"
+          },
+          "sentences": [
+            "A _____ was a Viking poet who told stories of heroes.",
+            "Who preserved Viking history through poems and songs? The _____"
+          ]
+        },
+        {
+          "word": "AXE",
+          "translations": {
+            "en": "AXE",
+            "tr": "BALTA"
+          },
+          "sentences": [
+            "A Viking warrior's _____ was both a tool and weapon.",
+            "What weapon was commonly used by Viking warriors? The _____"
+          ]
+        },
+        {
+          "word": "VIKINGR",
+          "translations": {
+            "en": "VIKINGR",
+            "tr": "VIKING"
+          },
+          "sentences": [
+            "The word _____ originally meant 'pirate' or 'raider'.",
+            "What did Vikings call themselves when they went raiding? _____"
           ]
         }
       ]

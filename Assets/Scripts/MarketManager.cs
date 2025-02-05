@@ -16,15 +16,19 @@ public class MarketManager : MonoBehaviour, IStoreListener
 
     private const string NO_ADS_PRODUCT_ID = "No Ads";
 
+    public Animator animator;
+
     // Example point packages
     private readonly Dictionary<string, int> pointPackages = new Dictionary<string, int>
     {
-        { "100 Points", 100 },
+        { "200 Points", 200 },
         { "600 Points", 600 },
         { "1500 Points", 1500 },
         { "3500 Points", 3500 },
         { "8000 Points", 8000 },
     };
+
+    private Coroutine pointAnimationCoroutine;
 
     // Start is called before the first frame update
     void Start()
@@ -41,7 +45,7 @@ public class MarketManager : MonoBehaviour, IStoreListener
         var builder = ConfigurationBuilder.Instance(StandardPurchasingModule.Instance());
         
         // Add products
-        builder.AddProduct("100 Points", ProductType.Consumable);
+        builder.AddProduct("200 Points", ProductType.Consumable);
         builder.AddProduct("600 Points", ProductType.Consumable);
         builder.AddProduct("1500 Points", ProductType.Consumable);
         builder.AddProduct("3500 Points", ProductType.Consumable);
@@ -103,14 +107,100 @@ public class MarketManager : MonoBehaviour, IStoreListener
 
     private void AddPoints(int points)
     {
+        int startPoints = currentPoints;
         currentPoints += points;
         GameManager.Instance.CurrentPoints = currentPoints;
-        UpdatePointsDisplay();
+        
+        // Stop any existing animation
+        if (pointAnimationCoroutine != null)
+        {
+            StopCoroutine(pointAnimationCoroutine);
+        }
+        
+        // Start new animation
+        pointAnimationCoroutine = StartCoroutine(AnimatePointsChange(startPoints, currentPoints));
         
         // Save the game after updating points
         SaveManager.Instance.SaveGame();
         
         Debug.Log($"Added {points} points. Total points: {currentPoints}");
+    }
+
+    private IEnumerator AnimatePointsChange(int startPoints, int endPoints)
+    {
+        float elapsedTime = 0f;
+        Vector3 originalScale = pointsText.transform.localScale;
+        Color originalColor = pointsText.color;
+        bool isIncreasing = endPoints > startPoints;
+        float animationDuration = 1.1f;
+        int lastPoints = startPoints;
+        Coroutine currentBumpCoroutine = null;
+        
+        while (elapsedTime < animationDuration)
+        {
+            elapsedTime += Time.deltaTime;
+            
+            // Polynomial easing - starts slow, accelerates faster
+            float t = elapsedTime / animationDuration;
+            t = t * t * (3 - 2 * t); // Smoother cubic easing
+            
+            // Calculate current points with accelerating step size
+            int currentPoints = Mathf.RoundToInt(Mathf.Lerp(startPoints, endPoints, t));
+            
+            // If points value changed, create a bump effect
+            if (currentPoints != lastPoints)
+            {
+                // Stop any existing bump animation
+                if (currentBumpCoroutine != null)
+                {
+                    StopCoroutine(currentBumpCoroutine);
+                    pointsText.transform.localScale = originalScale;
+                }
+                
+                // Start new bump animation
+                currentBumpCoroutine = StartCoroutine(BumpScale(pointsText.transform, originalScale));
+                lastPoints = currentPoints;
+            }
+            
+            // Update points display
+            if (pointsText != null)
+            {
+                pointsText.text = currentPoints.ToString();
+                pointsText.color = isIncreasing ? Color.green : Color.red;
+            }
+            
+            yield return null;
+        }
+        
+        // Ensure we end up at the exact final value and return to original color
+        if (pointsText != null)
+        {
+            pointsText.text = endPoints.ToString();
+            pointsText.transform.localScale = originalScale;
+            pointsText.color = originalColor;
+        }
+    }
+
+    private IEnumerator BumpScale(Transform target, Vector3 originalScale)
+    {
+        float bumpDuration = 0.008f;
+        float elapsedTime = 0f;
+        float maxScale = 1.2f;
+        
+        while (elapsedTime < bumpDuration)
+        {
+            elapsedTime += Time.deltaTime;
+            float t = elapsedTime / bumpDuration;
+            
+            // Smoother bump curve
+            float scale = 1f + (maxScale - 1f) * (1f - (2f * t - 1f) * (2f * t - 1f));
+            target.localScale = originalScale * scale;
+            
+            yield return null;
+        }
+        
+        // Ensure we return to original scale
+        target.localScale = originalScale;
     }
 
     private void UpdatePointsDisplay()
@@ -155,6 +245,26 @@ public class MarketManager : MonoBehaviour, IStoreListener
 
     public void OnReturnButtonPressed()
     {
-        SceneManager.LoadScene("MainMenuScene");
+        animator.SetBool("DeLoad", true);
+    }
+
+    public void OnReturnButtonClickedSetDeactive()
+    {
+        gameObject.GetComponent<Canvas>().sortingLayerName = "BackgroundImage";
+        gameObject.GetComponent<Canvas>().sortingOrder = -2;
+        gameObject.SetActive(false);
+    }
+
+    public void ShowMarketScreen()
+    {
+        gameObject.SetActive(true);
+        gameObject.GetComponent<Canvas>().sortingLayerName = "UI";
+        gameObject.GetComponent<Canvas>().sortingOrder = 3;
+    
+        BackgroundImage.sprite = GameManager.Instance.getEraImage(GameManager.Instance.CurrentEra);
+        // Initialize current points from GameManager or PlayerPrefs
+        currentPoints = GameManager.Instance.CurrentPoints;
+        UpdatePointsDisplay();
+        InitializePurchasing();
     }
 }

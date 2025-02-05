@@ -27,6 +27,8 @@ public class TranslationManager : MonoBehaviour
                 {"ındustrial_revolution", "Industrial Revolution"},
                 {"ancient_greece", "Ancient Greece"},
                 {"points", "points"},
+                {"buy", "Buy"},
+                {"viking_age", "Viking Age"}
             }
         },
         {
@@ -49,6 +51,8 @@ public class TranslationManager : MonoBehaviour
                 {"ındustrial_revolution", "Sanayi Devrimi"},
                 {"ancient_greece", "Antik Yunan"},
                 {"points", "puan"},
+                {"buy", "Al"},
+                {"viking_age", "Viking Çağı"}
             }
         }
     };

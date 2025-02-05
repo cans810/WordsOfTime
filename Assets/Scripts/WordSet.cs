@@ -1,8 +1,16 @@
 [System.Serializable]
+public class Translations
+{
+    public string en;
+    public string tr;
+}
+
+[System.Serializable]
 public class WordEntry
 {
     public string word;
     public string[] sentences;
+    public Translations translations;
 }
 
 [System.Serializable]

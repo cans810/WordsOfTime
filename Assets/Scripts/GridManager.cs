@@ -233,8 +233,11 @@ public class GridManager : MonoBehaviour
             Debug.LogWarning($"Failed to place word {word} in snake pattern after {maxAttempts} attempts");
         }
 
-        // Fill remaining empty spaces with random letters
-        string alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZÇĞİÖŞÜ"; // Include Turkish characters
+        // Fill remaining empty spaces with random letters based on language
+        string alphabet = GameManager.Instance.CurrentLanguage == "tr" 
+            ? "ABCDEFGHIJKLMNOPRSTUVYZÇĞİÖŞÜ"  // Turkish alphabet
+            : "ABCDEFGHIJKLMNOPQRSTUVWXYZ";        // English alphabet
+
         for (int i = 0; i < totalCells; i++)
         {
             if (gridData[i] == ' ')
@@ -463,21 +466,24 @@ public class GridManager : MonoBehaviour
         highlightedTiles.Clear();
     }
 
-    public void ShowSolvedWord(string word, List<Vector2Int> path)
+    public void ShowSolvedWord(string word, List<Vector2Int> positions)
     {
-        if (word == currentWord && path != null)
+        // Check if the word matches the current word or its base word
+        string baseWord = GameManager.Instance.GetBaseWord(word);
+        string currentBaseWord = GameManager.Instance.GetBaseWord(currentWord);
+        
+        if ((word == currentWord || baseWord == currentBaseWord) && positions != null)
         {
-            foreach (Vector2Int pos in path)
+            foreach (Vector2Int pos in positions)
             {
-                int index = pos.y * gridSize + pos.x;
-                if (grid[pos.x, pos.y] != null)
+                if (pos.x >= 0 && pos.x < gridSize && 
+                    pos.y >= 0 && pos.y < gridSize && 
+                    grid[pos.x, pos.y] != null)
                 {
-                    grid[pos.x, pos.y].GetComponent<Image>().color = Color.yellow;
+                    grid[pos.x, pos.y].SetSolvedColor();
                 }
             }
         }
-
-        WordGameManager.Instance.UpdateCurrentWord(currentWord);
     }
 
     public List<LetterTile> GetSelectedTiles()
@@ -485,5 +491,56 @@ public class GridManager : MonoBehaviour
         return selectedTiles;
     }
 
-    // ... rest of your existing methods remain the same ...
+    public void UpdateSolvedWordsDisplay()
+    {
+        if (GameManager.Instance != null)
+        {
+            // Clear existing solved words
+            ClearSolvedWords();
+            
+            // Show solved words for the current language
+            foreach (var baseWord in GameManager.Instance.GetSolvedBaseWordsForEra(GameManager.Instance.CurrentEra))
+            {
+                string currentLanguageWord = GameManager.Instance.GetCurrentLanguageWord(baseWord);
+                
+                if (GameManager.Instance.GetSolvedWordPositions(currentLanguageWord, out List<Vector2Int> positions))
+                {
+                    ShowSolvedWord(currentLanguageWord, positions);
+                }
+            }
+        }
+    }
+
+    public void ClearSolvedWords()
+    {
+        // Reset all tiles to their default state
+        for (int x = 0; x < gridSize; x++)
+        {
+            for (int y = 0; y < gridSize; y++)
+            {
+                if (grid[x, y] != null)
+                {
+                    grid[x, y].ResetTile();
+                    grid[x, y].isSolved = false;
+                    grid[x, y].GetComponent<Image>().raycastTarget = true;
+                }
+            }
+        }
+    }
+
+    public List<LetterTile> GetAllTiles()
+    {
+        List<LetterTile> tiles = new List<LetterTile>();
+        for (int x = 0; x < gridSize; x++)
+        {
+            for (int y = 0; y < gridSize; y++)
+            {
+                if (grid[x, y] != null)
+                {
+                    tiles.Add(grid[x, y]);
+                }
+            }
+        }
+        return tiles;
+    }
 }
