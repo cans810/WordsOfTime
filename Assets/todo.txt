@@ -27,7 +27,3 @@ konulmalı, daha sonra da, oyuncu oyuna girdiğinde gerçek gridler bu dictionar
 >daha çok era ekle
 >reklam koymayı yap
 >bildirim koymayı yap
-
-
-
-cümle oluşturmayı gpt ile yap

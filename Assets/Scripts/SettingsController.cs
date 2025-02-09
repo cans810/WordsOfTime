@@ -57,6 +57,8 @@ public class SettingsController : MonoBehaviour
 
     void Start()
     {
+        BackgroundImage.sprite = GameManager.Instance.getEraImage(GameManager.Instance.CurrentEra);
+
         Debug.Log("SettingsController Start");
         if (languageSelectionPanel != null)
         {
@@ -73,8 +75,6 @@ public class SettingsController : MonoBehaviour
         musicToggle.onValueChanged.AddListener(OnMusicToggleChanged);
         soundToggle.onValueChanged.AddListener(OnSoundToggleChanged);
         notificationsToggle.onValueChanged.AddListener(OnNotificationsToggleChanged);
-
-        BackgroundImage.sprite = GameManager.Instance.getEraImage(GameManager.Instance.CurrentEra);
     }
 
     private void InitializeLanguageSettings()
@@ -179,19 +179,26 @@ public class SettingsController : MonoBehaviour
     public void ShowSettings()
     {
         gameObject.SetActive(true);
+        StartCoroutine(InitializeSettingsDelayed());
+    }
+
+    private IEnumerator InitializeSettingsDelayed()
+    {
+        // Update background first for visual feedback
+        BackgroundImage.sprite = GameManager.Instance.getEraImage(GameManager.Instance.CurrentEra);
         
-        // Refresh all toggle states
+        yield return new WaitForEndOfFrame();
+        
+        // Initialize settings
         if (SoundManager.Instance != null)
         {
             if (soundToggle != null) soundToggle.isOn = SoundManager.Instance.IsSoundOn;
             if (musicToggle != null) musicToggle.isOn = SoundManager.Instance.IsMusicOn;
         }
 
-        // Load saved notification state
-        if (notificationsToggle != null && SaveManager.Instance != null && SaveManager.Instance.saveData != null)
+        if (notificationsToggle != null && SaveManager.Instance != null && SaveManager.Instance.Data != null && SaveManager.Instance.Data.settings != null)
         {
-            notificationsToggle.isOn = SaveManager.Instance.saveData.settings.notificationsEnabled;
-            Debug.Log($"Loading notifications state: {notificationsToggle.isOn}");
+            notificationsToggle.isOn = SaveManager.Instance.Data.settings.notificationsEnabled;
         }
 
         UpdateLanguageDisplay();
@@ -247,6 +254,18 @@ public class SettingsController : MonoBehaviour
 
     private void SaveSettings()
     {
+        GameSettings settings = new GameSettings
+        {
+            musicEnabled = musicToggle.isOn,
+            soundEnabled = soundToggle.isOn,
+            notificationsEnabled = notificationsToggle.isOn
+        };
+
+        if (SaveManager.Instance.Data != null && SaveManager.Instance.Data.settings != null)
+        {
+            SaveManager.Instance.Data.settings = settings;
+        }
+
         SaveManager.Instance.SaveGame();
     }
 

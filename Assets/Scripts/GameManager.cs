@@ -5,6 +5,7 @@ using System.Linq;
 using UnityEngine.SceneManagement;
 using System;
 using UnityEngine.UI;
+using System.Collections;
 
 public class GameManager : MonoBehaviour
 {
@@ -144,6 +145,14 @@ public class GameManager : MonoBehaviour
 
     private Dictionary<string, HashSet<string>> solvedWordsPerLanguage = new Dictionary<string, HashSet<string>>();
 
+    private const string AD_STATE_KEY = "AdState";
+    public AdState adState = new AdState();
+
+    // Add this field to track word guesses
+    public int wordGuessCount = 0;
+    private const int WORDS_BETWEEN_ADS = 3;
+    private const float REWARDED_AD_COOLDOWN = 7200f; // 2 hours in seconds
+
     private void Awake()
     {
         if (_instance != null && _instance != this)
@@ -156,7 +165,8 @@ public class GameManager : MonoBehaviour
 
         // Initialize with default settings
         currentSettings = new GameSettings();
-        
+        LoadSettings();  // Make sure we load settings in Awake
+                
         // Initialize default unlocked eras
         unlockedEras = new HashSet<string>() { "Ancient Egypt", "Medieval Europe" };
         Debug.Log($"Initialized unlocked eras: {string.Join(", ", unlockedEras)}");
@@ -202,49 +212,83 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        Debug.Log("GameManager Start");
+        Screen.orientation = ScreenOrientation.Portrait;
+        Application.targetFrameRate = 60;
+
+        Debug.Log("=== GameManager Start ===");
         
+        // First load the words from JSON
+        LoadWordsFromJson();
+        Debug.Log("Words loaded from JSON");
+
+        // Always shuffle words on load
+        ShuffleAllEraWords();
+        Debug.Log("Words shuffled");
+
         // Wait for SaveManager to initialize and load save file
         if (SaveManager.Instance != null)
         {
             Debug.Log("SaveManager instance found");
-            // First load the words from JSON
-            LoadWordsFromJson();
-            // Always shuffle words on load
-            ShuffleAllEraWords();
-            // Then load the save file for other game data
+            // Load the save file for game data
             SaveManager.Instance.LoadGame();
+            Debug.Log("Save game loaded");
+            
+            // Generate grids after loading save
+            GenerateAllGrids();
+            Debug.Log("Grids generated");
+            
             // Select random era after loading save data
             SelectRandomUnlockedEra();
+            Debug.Log($"Random era selected: {CurrentEra}");
         }
         else
         {
-            Debug.LogWarning("SaveManager instance not found!");
+            Debug.LogError("SaveManager instance not found!");
             LoadWordsFromJson();
             ShuffleAllEraWords();
+            GenerateAllGrids();
             SelectRandomUnlockedEra();
-        }
-        
-        // Generate grids after loading/shuffling words
-        GenerateAllGrids();
-        
-        // Debug print current word order
-        foreach (var language in eraWordsPerLanguage.Keys)
-        {
-            foreach (var era in eraWordsPerLanguage[language].Keys)
-            {
-                Debug.Log($"Final word order for {era} in {language}: {string.Join(", ", eraWordsPerLanguage[language][era])}");
-            }
         }
         
         // Apply loaded or generated state
         ApplyGuessedWordsState();
-
+        
         // Start playing music for current era
         if (SoundManager.Instance != null && !string.IsNullOrEmpty(CurrentEra))
         {
             Debug.Log($"Starting music for era: {CurrentEra}");
             SoundManager.Instance.PlayEraMusic(CurrentEra);
+        }
+
+        // Debug print current state
+        Debug.Log($"Current points: {CurrentPoints}");
+        Debug.Log($"Current era: {CurrentEra}");
+        Debug.Log($"Unlocked eras: {string.Join(", ", unlockedEras)}");
+        Debug.Log($"Words loaded for current era: {(eraWordsPerLanguage.ContainsKey(currentLanguage) ? eraWordsPerLanguage[currentLanguage][CurrentEra].Count.ToString() : "0")}");
+
+        StartCoroutine(UpdateAdCooldown());
+    }
+
+    private IEnumerator UpdateAdCooldown()
+    {
+        while (true)
+        {
+            long currentTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+            long lastAdTime = SaveManager.Instance.Data.lastRewardedAdTimestamp;
+
+            if (lastAdTime > 0)
+            {
+                long remainingTime = (long)REWARDED_AD_COOLDOWN - (currentTime - lastAdTime);
+
+                // If cooldown has passed, reset the timestamp
+                if (remainingTime <= 0)
+                {
+                    SaveManager.Instance.Data.lastRewardedAdTimestamp = 0;
+                    SaveManager.Instance.SaveGame();
+                }
+            }
+
+            yield return new WaitForSeconds(1); // Update every second
         }
     }
 
@@ -372,6 +416,7 @@ public class GameManager : MonoBehaviour
 
     private void GenerateAllGrids()
     {
+        Debug.Log("=== Generating Grids ===");
         if (File.Exists(SaveManager.Instance.SavePath))
         {
             LoadGridsFromSave();
@@ -382,9 +427,7 @@ public class GameManager : MonoBehaviour
         foreach (var era in eraWordsPerLanguage[currentLanguage].Keys)
         {
             List<string> words = new List<string>(eraWordsPerLanguage[currentLanguage][era]);
-            // Remove this shuffle since we want to use the already shuffled order
-            // ShuffleWords(words);
-
+            
             foreach (var word in words)
             {
                 if (!initialGrids.ContainsKey(word))
@@ -1107,6 +1150,27 @@ public class GameManager : MonoBehaviour
         Debug.Log($"Adding guessed word: {word}");
         guessedWords.Add(word);
         Debug.Log($"Current guessed words: {string.Join(", ", guessedWords)}");
+        
+        // Increment word guess count and check if it's time to show an ad
+        wordGuessCount++;
+        if (wordGuessCount >= WORDS_BETWEEN_ADS)
+        {
+            wordGuessCount = 0;
+            ShowInterstitialAd();
+        }
+    }
+
+    private void ShowInterstitialAd()
+    {
+        if (AdManager.Instance != null)
+        {
+            Debug.Log("Triggering interstitial ad after 3 words");
+            AdManager.Instance.ShowInterstitialAd();
+        }
+        else
+        {
+            Debug.LogWarning("AdManager instance is null!");
+        }
     }
 
     public bool IsWordGuessed(string word)
@@ -1131,68 +1195,18 @@ public class GameManager : MonoBehaviour
         return null;
     }
 
-    public void OnWordGuessed(string baseWord)
+    public void OnWordGuessed()
     {
-        Debug.Log($"OnWordGuessed called with base word: {baseWord}");
+        // Increment word guess count
+        SaveManager.Instance.Data.wordGuessCount++;
         
-        // Store the base word for all languages
-        if (!solvedBaseWordsPerEra.ContainsKey(CurrentEra))
+        // Check if it's time to show an interstitial ad
+        if (SaveManager.Instance.Data.wordGuessCount >= 3)
         {
-            solvedBaseWordsPerEra[CurrentEra] = new HashSet<string>();
+            SaveManager.Instance.Data.wordGuessCount = 0;
+            SaveManager.Instance.SaveGame();
+            AdManager.Instance.ShowInterstitialAd();
         }
-        solvedBaseWordsPerEra[CurrentEra].Add(baseWord);
-        
-        // Store translations for all supported languages
-        foreach (string language in new[] { "en", "tr" })
-        {
-            string translatedWord = GetTranslation(baseWord, language);
-            Debug.Log($"Storing translation for {language}: {translatedWord}");
-            
-            if (!solvedWordsPerLanguage.ContainsKey(language))
-            {
-                solvedWordsPerLanguage[language] = new HashSet<string>();
-            }
-            solvedWordsPerLanguage[language].Add(translatedWord);
-        }
-        
-        Debug.Log($"Solved words in current era: {string.Join(", ", solvedBaseWordsPerEra[CurrentEra])}");
-        SaveManager.Instance.SaveGame();
-    }
-
-    public string GetTranslation(string baseWord, string language)
-    {
-        Debug.Log($"Getting translation for base word: {baseWord} in language: {language}");
-        
-        if (language == "en")
-        {
-            return baseWord;
-        }
-        
-        WordSetList wordSetList = LoadWordSetList();
-        if (wordSetList == null)
-        {
-            return baseWord;
-        }
-        
-        foreach (WordSet wordSet in wordSetList.sets)
-        {
-            foreach (WordEntry wordEntry in wordSet.words)
-            {
-                if (string.Equals(wordEntry.translations.en, baseWord, StringComparison.OrdinalIgnoreCase))
-                {
-                    string translation = language == "tr" ? 
-                        wordEntry.translations.tr : 
-                        wordEntry.translations.en;
-                    Debug.Log($"Found exact match translation in {wordSet.era}: {translation} for {baseWord}");
-                    Debug.Log($"English word: '{wordEntry.translations.en}'");
-                    Debug.Log($"Turkish translation: '{wordEntry.translations.tr}'");
-                    return translation;
-                }
-            }
-        }
-        
-        Debug.LogWarning($"No translation found for {baseWord} in {language}");
-        return baseWord;
     }
 
     public float GetMusicSound()
@@ -1244,9 +1258,9 @@ public class GameManager : MonoBehaviour
 
     private void LoadGridsFromSave()
     {
-        if (SaveManager.Instance.saveData != null && SaveManager.Instance.saveData.preGeneratedGrids != null)
+        if (SaveManager.Instance.Data != null && SaveManager.Instance.Data.preGeneratedGrids != null)
         {
-            LoadGridData(SaveManager.Instance.saveData.preGeneratedGrids);
+            LoadGridData(SaveManager.Instance.Data.preGeneratedGrids);
             Debug.Log("Loaded grids from save file.");
         }
         else
@@ -1478,6 +1492,148 @@ public class GameManager : MonoBehaviour
         
         Debug.Log($"Word {word} not found in grid");
         return null;
+    }
+
+    private void LoadSettings()
+    {
+        if (SaveManager.Instance != null && SaveManager.Instance.Data != null)
+        {
+            Debug.Log("=== Loading Settings ===");
+            
+            // Load game settings
+            if (SaveManager.Instance.Data.settings != null)
+            {
+                currentSettings.soundEnabled = SaveManager.Instance.Data.settings.soundEnabled;
+                currentSettings.musicEnabled = SaveManager.Instance.Data.settings.musicEnabled;
+                currentSettings.notificationsEnabled = SaveManager.Instance.Data.settings.notificationsEnabled;
+                currentSettings.soundVolume = SaveManager.Instance.Data.settings.soundVolume;
+                currentSettings.musicVolume = SaveManager.Instance.Data.settings.musicVolume;
+                
+                Debug.Log($"Settings loaded: " +
+                         $"Sound: {currentSettings.soundEnabled}, " +
+                         $"Music: {currentSettings.musicEnabled}, " +
+                         $"Notifications: {currentSettings.notificationsEnabled}, " +
+                         $"Sound Volume: {currentSettings.soundVolume}, " +
+                         $"Music Volume: {currentSettings.musicVolume}");
+            }
+            else
+            {
+                Debug.LogWarning("No settings found in save data, using defaults");
+            }
+            
+            // Load guessed words
+            if (SaveManager.Instance.Data.guessedWords != null)
+            {
+                guessedWords = new HashSet<string>(SaveManager.Instance.Data.guessedWords);
+                Debug.Log($"Loaded {guessedWords.Count} guessed words");
+            }
+            else
+            {
+                Debug.LogWarning("No guessed words found in save data");
+            }
+            
+            // Load unlocked eras
+            if (SaveManager.Instance.Data.unlockedEras != null)
+            {
+                unlockedEras = new HashSet<string>(SaveManager.Instance.Data.unlockedEras);
+                Debug.Log($"Loaded {unlockedEras.Count} unlocked eras: {string.Join(", ", unlockedEras)}");
+            }
+            else
+            {
+                Debug.LogWarning("No unlocked eras found in save data, using defaults");
+                unlockedEras = new HashSet<string>() { "Ancient Egypt", "Medieval Europe" };
+            }
+            
+            // Load points
+            currentPoints = SaveManager.Instance.Data.points;
+            Debug.Log($"Loaded points: {currentPoints}");
+        }
+        else
+        {
+            Debug.LogWarning("SaveManager or save data not available, using default settings");
+            currentSettings = new GameSettings();
+            guessedWords = new HashSet<string>();
+            unlockedEras = new HashSet<string>() { "Ancient Egypt", "Medieval Europe" };
+            currentPoints = 0;
+        }
+    }
+
+    private void OnApplicationQuit()
+    {
+        SaveGameState();
+    }
+
+    public void SaveGameState()
+    {
+        // Save the current game state
+        SaveManager.Instance.SaveGame();
+        
+        // Save ad state
+        SaveAdState();
+        
+        Debug.Log("Game state saved on application quit");
+    }
+
+    public void SaveAdState()
+    {
+        string json = JsonUtility.ToJson(adState);
+        PlayerPrefs.SetString(AD_STATE_KEY, json);
+        PlayerPrefs.Save();
+    }
+
+    public AdState LoadAdState(AdState? newState = null)
+    {
+        if (newState != null)
+        {
+            adState = newState.Value;
+            SaveAdState();
+            return adState;
+        }
+
+        if (PlayerPrefs.HasKey(AD_STATE_KEY))
+        {
+            string json = PlayerPrefs.GetString(AD_STATE_KEY);
+            adState = JsonUtility.FromJson<AdState>(json);
+            
+            // Use the saved timestamp from SaveManager instead of resetting
+            long lastAdTime = SaveManager.Instance.Data.lastRewardedAdTimestamp;
+            if (lastAdTime > 0)
+            {
+                long currentTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+                long remainingTime = (long)REWARDED_AD_COOLDOWN - (currentTime - lastAdTime);
+                
+                adState.canWatch = remainingTime <= 0;
+                if (!adState.canWatch)
+                {
+                    adState.nextAvailableTime = DateTime.Now.AddSeconds(remainingTime);
+                }
+            }
+        }
+        else
+        {
+            // Initialize with values from SaveManager if available
+            long lastAdTime = SaveManager.Instance.Data.lastRewardedAdTimestamp;
+            long currentTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+            long remainingTime = (long)REWARDED_AD_COOLDOWN - (currentTime - lastAdTime);
+            
+            adState = new AdState
+            {
+                canWatch = remainingTime <= 0,
+                nextAvailableTime = DateTime.Now.AddSeconds(Math.Max(0, remainingTime))
+            };
+        }
+        
+        return adState;
+    }
+
+    public string GetTranslation(string baseWord, string language)
+    {
+        if (wordTranslations.ContainsKey(baseWord) && 
+            wordTranslations[baseWord].ContainsKey(language))
+        {
+            return wordTranslations[baseWord][language];
+        }
+        return baseWord;
     }
 }
 

@@ -2,6 +2,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using System.Collections;
 
 public class EraSelectionManager : MonoBehaviour
 {
@@ -10,6 +11,12 @@ public class EraSelectionManager : MonoBehaviour
     [SerializeField] private SpriteRenderer backgroundImage;
 
     public Animator animator;
+
+    public void Awake()
+    {
+        gameObject.GetComponent<Canvas>().sortingLayerName = "BackgroundImage";
+        gameObject.GetComponent<Canvas>().sortingOrder = -1;
+    }
 
     public void UpdateEraPrices()
     {
@@ -178,13 +185,21 @@ public class EraSelectionManager : MonoBehaviour
     public void ShowEraSelectionScreen()
     {
         gameObject.SetActive(true);
-        gameObject.GetComponent<Canvas>().sortingLayerName = "UI";
-        gameObject.GetComponent<Canvas>().sortingOrder = 1;
-    
-        SetInitialBackgroundImage();
-        UpdateEraPrices();
+        StartCoroutine(InitializeEraSelectionDelayed());
     }
 
+    private IEnumerator InitializeEraSelectionDelayed()
+    {
+        gameObject.GetComponent<Canvas>().sortingLayerName = "UI";
+        gameObject.GetComponent<Canvas>().sortingOrder = 2;
+        // Update background first for visual feedback
+        SetInitialBackgroundImage();
+        
+        yield return new WaitForEndOfFrame();
+        
+        // Update prices after a frame
+        UpdateEraPrices();
+    }
 
     public void OnReturnButtonClickedPlayAnimation()
     {

@@ -5,6 +5,19 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;  // Add this line for ToList()
 
+[System.Serializable]
+public class UsedHintData
+{
+    public string wordKey;
+    public List<int> hintLevels;
+
+    public UsedHintData(string key, List<int> levels)
+    {
+        wordKey = key;
+        hintLevels = levels;
+    }
+}
+
 public class SaveManager : MonoBehaviour
 {
     private static SaveManager _instance;
@@ -25,8 +38,10 @@ public class SaveManager : MonoBehaviour
         }
     }
 
-    public SaveData saveData { get; private set; }  // Make it publicly readable but privately settable
+    public SaveData Data { get; private set; }
     public string SavePath => Path.Combine(Application.persistentDataPath, "gamesave.json");
+
+    private const int REWARDED_AD_COOLDOWN = 7200; // 2 hours in seconds (matches MainMenuManager)
 
     private void Awake()
     {
@@ -52,23 +67,23 @@ public class SaveManager : MonoBehaviour
         Debug.Log($"Saving game to: {SavePath}");
         try
         {
-            saveData = new SaveData();
+            Data = new SaveData();
             
             // Save points and guessed words
-            saveData.points = GameManager.Instance.CurrentPoints;
-            saveData.guessedWords = GameManager.Instance.GetGuessedWords();
+            Data.points = GameManager.Instance.CurrentPoints;
+            Data.guessedWords = GameManager.Instance.GetGuessedWords();
             
             // Save hint usage data
-            saveData.usedHintsData = GameManager.Instance.GetUsedHintsData();
-            Debug.Log($"Saving {saveData.usedHintsData.Count} hint records");
+            Data.usedHintsData = GameManager.Instance.GetUsedHintsData();
+            Debug.Log($"Saving {Data.usedHintsData.Count} hint records");
             
             // Save grid data
             List<GridData> gridDataList;
             GameManager.Instance.SaveGridData(out gridDataList);
-            saveData.preGeneratedGrids = gridDataList;
+            Data.preGeneratedGrids = gridDataList;
 
             // Save game settings
-            saveData.settings = GameManager.Instance.GetSettings();
+            Data.settings = GameManager.Instance.GetSettings();
 
             // Save shuffled words
             foreach (var language in GameManager.Instance.eraWordsPerLanguage.Keys)
@@ -76,14 +91,23 @@ public class SaveManager : MonoBehaviour
                 foreach (var era in GameManager.Instance.eraWordsPerLanguage[language].Keys)
                 {
                     string key = $"{language}_{era}";
-                    saveData.shuffledWords[key] = new List<string>(GameManager.Instance.eraWordsPerLanguage[language][era]);
+                    Data.shuffledWords[key] = new List<string>(GameManager.Instance.eraWordsPerLanguage[language][era]);
                 }
             }
 
             // Save unlocked eras
-            saveData.unlockedEras = GameManager.Instance.GetUnlockedEras().ToList();
+            Data.unlockedEras = GameManager.Instance.GetUnlockedEras().ToList();
 
-            string json = JsonUtility.ToJson(saveData, true);  // Added true for pretty print
+            // Save ad state by creating a new AdState
+            var currentAdState = GameManager.Instance.LoadAdState();
+            Data.adState = new AdState 
+            {
+                canWatch = currentAdState.canWatch,
+                nextAvailableTime = currentAdState.nextAvailableTime
+            };
+            Data.wordGuessCount = GameManager.Instance.wordGuessCount;
+
+            string json = JsonUtility.ToJson(Data, true);
             File.WriteAllText(SavePath, json);
             
             Debug.Log($"Game saved successfully!");
@@ -102,22 +126,22 @@ public class SaveManager : MonoBehaviour
             if (File.Exists(SavePath))
             {
                 string json = File.ReadAllText(SavePath);
-                saveData = JsonUtility.FromJson<SaveData>(json);
+                Data = JsonUtility.FromJson<SaveData>(json);
 
                 if (GameManager.Instance != null)
                 {
                     // Load hint usage data
-                    if (saveData.usedHintsData != null)
+                    if (Data.usedHintsData != null)
                     {
-                        Debug.Log($"Loading {saveData.usedHintsData.Count} hint records");
-                        GameManager.Instance.LoadUsedHintsData(saveData.usedHintsData);
+                        Debug.Log($"Loading {Data.usedHintsData.Count} hint records");
+                        GameManager.Instance.LoadUsedHintsData(Data.usedHintsData);
                     }
                     
                     // Load saved shuffled words if they exist
-                    if (saveData.shuffledWords != null && saveData.shuffledWords.Count > 0)
+                    if (Data.shuffledWords != null && Data.shuffledWords.Count > 0)
                     {
                         Debug.Log("Loading saved word order");
-                        foreach (var kvp in saveData.shuffledWords)
+                        foreach (var kvp in Data.shuffledWords)
                         {
                             string[] parts = kvp.Key.Split('_');
                             if (parts.Length == 2)
@@ -135,9 +159,9 @@ public class SaveManager : MonoBehaviour
                     }
 
                     // Load unlocked eras
-                    if (saveData.unlockedEras != null)
+                    if (Data.unlockedEras != null)
                     {
-                        GameManager.Instance.SetUnlockedEras(new HashSet<string>(saveData.unlockedEras));
+                        GameManager.Instance.SetUnlockedEras(new HashSet<string>(Data.unlockedEras));
                     }
                     else
                     {
@@ -145,17 +169,21 @@ public class SaveManager : MonoBehaviour
                         HashSet<string> defaultEras = new HashSet<string> { "Ancient Egypt", "Medieval Europe" };
                         GameManager.Instance.SetUnlockedEras(defaultEras);
                     }
+
+                    // Load ad state directly
+                    GameManager.Instance.LoadAdState(Data.adState);
                 }
 
-                GameManager.Instance.SetPoints(saveData.points);
-                GameManager.Instance.SetGuessedWords(saveData.guessedWords);
-                GameManager.Instance.LoadGridData(saveData.preGeneratedGrids);
-                GameManager.Instance.LoadSettings(saveData.settings);
+                GameManager.Instance.SetPoints(Data.points);
+                GameManager.Instance.SetGuessedWords(Data.guessedWords);
+                GameManager.Instance.LoadGridData(Data.preGeneratedGrids);
+                GameManager.Instance.LoadSettings(Data.settings);
+                GameManager.Instance.wordGuessCount = Data.wordGuessCount;
             }
             else
             {
                 Debug.Log("No save file found, starting new game with shuffled words");
-                saveData = new SaveData();
+                Data = new SaveData();
                 // Only shuffle words if this is the first time (no save file exists)
                 if (GameManager.Instance != null)
                 {
@@ -168,7 +196,7 @@ public class SaveManager : MonoBehaviour
         catch (Exception e)
         {
             Debug.LogError($"Failed to load game: {e.Message}");
-            saveData = new SaveData();
+            Data = new SaveData();
         }
     }
 
@@ -177,7 +205,7 @@ public class SaveManager : MonoBehaviour
         if (File.Exists(SavePath))
         {
             File.Delete(SavePath);
-            saveData = new SaveData();
+            Data = new SaveData();
             Debug.Log("Save file deleted");
         }
     }
@@ -193,5 +221,20 @@ public class SaveManager : MonoBehaviour
     private void OnApplicationQuit()
     {
         SaveGame();
+    }
+
+    public void Initialize()
+    {
+        // existing initialization code...
+        
+        if (Data.lastRewardedAdTimestamp == 0)
+        {
+            Data.lastRewardedAdTimestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds() - REWARDED_AD_COOLDOWN;
+        }
+        
+        if (Data.wordGuessCount == 0)
+        {
+            Data.wordGuessCount = 0;
+        }
     }
 }

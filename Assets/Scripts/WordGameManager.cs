@@ -81,6 +81,10 @@ public class WordGameManager : MonoBehaviour
 
     private List<LetterTile> selectedTiles = new List<LetterTile>();
 
+    private int wordsGuessedCount = 0;
+    private const int WORDS_BEFORE_AD = 3;
+    private bool justShowedAd = false;
+
     private void Awake()
     {
         if (Instance == null)
@@ -99,7 +103,7 @@ public class WordGameManager : MonoBehaviour
         // Find the GameSceneCanvasController
         if (gameSceneCanvasController == null)
         {
-            gameSceneCanvasController = FindObjectOfType<GameSceneCanvasController>();
+            gameSceneCanvasController = FindFirstObjectByType<GameSceneCanvasController>();
         }
     }
 
@@ -141,6 +145,9 @@ public class WordGameManager : MonoBehaviour
         {
             GameManager.Instance.OnLanguageChanged += HandleLanguageChanged;
         }
+        Debug.Log("WordGameManager enabled, resetting counters");
+        wordsGuessedCount = 0;
+        justShowedAd = false;
     }
 
     private void OnDisable()
@@ -150,6 +157,9 @@ public class WordGameManager : MonoBehaviour
         {
             GameManager.Instance.OnLanguageChanged -= HandleLanguageChanged;
         }
+        Debug.Log("WordGameManager disabled, resetting counters");
+        wordsGuessedCount = 0;
+        justShowedAd = false;
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -941,20 +951,11 @@ public class WordGameManager : MonoBehaviour
             string baseWord = GameManager.Instance.GetBaseWord(word);
             Debug.Log($"Base word: {baseWord}");
             
-            // Store positions for both current word and its translations
+            // Store positions and mark word as solved
             List<Vector2Int> positions = selectedTiles.Select(t => t.GetGridPosition()).ToList();
             GameManager.Instance.StoreSolvedWordPositions(word, positions);
-            
-            // Store positions for translations in all supported languages
-            foreach (string language in new[] { "en", "tr" })
-            {
-                string translatedWord = GameManager.Instance.GetTranslation(baseWord, language);
-                Debug.Log($"Storing positions for translation in {language}: {translatedWord}");
-                GameManager.Instance.StoreSolvedWordPositions(translatedWord, positions);
-            }
-            
-            // Mark word as solved
-            GameManager.Instance.OnWordGuessed(baseWord);
+            GameManager.Instance.StoreSolvedBaseWord(GameManager.Instance.CurrentEra, baseWord);
+            GameManager.Instance.OnWordGuessed();
             
             // Add points and play sound
             int currentPoints = GameManager.Instance.CurrentPoints;
@@ -965,6 +966,31 @@ public class WordGameManager : MonoBehaviour
             // Update UI
             UpdateProgressBar();
             UpdateSentenceDisplay();
+
+            // Increment counter and check for ad
+            wordsGuessedCount++;
+            Debug.Log($"Words guessed: {wordsGuessedCount}/{WORDS_BEFORE_AD}");
+            
+            if (wordsGuessedCount >= WORDS_BEFORE_AD)
+            {
+                Debug.Log("Playing ad after 3 words");
+                if (AdManager.Instance != null)
+                {
+                    AdManager.Instance.ShowInterstitialAd();
+                }
+                wordsGuessedCount = 0;  // Reset counter only after showing ad
+                Debug.Log("Counter reset to 0");
+            }
+
+            // Notify GameManager about the guessed word
+            if (GameManager.Instance != null)
+            {
+                GameManager.Instance.AddGuessedWord(word);
+            }
+            else
+            {
+                Debug.LogWarning("GameManager instance is null!");
+            }
         }
         else
         {

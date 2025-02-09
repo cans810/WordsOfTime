@@ -26,6 +26,11 @@ public class SaveData
     public Dictionary<string, List<string>> shuffledWords = new Dictionary<string, List<string>>();
     public List<HintData> usedHintsData = new List<HintData>();
     public List<string> unlockedEras = new List<string>();
+    public AdState adState;
+    public int gamesPlayedSinceLastAd;
+    public long lastRewardedAdTimestamp;
+    public int wordGuessCount;
+    public long lastClosedTime;
 
     public SaveData()
     {
@@ -35,6 +40,11 @@ public class SaveData
         usedHintsData = new List<HintData>();
         shuffledWords = new Dictionary<string, List<string>>();
         unlockedEras = new List<string>();
+        adState = new AdState { canWatch = true, nextAvailableTime = DateTime.Now };
+        gamesPlayedSinceLastAd = 0;
+        lastRewardedAdTimestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds(); // Initialize with current time
+        wordGuessCount = 0;
+        lastClosedTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
     }
 }
 

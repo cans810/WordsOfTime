@@ -10,13 +10,14 @@ public class MarketManager : MonoBehaviour, IStoreListener
 {
     public SpriteRenderer BackgroundImage;
     public TextMeshProUGUI pointsText;
-    private int currentPoints;
     private IStoreController storeController;
     private IExtensionProvider extensionProvider;
 
     private const string NO_ADS_PRODUCT_ID = "No Ads";
 
     public Animator animator;
+
+    [SerializeField] private Button noAdsButton;
 
     // Example point packages
     private readonly Dictionary<string, int> pointPackages = new Dictionary<string, int>
@@ -31,13 +32,24 @@ public class MarketManager : MonoBehaviour, IStoreListener
     private Coroutine pointAnimationCoroutine;
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
+        Debug.Log("MarketManager Start");
         BackgroundImage.sprite = GameManager.Instance.getEraImage(GameManager.Instance.CurrentEra);
-        // Initialize current points from GameManager or PlayerPrefs
-        currentPoints = GameManager.Instance.CurrentPoints;
-        UpdatePointsDisplay();
         InitializePurchasing();
+        
+        CheckNoAdsState();
+    }
+
+    private void OnEnable()
+    {
+        CheckNoAdsState();
+    }
+
+    private void CheckNoAdsState()
+    {
+        Debug.Log("Checking No Ads state...");
+
     }
 
     private void InitializePurchasing()
@@ -51,8 +63,8 @@ public class MarketManager : MonoBehaviour, IStoreListener
         builder.AddProduct("3500 Points", ProductType.Consumable);
         builder.AddProduct("8000 Points", ProductType.Consumable);
 
+        // Add No Ads as a non-consumable product
         builder.AddProduct(NO_ADS_PRODUCT_ID, ProductType.NonConsumable);
-
 
         UnityPurchasing.Initialize(this, builder);
     }
@@ -61,6 +73,13 @@ public class MarketManager : MonoBehaviour, IStoreListener
     {
         storeController = controller;
         extensionProvider = extensions;
+        
+        // Check if No Ads was previously purchased
+        if (IsNoAdsPurchased())
+        {
+            //GameManager.Instance.EnableNoAds();
+        }
+        
         Debug.Log("IAP Initialization successful!");
     }
 
@@ -77,24 +96,24 @@ public class MarketManager : MonoBehaviour, IStoreListener
     public PurchaseProcessingResult ProcessPurchase(PurchaseEventArgs args)
     {
         string productId = args.purchasedProduct.definition.id;
-        
+        Debug.Log($"Processing purchase: {productId}");
+
         if (productId == NO_ADS_PRODUCT_ID)
         {
-            // Handle No Ads purchase
-            GameManager.Instance.SetNoAds(true);
-            SaveManager.Instance.SaveGame();
-            Debug.Log("No Ads purchased successfully!");
+            Debug.Log("No Ads purchased - enabling permanently");
+            //GameManager.Instance.EnableNoAds();
+            Destroy(noAdsButton.gameObject);
         }
         else if (pointPackages.ContainsKey(productId))
         {
-            // Handle points purchase
+            Debug.Log($"Processing points purchase for {productId}");
             int pointsToAdd = pointPackages[productId];
             AddPoints(pointsToAdd);
-            Debug.Log($"Purchase successful: {productId}");
+            Debug.Log($"Points purchase completed. New total: {GameManager.Instance.CurrentPoints}");
         }
         else
         {
-            Debug.LogWarning($"Product {productId} not found.");
+            Debug.LogWarning($"Unknown product ID: {productId}");
         }
 
         return PurchaseProcessingResult.Complete;
@@ -107,119 +126,116 @@ public class MarketManager : MonoBehaviour, IStoreListener
 
     private void AddPoints(int points)
     {
-        int startPoints = currentPoints;
-        currentPoints += points;
-        GameManager.Instance.CurrentPoints = currentPoints;
+        Debug.Log($"=== Adding Points from Market ===");
+        Debug.Log($"Current points before adding: {GameManager.Instance.CurrentPoints}");
+        Debug.Log($"Points to add: {points}");
+
+        int startPoints = GameManager.Instance.CurrentPoints;
         
-        // Stop any existing animation
+        // Directly modify GameManager's points
+        GameManager.Instance.CurrentPoints += points;
+        
+        Debug.Log($"New total points: {GameManager.Instance.CurrentPoints}");
+        
+        // Save immediately
+        SaveManager.Instance.SaveGame();
+        Debug.Log("Points saved to SaveManager");
+        
+        // Update display
+        UpdatePointsDisplay();
+        
+        // Animate the change
         if (pointAnimationCoroutine != null)
         {
             StopCoroutine(pointAnimationCoroutine);
         }
-        
-        // Start new animation
-        pointAnimationCoroutine = StartCoroutine(AnimatePointsChange(startPoints, currentPoints));
-        
-        // Save the game after updating points
-        SaveManager.Instance.SaveGame();
-        
-        Debug.Log($"Added {points} points. Total points: {currentPoints}");
+        pointAnimationCoroutine = StartCoroutine(AnimatePointsChange(startPoints, GameManager.Instance.CurrentPoints));
     }
 
     private IEnumerator AnimatePointsChange(int startPoints, int endPoints)
     {
         float elapsedTime = 0f;
-        Vector3 originalScale = pointsText.transform.localScale;
-        Color originalColor = pointsText.color;
-        bool isIncreasing = endPoints > startPoints;
         float animationDuration = 1.1f;
-        int lastPoints = startPoints;
-        Coroutine currentBumpCoroutine = null;
         
         while (elapsedTime < animationDuration)
         {
             elapsedTime += Time.deltaTime;
-            
-            // Polynomial easing - starts slow, accelerates faster
             float t = elapsedTime / animationDuration;
-            t = t * t * (3 - 2 * t); // Smoother cubic easing
+            t = t * t * (3 - 2 * t); // Smooth interpolation
             
-            // Calculate current points with accelerating step size
             int currentPoints = Mathf.RoundToInt(Mathf.Lerp(startPoints, endPoints, t));
             
-            // If points value changed, create a bump effect
-            if (currentPoints != lastPoints)
-            {
-                // Stop any existing bump animation
-                if (currentBumpCoroutine != null)
-                {
-                    StopCoroutine(currentBumpCoroutine);
-                    pointsText.transform.localScale = originalScale;
-                }
-                
-                // Start new bump animation
-                currentBumpCoroutine = StartCoroutine(BumpScale(pointsText.transform, originalScale));
-                lastPoints = currentPoints;
-            }
-            
-            // Update points display
             if (pointsText != null)
             {
                 pointsText.text = currentPoints.ToString();
-                pointsText.color = isIncreasing ? Color.green : Color.red;
+                pointsText.color = Color.green;
             }
             
             yield return null;
         }
         
-        // Ensure we end up at the exact final value and return to original color
+        // Ensure we end at exact value
         if (pointsText != null)
         {
             pointsText.text = endPoints.ToString();
-            pointsText.transform.localScale = originalScale;
-            pointsText.color = originalColor;
+            pointsText.color = Color.white;
         }
-    }
-
-    private IEnumerator BumpScale(Transform target, Vector3 originalScale)
-    {
-        float bumpDuration = 0.008f;
-        float elapsedTime = 0f;
-        float maxScale = 1.2f;
-        
-        while (elapsedTime < bumpDuration)
-        {
-            elapsedTime += Time.deltaTime;
-            float t = elapsedTime / bumpDuration;
-            
-            // Smoother bump curve
-            float scale = 1f + (maxScale - 1f) * (1f - (2f * t - 1f) * (2f * t - 1f));
-            target.localScale = originalScale * scale;
-            
-            yield return null;
-        }
-        
-        // Ensure we return to original scale
-        target.localScale = originalScale;
     }
 
     private void UpdatePointsDisplay()
     {
         if (pointsText != null)
         {
-            // Get the current points from GameManager
-            currentPoints = GameManager.Instance.CurrentPoints;
-            // Just display the points amount
-            pointsText.text = currentPoints.ToString();
+            pointsText.text = GameManager.Instance.CurrentPoints.ToString();
         }
+    }
+
+    private void UpdateNoAdsButton()
+    {
+        Debug.Log("=== UpdateNoAdsButton ===");
+        
+        if (noAdsButton == null)
+        {
+            Debug.LogError("No Ads button reference is missing!");
+            return;
+        }
+
+        
+        bool hasIAPReceipt = false;
+        if (storeController != null && storeController.products.WithID(NO_ADS_PRODUCT_ID) != null)
+        {
+            hasIAPReceipt = storeController.products.WithID(NO_ADS_PRODUCT_ID).hasReceipt;
+            Debug.Log($"IAP Receipt Status: {hasIAPReceipt}");
+        }
+        
+        Debug.Log($"No Ads button active state: {noAdsButton.gameObject.activeSelf}");
     }
 
     public bool IsNoAdsPurchased()
     {
+        Debug.Log("Checking No Ads Purchase Status:");
+        
+        // Check GameManager state
+        
+        // Check IAP receipt
         if (storeController != null && storeController.products.WithID(NO_ADS_PRODUCT_ID) != null)
         {
-            return storeController.products.WithID(NO_ADS_PRODUCT_ID).hasReceipt;
+            bool hasReceipt = storeController.products.WithID(NO_ADS_PRODUCT_ID).hasReceipt;
+            Debug.Log($"IAP Receipt found: {hasReceipt}");
+            
+            if (hasReceipt)
+            {
+                Debug.Log("Updating GameManager and saving No Ads state");
+                //GameManager.Instance.EnableNoAds();
+                SaveManager.Instance.SaveGame();
+            }
+            return hasReceipt;
         }
+        else
+        {
+            Debug.Log("Store controller not initialized or No Ads product not found");
+        }
+        
         return false;
     }
 
@@ -257,14 +273,20 @@ public class MarketManager : MonoBehaviour, IStoreListener
 
     public void ShowMarketScreen()
     {
+        Debug.Log("=== ShowMarketScreen ===");
         gameObject.SetActive(true);
         gameObject.GetComponent<Canvas>().sortingLayerName = "UI";
         gameObject.GetComponent<Canvas>().sortingOrder = 3;
     
         BackgroundImage.sprite = GameManager.Instance.getEraImage(GameManager.Instance.CurrentEra);
-        // Initialize current points from GameManager or PlayerPrefs
-        currentPoints = GameManager.Instance.CurrentPoints;
         UpdatePointsDisplay();
+        
+        // Make sure we initialize purchasing before updating the button
         InitializePurchasing();
+        
+        // Force update the No Ads button state
+        UpdateNoAdsButton();
+        
+        Debug.Log("Market screen shown and initialized");
     }
 }

@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
+using System;
 
 public class MainMenuManager : MonoBehaviour
 {
@@ -16,9 +17,29 @@ public class MainMenuManager : MonoBehaviour
 
     private string currentLanguage;
 
+    private const float MUSIC_FADE_DURATION = 2.0f; // Duration of fade in seconds
+    private bool isFirstStart = true;
+
+    [SerializeField] private Button watchAdButton;
+    [SerializeField] private TextMeshProUGUI watchAdCooldownText;
+    private RewardedAdExample rewardedAd;
+    private const string LAST_AD_TIME_KEY = "LastAdWatchTime";
+    private const float REWARDED_AD_COOLDOWN = 7200f; // 2 hours in seconds
+    private float remainingCooldown = 0f;
+    private bool isCountingDown = false;
+
     // Start is called before the first frame update
     private void Start()
     {
+        // Check if this is the first start
+        isFirstStart = PlayerPrefs.GetInt("HasStartedBefore", 0) == 0;
+        
+        if (isFirstStart)
+        {
+            PlayerPrefs.SetInt("HasStartedBefore", 1);
+            PlayerPrefs.Save();
+        }
+
         currentLanguage = PlayerPrefs.GetString("Language", "en");
         BackgroundImage.sprite = GameManager.Instance.getEraImage(GameManager.Instance.CurrentEra);
 
@@ -29,47 +50,91 @@ public class MainMenuManager : MonoBehaviour
             pointText = pointPanel.Find("point")?.GetComponent<TextMeshProUGUI>();
         }
         
-        // Find settings controller including inactive objects
+        // Find managers without activating them
         settingsController = FindInactiveObjectByType<SettingsController>();
         eraSelectionManager = FindInactiveObjectByType<EraSelectionManager>();
         marketManager = FindInactiveObjectByType<MarketManager>();
-
-        StartCoroutine(InitializeEraSelectionManager());
         
         UpdatePointsDisplay();
         UpdateEraDisplay();
 
-        // Subscribe to era change events if GameManager has them
         if (GameManager.Instance != null)
         {
             GameManager.Instance.OnEraChanged += UpdateEraDisplay;
         }
-    }
 
-    private IEnumerator InitializeEraSelectionManager()
-    {
-        if (eraSelectionManager != null)
+        // Play music with delay
+        if (SoundManager.Instance != null)
         {
-            // Activate the manager
-            eraSelectionManager.gameObject.SetActive(true);
-            
-            // Wait for end of frame to ensure all components are initialized
-            yield return new WaitForEndOfFrame();
-            
-            // Update prices
-            eraSelectionManager.UpdateEraPrices();
-            
-            // Wait another frame to ensure UI is updated
-            yield return new WaitForEndOfFrame();
-            
-            // Deactivate the manager after initialization
-            eraSelectionManager.gameObject.SetActive(false);
-            
-            Debug.Log("EraSelectionManager initialized and deactivated");
+            SoundManager.Instance.PlayMusicWithDelay();
+        }
+
+        // Initialize rewarded ads by finding the existing component
+        GameObject adsGameObject = GameObject.Find("Ads");
+        if (adsGameObject != null)
+        {
+            rewardedAd = adsGameObject.GetComponent<RewardedAdExample>();
+            if (rewardedAd != null)
+            {
+                rewardedAd.LoadAd();
+            }
+            else
+            {
+                Debug.LogError("RewardedAdExample component not found on Ads GameObject!");
+            }
         }
         else
         {
-            Debug.LogWarning("EraSelectionManager not found");
+            Debug.LogError("Ads GameObject not found!");
+        }
+
+        // Get the last ad time from PlayerPrefs
+        long lastAdTime = long.Parse(PlayerPrefs.GetString(LAST_AD_TIME_KEY, "0"));
+        long currentTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+        
+        // Calculate initial remaining time
+        remainingCooldown = Mathf.Max(0, REWARDED_AD_COOLDOWN - (currentTime - lastAdTime));
+        
+        if (remainingCooldown > 0)
+        {
+            isCountingDown = true;
+            UpdateWatchAdCooldown();
+        }
+    }
+
+    private IEnumerator DelayedMusicStart()
+    {
+        // Wait for 1 second before starting the fade
+        yield return new WaitForSeconds(1f);
+        StartCoroutine(FadeMusicIn());
+    }
+
+    private IEnumerator FadeMusicIn()
+    {
+        float elapsedTime = 0;
+        float startVolume = 0f;
+        float targetVolume = 1f; // Or whatever your default music volume is
+
+        while (elapsedTime < MUSIC_FADE_DURATION)
+        {
+            elapsedTime += Time.deltaTime;
+            float normalizedTime = elapsedTime / MUSIC_FADE_DURATION;
+            
+            // Use smooth step for more natural fading
+            float currentVolume = Mathf.Lerp(startVolume, targetVolume, normalizedTime * normalizedTime * (3f - 2f * normalizedTime));
+            
+            if (SoundManager.Instance != null)
+            {
+                SoundManager.Instance.SetMusicVolume(currentVolume);
+            }
+            
+            yield return null;
+        }
+
+        // Ensure we end at exactly the target volume
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.SetMusicVolume(targetVolume);
         }
     }
 
@@ -96,6 +161,12 @@ public class MainMenuManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (isCountingDown && remainingCooldown > 0)
+        {
+            remainingCooldown -= Time.deltaTime;
+            UpdateWatchAdCooldown();
+        }
+
         UpdatePointsDisplay();
     }
 
@@ -178,5 +249,53 @@ public class MainMenuManager : MonoBehaviour
         PlayerPrefs.SetString("Language", newLanguage);
         PlayerPrefs.Save();
         UpdateEraDisplay();
+    }
+
+    private void UpdateWatchAdCooldown()
+    {
+        if (remainingCooldown <= 0)
+        {
+            watchAdButton.interactable = true;
+            watchAdCooldownText.text = "Watch Ad";
+            isCountingDown = false;
+        }
+        else
+        {
+            watchAdButton.interactable = false;
+            int hours = Mathf.FloorToInt(remainingCooldown / 3600f);
+            int minutes = Mathf.FloorToInt((remainingCooldown % 3600f) / 60f);
+            int seconds = Mathf.FloorToInt(remainingCooldown % 60f);
+            watchAdCooldownText.text = $"{hours}h {minutes}m {seconds}s";
+        }
+    }
+
+    public void OnWatchAdButtonClicked()
+    {
+        if (rewardedAd != null && remainingCooldown <= 0)
+        {
+            rewardedAd.ShowAd(() => {
+                // Reward the player
+                GameManager.Instance.AddPoints(150);
+                
+                // Set new cooldown
+                remainingCooldown = REWARDED_AD_COOLDOWN;
+                isCountingDown = true;
+                
+                // Save the current time
+                string currentTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString();
+                PlayerPrefs.SetString(LAST_AD_TIME_KEY, currentTime);
+                PlayerPrefs.Save();
+                
+                UpdateWatchAdCooldown();
+            });
+        }
+    }
+
+    private void OnApplicationQuit()
+    {
+        // Save state through GameManager
+        GameManager.Instance.SaveGameState();
+        SaveManager.Instance.Data.lastClosedTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+        SaveManager.Instance.SaveGame();
     }
 }
