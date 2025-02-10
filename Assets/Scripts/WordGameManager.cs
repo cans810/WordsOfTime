@@ -23,7 +23,7 @@ public static class StringExtensions
 public class WordGameManager : MonoBehaviour
 {
     [Header("UI References")]
-    [SerializeField] public SpriteRenderer BackgroundImage;
+    [SerializeField] public Image BackgroundImage;
     [SerializeField] private TextMeshProUGUI scoreText;
     [SerializeField] private TextMeshProUGUI messageText;
     [SerializeField] private TextMeshProUGUI sentenceText;
@@ -341,7 +341,7 @@ public class WordGameManager : MonoBehaviour
     {
         // Find UI references in the scene
         if (BackgroundImage == null)
-            BackgroundImage = GameObject.Find("BackgroundImage")?.GetComponent<SpriteRenderer>();
+            BackgroundImage = GameObject.Find("BackgroundImage")?.GetComponent<Image>();
         
         if (scoreText == null)
             scoreText = GameObject.Find("MessageText")?.GetComponent<TextMeshProUGUI>();

@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 
 public class MarketManager : MonoBehaviour, IStoreListener
 {
-    public SpriteRenderer BackgroundImage;
+    public Image BackgroundImage;
     public TextMeshProUGUI pointsText;
     private IStoreController storeController;
     private IExtensionProvider extensionProvider;

@@ -8,7 +8,7 @@ using System;
 
 public class MainMenuManager : MonoBehaviour
 {
-    public SpriteRenderer BackgroundImage;
+    public Image BackgroundImage;
     private TextMeshProUGUI pointText;
     private SettingsController settingsController;
     private EraSelectionManager eraSelectionManager;

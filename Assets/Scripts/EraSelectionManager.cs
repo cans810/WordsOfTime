@@ -8,7 +8,7 @@ public class EraSelectionManager : MonoBehaviour
 {
     public Transform EraSelectionCanvas;
 
-    [SerializeField] private SpriteRenderer backgroundImage;
+    [SerializeField] private Image backgroundImage;
 
     public Animator animator;
 
@@ -24,7 +24,10 @@ public class EraSelectionManager : MonoBehaviour
         string unlockedText = GameManager.Instance.CurrentLanguage == "tr" ? "AÇIK" : "UNLOCKED";
 
         // Find the ScrollArea and then the Eras object
-        Transform scrollArea = EraSelectionCanvas.Find("ScrollArea");
+        Transform safeArea = EraSelectionCanvas.Find("SafeArea");
+
+        Transform scrollArea = safeArea.Find("ScrollArea");
+        
         if (scrollArea == null)
         {
             Debug.LogError("ScrollArea not found!");

@@ -33,7 +33,7 @@ public class SettingsController : MonoBehaviour
     [SerializeField] private Animator animator;
 
     public GameObject LanguageSelectionPanel;
-    public SpriteRenderer BackgroundImage;
+    public Image BackgroundImage;
 
     public Toggle NotificationsToggle => notificationsToggle;  // Public getter for the toggle
 
