@@ -49,7 +49,23 @@ public class MarketManager : MonoBehaviour, IStoreListener
     private void CheckNoAdsState()
     {
         Debug.Log("Checking No Ads state...");
+        if (IsNoAdsPurchased())
+        {
+            DestroyNoAdsButton();
+        }
+    }
 
+    private void DestroyNoAdsButton()
+    {
+        if (noAdsButton != null)
+        {
+            Debug.Log("Destroying No Ads button");
+            Destroy(noAdsButton.gameObject);
+        }
+        else
+        {
+            Debug.LogWarning("No Ads button reference is null");
+        }
     }
 
     private void InitializePurchasing()
@@ -101,8 +117,8 @@ public class MarketManager : MonoBehaviour, IStoreListener
         if (productId == NO_ADS_PRODUCT_ID)
         {
             Debug.Log("No Ads purchased - enabling permanently");
-            //GameManager.Instance.EnableNoAds();
-            Destroy(noAdsButton.gameObject);
+            GameManager.Instance.EnableNoAds();
+            DestroyNoAdsButton();
         }
         else if (pointPackages.ContainsKey(productId))
         {
@@ -216,6 +232,11 @@ public class MarketManager : MonoBehaviour, IStoreListener
         Debug.Log("Checking No Ads Purchase Status:");
         
         // Check GameManager state
+        if (GameManager.Instance.NoAdsBought)
+        {
+            Debug.Log("No Ads already purchased (from GameManager)");
+            return true;
+        }
         
         // Check IAP receipt
         if (storeController != null && storeController.products.WithID(NO_ADS_PRODUCT_ID) != null)
@@ -226,7 +247,7 @@ public class MarketManager : MonoBehaviour, IStoreListener
             if (hasReceipt)
             {
                 Debug.Log("Updating GameManager and saving No Ads state");
-                //GameManager.Instance.EnableNoAds();
+                GameManager.Instance.EnableNoAds();
                 SaveManager.Instance.SaveGame();
             }
             return hasReceipt;

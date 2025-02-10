@@ -23,7 +23,7 @@ public static class StringExtensions
 public class WordGameManager : MonoBehaviour
 {
     [Header("UI References")]
-    [SerializeField] public Image BackgroundImage;
+    [SerializeField] public SpriteRenderer BackgroundImage;
     [SerializeField] private TextMeshProUGUI scoreText;
     [SerializeField] private TextMeshProUGUI messageText;
     [SerializeField] private TextMeshProUGUI sentenceText;
@@ -301,6 +301,31 @@ public class WordGameManager : MonoBehaviour
         GridManager.Instance.ResetGridForNewWord();
         UpdateProgressBar();
         UpdateSentenceDisplay();
+
+        // Increment word guess count
+        wordsGuessedCount++;
+        
+        // Only show ad if no ads is not bought and we've reached the word count threshold
+        if (!GameManager.Instance.NoAdsBought && wordsGuessedCount >= WORDS_BEFORE_AD)
+        {
+            ShowAd();
+            wordsGuessedCount = 0; // Reset counter
+        }
+    }
+
+    private void ShowAd()
+    {
+        if (GameManager.Instance.NoAdsBought)
+        {
+            Debug.Log("No Ads purchased - skipping ad");
+            return;
+        }
+
+        // Your existing ad showing logic here
+        Debug.Log("Showing ad...");
+        
+        // After ad is shown, reset the counter
+        wordsGuessedCount = 0;
     }
 
     public void StartNewGameInEra()
@@ -341,7 +366,7 @@ public class WordGameManager : MonoBehaviour
     {
         // Find UI references in the scene
         if (BackgroundImage == null)
-            BackgroundImage = GameObject.Find("BackgroundImage")?.GetComponent<Image>();
+            BackgroundImage = GameObject.Find("BackgroundImage")?.GetComponent<SpriteRenderer>();
         
         if (scoreText == null)
             scoreText = GameObject.Find("MessageText")?.GetComponent<TextMeshProUGUI>();

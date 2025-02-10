@@ -31,6 +31,7 @@ public class SaveData
     public long lastRewardedAdTimestamp;
     public int wordGuessCount;
     public long lastClosedTime;
+    public bool noAdsBought;
 
     public SaveData()
     {
@@ -45,6 +46,7 @@ public class SaveData
         lastRewardedAdTimestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds(); // Initialize with current time
         wordGuessCount = 0;
         lastClosedTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+        noAdsBought = false;
     }
 }
 

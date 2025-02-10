@@ -138,6 +138,9 @@ public class GameManager : MonoBehaviour
     private bool noAds = false;
     public bool NoAds => noAds;
 
+    private bool noAdsBought = false;
+    public bool NoAdsBought => noAdsBought;
+
     public HashSet<string> unlockedEras = new HashSet<string>() { "Ancient Egypt","Medieval Europe" }; // Start with Ancient Egypt unlocked
 
     // Add a dictionary to store word translations
@@ -931,7 +934,6 @@ public class GameManager : MonoBehaviour
             isSoundOn = settings.soundEnabled;
             notifications = settings.notificationsEnabled;
             
-            // Apply settings to SoundManager
             if (SoundManager.Instance != null)
             {
                 SoundManager.Instance.IsMusicOn = settings.musicEnabled;
@@ -1291,32 +1293,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void SetNoAds(bool value)
+    public void SetNoAdsBought(bool value)
     {
-        noAds = value;
-        // Disable ads in your ad manager
-        if (noAds)
-        {
-            // Add code to disable ads
-            // For example: AdManager.Instance.DisableAds();
-        }
-    }
-
-    // Add this to your save/load logic
-    public void SaveNoAdsState()
-    {
-        PlayerPrefs.SetInt("NoAds", noAds ? 1 : 0);
-        PlayerPrefs.Save();
-    }
-
-    public void LoadNoAdsState()
-    {
-        noAds = PlayerPrefs.GetInt("NoAds", 0) == 1;
-        if (noAds)
-        {
-            // Disable ads on game start if previously purchased
-            // AdManager.Instance.DisableAds();
-        }
+        noAdsBought = value;
+        noAds = value; // Sync with existing noAds flag
+        Debug.Log($"No Ads bought state set to: {value}");
     }
 
     // Add these methods for SaveManager to use
@@ -1634,6 +1615,14 @@ public class GameManager : MonoBehaviour
             return wordTranslations[baseWord][language];
         }
         return baseWord;
+    }
+
+    public void EnableNoAds()
+    {
+        noAdsBought = true;
+        noAds = true;
+        SaveManager.Instance.SaveGame(); // Save the new state
+        Debug.Log("No Ads enabled and saved");
     }
 }
 

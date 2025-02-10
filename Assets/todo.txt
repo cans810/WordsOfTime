@@ -21,9 +21,10 @@ konulmalı, daha sonra da, oyuncu oyuna girdiğinde gerçek gridler bu dictionar
 //gridde sadece seçili dilin barındırdığı harfler olsun, mesela ingilizce için Ş gibi harfler olmasın
 //market sayfasında puan satın alınabilir, reklam kaldırma seçeneği satın alınabilir
 //boşluk doldurma yerine soru cevaplama olabilir
+//progress ve eraların scrollarını yap
 
->progress ve eraların scrollarını yap
+>noads satın alımını kaydetmeyi yap
 >daha çok kelime ekle
 >daha çok era ekle
->reklam koymayı yap
+//reklam koymayı yap
 >bildirim koymayı yap

@@ -107,6 +107,9 @@ public class SaveManager : MonoBehaviour
             };
             Data.wordGuessCount = GameManager.Instance.wordGuessCount;
 
+            // Save no ads state
+            Data.noAdsBought = GameManager.Instance.NoAdsBought;
+
             string json = JsonUtility.ToJson(Data, true);
             File.WriteAllText(SavePath, json);
             
@@ -172,6 +175,9 @@ public class SaveManager : MonoBehaviour
 
                     // Load ad state directly
                     GameManager.Instance.LoadAdState(Data.adState);
+
+                    // Load no ads state
+                    GameManager.Instance.SetNoAdsBought(Data.noAdsBought);
                 }
 
                 GameManager.Instance.SetPoints(Data.points);
@@ -184,6 +190,9 @@ public class SaveManager : MonoBehaviour
             {
                 Debug.Log("No save file found, starting new game with shuffled words");
                 Data = new SaveData();
+                // Initialize no ads state
+                Data.noAdsBought = false;
+                
                 // Only shuffle words if this is the first time (no save file exists)
                 if (GameManager.Instance != null)
                 {
