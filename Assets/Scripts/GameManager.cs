@@ -177,6 +177,8 @@ public class GameManager : MonoBehaviour
         // Load saved language preference
         string savedLanguage = PlayerPrefs.GetString("Language", "en");
         SetLanguage(savedLanguage);
+
+        Debug.Log($"No ads bought: {NoAdsBought}");
     }
 
     private void SelectRandomUnlockedEra()

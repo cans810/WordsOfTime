@@ -11,6 +11,8 @@ public class AdManager : MonoBehaviour
     private const int WORDS_BETWEEN_ADS = 3;  // Show ad every 3 words guessed
     private const int REWARDED_AD_COOLDOWN = 300; // Assuming a default cooldown period of 5 minutes
 
+    private long lastAdTime;
+
     private void Awake()
     {
         if (instance == null)
@@ -64,7 +66,6 @@ public class AdManager : MonoBehaviour
         {
             // Check if the cooldown period has passed
             long currentTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
-            long lastAdTime = SaveManager.Instance.Data.lastRewardedAdTimestamp;
             return currentTime - lastAdTime >= REWARDED_AD_COOLDOWN;
         }
     }
@@ -72,7 +73,8 @@ public class AdManager : MonoBehaviour
     public void OnRewardedAdWatched()
     {
         // Update the last watched timestamp
-        SaveManager.Instance.Data.lastRewardedAdTimestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+        lastAdTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+        SaveManager.Instance.Data.lastRewardedAdTimestamp = lastAdTime;
         SaveManager.Instance.SaveGame();
         
         // existing reward logic...

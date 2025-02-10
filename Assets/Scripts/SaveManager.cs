@@ -4,6 +4,7 @@ using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;  // Add this line for ToList()
+using System.Runtime.Serialization.Formatters.Binary;
 
 [System.Serializable]
 public class UsedHintData
@@ -39,7 +40,7 @@ public class SaveManager : MonoBehaviour
     }
 
     public SaveData Data { get; private set; }
-    public string SavePath => Path.Combine(Application.persistentDataPath, "gamesave.json");
+    public string SavePath => Path.Combine(Application.persistentDataPath, "gamesave.bin");
 
     private const int REWARDED_AD_COOLDOWN = 7200; // 2 hours in seconds (matches MainMenuManager)
 
@@ -110,8 +111,11 @@ public class SaveManager : MonoBehaviour
             // Save no ads state
             Data.noAdsBought = GameManager.Instance.NoAdsBought;
 
-            string json = JsonUtility.ToJson(Data, true);
-            File.WriteAllText(SavePath, json);
+            using (FileStream stream = new FileStream(SavePath, FileMode.Create))
+            {
+                BinaryFormatter formatter = new BinaryFormatter();
+                formatter.Serialize(stream, Data);
+            }
             
             Debug.Log($"Game saved successfully!");
         }
@@ -128,8 +132,11 @@ public class SaveManager : MonoBehaviour
         {
             if (File.Exists(SavePath))
             {
-                string json = File.ReadAllText(SavePath);
-                Data = JsonUtility.FromJson<SaveData>(json);
+                using (FileStream stream = new FileStream(SavePath, FileMode.Open))
+                {
+                    BinaryFormatter formatter = new BinaryFormatter();
+                    Data = (SaveData)formatter.Deserialize(stream);
+                }
 
                 if (GameManager.Instance != null)
                 {

@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 using System;
 using System.Collections;
 using System.Linq;
+using System.Text;
 
 public static class StringExtensions
 {
@@ -305,8 +306,8 @@ public class WordGameManager : MonoBehaviour
         // Increment word guess count
         wordsGuessedCount++;
         
-        // Only show ad if no ads is not bought and we've reached the word count threshold
-        if (!GameManager.Instance.NoAdsBought && wordsGuessedCount >= WORDS_BEFORE_AD)
+        // Show ad every 3 words guessed
+        if (wordsGuessedCount >= WORDS_BEFORE_AD)
         {
             ShowAd();
             wordsGuessedCount = 0; // Reset counter
@@ -321,10 +322,18 @@ public class WordGameManager : MonoBehaviour
             return;
         }
 
-        // Your existing ad showing logic here
-        Debug.Log("Showing ad...");
+        // Show the ad
+        if (AdManager.Instance != null)
+        {
+            Debug.Log("Showing interstitial ad...");
+            AdManager.Instance.ShowInterstitialAd();
+        }
+        else
+        {
+            Debug.LogWarning("AdManager instance not found!");
+        }
         
-        // After ad is shown, reset the counter
+        // Reset the counter
         wordsGuessedCount = 0;
     }
 

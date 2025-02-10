@@ -28,6 +28,9 @@ public class MainMenuManager : MonoBehaviour
     private float remainingCooldown = 0f;
     private bool isCountingDown = false;
 
+    private float lastUpdateTime = 0f;
+    private const float UPDATE_INTERVAL = 0.5f;
+
     // Start is called before the first frame update
     private void Start()
     {
@@ -167,7 +170,11 @@ public class MainMenuManager : MonoBehaviour
             UpdateWatchAdCooldown();
         }
 
-        UpdatePointsDisplay();
+        if (Time.time - lastUpdateTime >= UPDATE_INTERVAL)
+        {
+            UpdatePointsDisplay();
+            lastUpdateTime = Time.time;
+        }
     }
 
     private void UpdatePointsDisplay()
