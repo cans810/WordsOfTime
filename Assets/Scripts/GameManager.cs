@@ -322,15 +322,15 @@ public class GameManager : MonoBehaviour
     {
         try
         {
-            // Load English words
-            string enFilePath = Path.Combine(Application.dataPath, "words.json");
+            // Load English words from StreamingAssets
+            string enFilePath = Path.Combine(Application.streamingAssetsPath, "words.json");
             if (File.Exists(enFilePath))
             {
                 LoadLanguageWords(enFilePath, "en");
             }
 
-            // Load Turkish words
-            string trFilePath = Path.Combine(Application.dataPath, "words_tr.json");
+            // Load Turkish words from StreamingAssets
+            string trFilePath = Path.Combine(Application.streamingAssetsPath, "words_tr.json");
             if (File.Exists(trFilePath))
             {
                 LoadLanguageWords(trFilePath, "tr");
@@ -1044,51 +1044,31 @@ public class GameManager : MonoBehaviour
 
     private WordSetList LoadWordSetList()
     {
-        // Try different possible paths
-        string[] possiblePaths = new string[] 
+        string streamingAssetsPath = Path.Combine(Application.streamingAssetsPath, "words.json");
+        
+        if (!File.Exists(streamingAssetsPath))
         {
-            "Assets/words.json",
-            "Assets/Data/words.json",
-            "Assets/WordData/words.json"
-        };
-
-        string jsonContent = null;
-        string usedPath = null;
-
-        foreach (string path in possiblePaths)
-        {
-            if (System.IO.File.Exists(path))
-            {
-                jsonContent = System.IO.File.ReadAllText(path);
-                usedPath = path;
-                Debug.Log($"Found words.json at path: {path}");
-                break;
-            }
-        }
-
-        if (jsonContent == null)
-        {
-            Debug.LogError("Could not load words.json file! Current search paths:");
-            foreach (string path in possiblePaths)
-            {
-                Debug.LogError($"- {path}");
-            }
+            Debug.LogError($"Could not find words.json in StreamingAssets folder: {streamingAssetsPath}");
             return null;
         }
 
         try
         {
+            string jsonContent = File.ReadAllText(streamingAssetsPath);
             WordSetList wordSetList = JsonUtility.FromJson<WordSetList>(jsonContent);
+            
             if (wordSetList == null || wordSetList.sets == null)
             {
-                Debug.LogError($"Could not parse words.json file at {usedPath}! Content might be invalid.");
+                Debug.LogError("Failed to parse words.json or no word sets found");
                 return null;
             }
+
+            Debug.Log($"Successfully loaded {wordSetList.sets.Length} word sets from StreamingAssets");
             return wordSetList;
         }
-        catch (System.Exception e)
+        catch (Exception e)
         {
-            Debug.LogError($"Error parsing words.json at {usedPath}: {e.Message}");
+            Debug.LogError($"Error loading words.json from StreamingAssets: {e.Message}");
             return null;
         }
     }
@@ -1627,7 +1607,3 @@ public class GameManager : MonoBehaviour
         Debug.Log("No Ads enabled and saved");
     }
 }
-
-
-
-

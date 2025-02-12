@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
 
 public static class WordValidator
 {
@@ -12,7 +13,7 @@ public static class WordValidator
 
     private static void LoadWordSets()
     {
-        string filePath = Application.dataPath + "/words.json";
+        string filePath = Path.Combine(Application.streamingAssetsPath, "words.json");
         if (!System.IO.File.Exists(filePath)) return;
 
         try

@@ -543,4 +543,168 @@ public class GridManager : MonoBehaviour
         }
         return tiles;
     }
+
+    private void CalculateDynamicCellSize()
+    {
+        if (gridContainer == null) return;
+
+        // Get the RectTransform of the grid container
+        RectTransform containerRect = gridContainer.GetComponent<RectTransform>();
+        if (containerRect == null) return;
+
+        // Get the container's width and height
+        float containerWidth = containerRect.rect.width;
+        float containerHeight = containerRect.rect.height;
+
+        // Calculate available space considering spacing between cells
+        float availableWidth = containerWidth - (spacing * (gridSize - 1));
+        float availableHeight = containerHeight - (spacing * (gridSize - 1));
+
+        // Calculate cell size based on the smaller of width or height to maintain square cells
+        cellSize = Mathf.Min(
+            availableWidth / gridSize,
+            availableHeight / gridSize
+        );
+
+        // Set minimum cell size (adjust these values based on your needs)
+        float minCellSize = 80f;  // Minimum size in pixels
+        float maxCellSize = 120f; // Maximum size in pixels
+
+        // Clamp the cell size between min and max values
+        cellSize = Mathf.Clamp(cellSize, minCellSize, maxCellSize);
+
+        Debug.Log($"Dynamic cell size calculated: {cellSize} (Container: {containerWidth}x{containerHeight})");
+    }
+
+    private IEnumerator GenerateGridCoroutine(List<char> letters)
+    {
+        // Calculate dynamic cell size before generating grid
+        CalculateDynamicCellSize();
+
+        const float SPAWN_DELAY = 0.2f;
+        const float WAVE_DELAY = 0.5f;
+        int index = 0;
+
+        // Center the grid in the container
+        float totalGridWidth = (gridSize * cellSize) + (spacing * (gridSize - 1));
+        float totalGridHeight = (gridSize * cellSize) + (spacing * (gridSize - 1));
+        
+        RectTransform containerRect = gridContainer.GetComponent<RectTransform>();
+        float startX = -(totalGridWidth / 2) + (cellSize / 2);
+        float startY = (totalGridHeight / 2) - (cellSize / 2);
+
+        // For each diagonal wave
+        for (int sum = 0; sum < gridSize * 2 - 1; sum++)
+        {
+            List<Vector2Int> currentWavePositions = new List<Vector2Int>();
+            
+            for (int x = 0; x <= sum; x++)
+            {
+                int y = sum - x;
+                
+                if (x < gridSize && y < gridSize)
+                {
+                    currentWavePositions.Add(new Vector2Int(x, y));
+                }
+            }
+
+            foreach (Vector2Int pos in currentWavePositions)
+            {
+                if (index < letters.Count)
+                {
+                    GameObject letterTileObj = Instantiate(letterTilePrefab, gridContainer);
+                    RectTransform rectTransform = letterTileObj.GetComponent<RectTransform>();
+                    
+                    // Calculate position using the centered starting points
+                    float xPos = startX + (pos.x * (cellSize + spacing));
+                    float yPos = startY - (pos.y * (cellSize + spacing));
+                    rectTransform.anchoredPosition = new Vector2(xPos, yPos);
+
+                    // Set the size of the tile
+                    rectTransform.sizeDelta = new Vector2(cellSize, cellSize);
+
+                    LetterTile letterTile = letterTileObj.GetComponent<LetterTile>();
+                    letterTile.SetLetter(letters[index], new Vector2Int(pos.x, pos.y));
+                    grid[pos.x, pos.y] = letterTile;
+
+                    letterTileObj.transform.localScale = Vector3.zero;
+                    StartCoroutine(AnimateScale(letterTileObj));
+
+                    index++;
+                    yield return new WaitForSeconds(SPAWN_DELAY);
+                }
+            }
+            
+            yield return new WaitForSeconds(WAVE_DELAY);
+        }
+    }
+
+    private IEnumerator AnimateScale(GameObject obj)
+    {
+        float elapsedTime = 0;
+        float duration = 0.8f;
+        
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+            float progress = elapsedTime / duration;
+            
+            // Use smooth step for a nice easing effect
+            float smoothProgress = Mathf.SmoothStep(0, 1, progress);
+            obj.transform.localScale = Vector3.one * smoothProgress;
+            
+            yield return null;
+        }
+        
+        obj.transform.localScale = Vector3.one;
+    }
+
+    // Modify the existing InitializeGrid method to use the coroutine
+    public void InitializeGrid(List<char> letters)
+    {
+        ClearGrid();
+        StartCoroutine(GenerateGridCoroutine(letters));
+    }
+
+    private void ClearGrid()
+    {
+        // Clear existing tiles
+        foreach (Transform child in gridContainer)
+        {
+            Destroy(child.gameObject);
+        }
+
+        grid = new LetterTile[gridSize, gridSize];
+    }
+
+    // Add this method to recalculate size when screen is resized
+    private void OnRectTransformDimensionsChange()
+    {
+        CalculateDynamicCellSize();
+        
+        // Update existing tiles if any
+        for (int x = 0; x < gridSize; x++)
+        {
+            for (int y = 0; y < gridSize; y++)
+            {
+                if (grid[x, y] != null)
+                {
+                    RectTransform rectTransform = grid[x, y].GetComponent<RectTransform>();
+                    if (rectTransform != null)
+                    {
+                        rectTransform.sizeDelta = new Vector2(cellSize, cellSize);
+                        
+                        float totalGridWidth = (gridSize * cellSize) + (spacing * (gridSize - 1));
+                        float totalGridHeight = (gridSize * cellSize) + (spacing * (gridSize - 1));
+                        float startX = -(totalGridWidth / 2) + (cellSize / 2);
+                        float startY = (totalGridHeight / 2) - (cellSize / 2);
+                        
+                        float xPos = startX + (x * (cellSize + spacing));
+                        float yPos = startY - (y * (cellSize + spacing));
+                        rectTransform.anchoredPosition = new Vector2(xPos, yPos);
+                    }
+                }
+            }
+        }
+    }
 }

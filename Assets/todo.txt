@@ -23,7 +23,7 @@ konulmalı, daha sonra da, oyuncu oyuna girdiğinde gerçek gridler bu dictionar
 //boşluk doldurma yerine soru cevaplama olabilir
 //progress ve eraların scrollarını yap
 
->noads satın alımını kaydetmeyi yap
+//noads satın alımını kaydetmeyi yap
 >daha çok kelime ekle
 >daha çok era ekle
 //reklam koymayı yap
