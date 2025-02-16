@@ -156,7 +156,8 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      ottoman empire_0: 4603040834657635565
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

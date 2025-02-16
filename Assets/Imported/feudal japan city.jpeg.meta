@@ -156,7 +156,8 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      feudal japan city_0: 6420910190903217966
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -24,7 +24,10 @@ konulmalı, daha sonra da, oyuncu oyuna girdiğinde gerçek gridler bu dictionar
 //progress ve eraların scrollarını yap
 
 //noads satın alımını kaydetmeyi yap
->daha çok kelime ekle
->daha çok era ekle
+//daha çok kelime ekle
+//daha çok era ekle
 //reklam koymayı yap
->bildirim koymayı yap
+
+> bildirim koymayı test et
+> çark tam yuvarlak değil gibi onu düzelt
+> ödül verildiğinde, ok a tıkladığı zaman verilen ödül puansa puan ekleme animasyonu yap

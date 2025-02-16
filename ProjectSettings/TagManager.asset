@@ -44,6 +44,12 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: BackgroundUI
+    uniqueID: 2141566793
+    locked: 0
   - name: UI
     uniqueID: 2258877983
+    locked: 0
+  - name: WheelUI
+    uniqueID: 3438563653
     locked: 0
