@@ -194,20 +194,101 @@ public class WordGameManager : MonoBehaviour
 
     private void CreateProgressBar()
     {
-        if (progressImagePrefab == null || progressBarContainer == null) return;
+        if (progressImagePrefab == null || progressBarContainer == null)
+        {
+            Debug.LogError("Progress bar prefab or container is null!");
+            return;
+        }
 
+        // Clear existing progress images
         foreach (Transform child in progressBarContainer)
         {
             Destroy(child.gameObject);
         }
         progressImages.Clear();
 
-        int wordCountInEra = WordValidator.GetWordsForEra(GameManager.Instance.CurrentEra).Count;
+        // Get word count for current era
+        int wordCountInEra = 0;
+        if (GameManager.Instance != null && 
+            GameManager.Instance.eraWordsPerLanguage.ContainsKey(GameManager.Instance.CurrentLanguage) &&
+            GameManager.Instance.eraWordsPerLanguage[GameManager.Instance.CurrentLanguage].ContainsKey(GameManager.Instance.CurrentEra))
+        {
+            wordCountInEra = GameManager.Instance.eraWordsPerLanguage[GameManager.Instance.CurrentLanguage][GameManager.Instance.CurrentEra].Count;
+        }
 
+        Debug.Log($"Creating progress bar with {wordCountInEra} slots");
+
+        // Create progress indicators
         for (int i = 0; i < wordCountInEra; i++)
         {
             GameObject progressImage = Instantiate(progressImagePrefab, progressBarContainer);
+            
+            // Ensure proper scaling and positioning
+            RectTransform rectTransform = progressImage.GetComponent<RectTransform>();
+            if (rectTransform != null)
+            {
+                rectTransform.localScale = Vector3.one;
+                rectTransform.anchoredPosition3D = Vector3.zero;
+            }
+
             progressImages.Add(progressImage);
+        }
+
+        // Force layout update
+        LayoutRebuilder.ForceRebuildLayoutImmediate(progressBarContainer as RectTransform);
+        
+        // Update the progress bar immediately
+        UpdateProgressBar();
+    }
+
+    private void UpdateProgressBar()
+    {
+        if (progressImages == null || progressImages.Count == 0)
+        {
+            Debug.LogWarning("No progress images to update!");
+            return;
+        }
+
+        // Get solved base words for current era
+        HashSet<string> solvedBaseWords = GameManager.Instance.GetSolvedBaseWordsForEra(GameManager.Instance.CurrentEra);
+        Debug.Log($"Updating progress bar. Solved words: {solvedBaseWords.Count}");
+
+        for (int i = 0; i < progressImages.Count; i++)
+        {
+            if (progressImages[i] == null) continue;
+
+            string wordAtIndex = null;
+            if (GameManager.Instance.eraWordsPerLanguage.ContainsKey(GameManager.Instance.CurrentLanguage) &&
+                GameManager.Instance.eraWordsPerLanguage[GameManager.Instance.CurrentLanguage].ContainsKey(GameManager.Instance.CurrentEra))
+            {
+                var words = GameManager.Instance.eraWordsPerLanguage[GameManager.Instance.CurrentLanguage][GameManager.Instance.CurrentEra];
+                if (i < words.Count)
+                {
+                    wordAtIndex = words[i];
+                }
+            }
+            
+            bool isSolved = false;
+            if (wordAtIndex != null)
+            {
+                string baseWord = GameManager.Instance.GetBaseWord(wordAtIndex);
+                isSolved = solvedBaseWords.Contains(baseWord);
+            }
+
+            RectTransform rectTransform = progressImages[i].GetComponent<RectTransform>();
+            Image image = progressImages[i].GetComponent<Image>();
+            
+            if (rectTransform != null && image != null)
+            {
+                image.color = isSolved ? Color.green : Color.white;
+                
+                // Scale the current word indicator
+                Vector3 newScale = i == currentWordIndex ? 
+                    new Vector3(0.39f, 0.39f, 0.39f) : 
+                    new Vector3(0.32f, 0.32f, 0.32f);
+                
+                rectTransform.localScale = newScale;
+            }
         }
     }
 
@@ -766,40 +847,6 @@ public class WordGameManager : MonoBehaviour
             LoadWord(currentWordIndex);
             UpdateProgressBar();
             UpdateSentenceDisplay();
-        }
-    }
-
-    public void UpdateProgressBar()
-    {
-        if (progressImages == null || progressImages.Count == 0) return;
-
-        // Get solved base words for current era
-        HashSet<string> solvedBaseWords = GameManager.Instance.GetSolvedBaseWordsForEra(GameManager.Instance.CurrentEra);
-
-        for (int i = 0; i < progressImages.Count; i++)
-        {
-            if (progressImages[i] == null) continue;
-
-            string wordAtIndex = currentEraWords != null && currentEraWords.Count > i ? currentEraWords[i] : null;
-            
-            bool isSolved = false;
-            if (wordAtIndex != null)
-            {
-                // Get the base word for the current word
-                string baseWord = GameManager.Instance.GetBaseWord(wordAtIndex);
-                isSolved = solvedBaseWords.Contains(baseWord);
-            }
-
-            RectTransform rectTransform = progressImages[i].GetComponent<RectTransform>();
-            Image image = progressImages[i].GetComponent<Image>();
-            
-            if (rectTransform != null && image != null)
-            {
-                image.color = isSolved ? Color.green : Color.white;
-                rectTransform.localScale = i == currentWordIndex ? 
-                    new Vector3(0.39f, 0.39f, 0.39f) : 
-                    new Vector3(0.32f, 0.32f, 0.32f);
-            }
         }
     }
 

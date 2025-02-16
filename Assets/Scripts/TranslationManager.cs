@@ -28,7 +28,9 @@ public class TranslationManager : MonoBehaviour
                 {"ancient_greece", "Ancient Greece"},
                 {"points", "points"},
                 {"buy", "Buy"},
-                {"viking_age", "Viking Age"}
+                {"viking_age", "Viking Age"},
+                {"ottoman_empire", "Ottoman Empire"},
+                {"feudal_japan", "Feudal Japan"}
             }
         },
         {
@@ -52,7 +54,9 @@ public class TranslationManager : MonoBehaviour
                 {"ancient_greece", "Antik Yunan"},
                 {"points", "puan"},
                 {"buy", "Al"},
-                {"viking_age", "Viking Çağı"}
+                {"viking_age", "Viking Çağı"},
+                {"ottoman_empire", "Osmanlı İmparatorluğu"},
+                {"feudal_japan", "Feodal Japonya"}
             }
         }
     };
@@ -72,30 +76,20 @@ public class TranslationManager : MonoBehaviour
 
     private void Start()
     {
-        Debug.Log("TranslationManager started. Available languages: " + 
-                  string.Join(", ", translations.Keys));
-        
-        foreach (var lang in translations.Keys)
-        {
-            Debug.Log($"Keys in {lang}: " + 
-                      string.Join(", ", translations[lang].Keys));
-        }
+
     }
 
     public string GetTranslation(string key)
     {
         string currentLanguage = GameManager.Instance.CurrentLanguage;
-        Debug.Log($"Getting translation for key: {key}, language: {currentLanguage}"); // Debug log
         
         if (translations.ContainsKey(currentLanguage) && 
             translations[currentLanguage].ContainsKey(key))
         {
             string translation = translations[currentLanguage][key];
-            Debug.Log($"Found translation: {translation}"); // Debug log
             return translation;
         }
 
-        Debug.LogWarning($"Translation not found for key: {key} in language: {currentLanguage}");
         return key;
     }
 

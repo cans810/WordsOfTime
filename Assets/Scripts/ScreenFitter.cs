@@ -6,6 +6,8 @@ public class ScreenFitter : MonoBehaviour
     private RectTransform rectTransform;
     private Canvas canvas;
 
+    [SerializeField] private float scaleMultiplier = 1.5f;
+
     private void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
@@ -26,26 +28,32 @@ public class ScreenFitter : MonoBehaviour
     {
         if (rectTransform == null || canvas == null) return;
 
-        // Get screen dimensions
-        float screenWidth = Screen.width;
-        float screenHeight = Screen.height;
+        // Get screen dimensions in canvas space
+        Vector2 screenSize = new Vector2(Screen.width, Screen.height);
+        if (canvas.renderMode != RenderMode.ScreenSpaceOverlay)
+        {
+            screenSize = screenSize / canvas.scaleFactor;
+        }
 
-        // Get current rect dimensions
-        Vector2 size = rectTransform.rect.size;
-        float rectWidth = size.x;
-        float rectHeight = size.y;
+        // Calculate the current rect size
+        Vector2 rectSize = rectTransform.rect.size;
+        
+        // First calculate base scale to fit screen
+        float scaleX = screenSize.x / rectSize.x;
+        float scaleY = screenSize.y / rectSize.y;
+        float baseScale = Mathf.Min(scaleX, scaleY);
 
-        // Calculate scale needed to fit screen
-        float scaleX = screenWidth / rectWidth;
-        float scaleY = screenHeight / rectHeight;
+        // Apply multiplier to get desired scale
+        float desiredScale = baseScale * scaleMultiplier;
 
-        // Use the smaller scale to ensure it fits within screen
-        float scale = Mathf.Min(scaleX, scaleY, 1f); // Never scale up, only down if needed
-
-        // Apply the scale
-        rectTransform.localScale = new Vector3(scale, scale, 1f);
-
-        // Center the element
-        rectTransform.anchoredPosition = Vector2.zero;
+        // Only scale down if the final size would exceed screen bounds
+        if (desiredScale * rectSize.x > screenSize.x || desiredScale * rectSize.y > screenSize.y)
+        {
+            rectTransform.localScale = Vector3.one * baseScale;
+        }
+        else
+        {
+            rectTransform.localScale = Vector3.one * desiredScale;
+        }
     }
 }

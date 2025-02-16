@@ -112,6 +112,61 @@
             "The Egyptians thought the _____ was special.",
             "Which animal was treated like a god in ancient Egypt? The _____"
           ]
+        },
+        {
+          "word": "SCARAB",
+          "translations": {
+            "en": "SCARAB",
+            "tr": "SKARABE"
+          },
+          "sentences": [
+            "The _____ beetle was a symbol of rebirth in ancient Egypt.",
+            "What insect was considered sacred by the Egyptians? The _____"
+          ]
+        },
+        {
+          "word": "PAPYRUS",
+          "translations": {
+            "en": "PAPYRUS",
+            "tr": "PAPİRÜS"
+          },
+          "sentences": [
+            "Ancient Egyptians wrote on _____ made from reeds.",
+            "What plant was used to make paper in ancient Egypt? _____"
+          ]
+        },
+        {
+          "word": "OSIRIS",
+          "translations": {
+            "en": "OSIRIS",
+            "tr": "OSİRİS"
+          },
+          "sentences": [
+            "_____ was the Egyptian god of the afterlife.",
+            "Which god was often shown with green skin? _____"
+          ]
+        },
+        {
+          "word": "CANOPIC",
+          "translations": {
+            "en": "CANOPIC",
+            "tr": "KANOPİK"
+          },
+          "sentences": [
+            "_____ jars held the organs of mummies.",
+            "What special containers were used in mummification? _____ jars"
+          ]
+        },
+        {
+          "word": "HORUS",
+          "translations": {
+            "en": "HORUS",
+            "tr": "HORUS"
+          },
+          "sentences": [
+            "_____ was the falcon-headed god of the sky.",
+            "Which Egyptian god was often shown as a falcon? _____"
+          ]
         }
       ]
     },
@@ -226,6 +281,61 @@
           "sentences": [
             "Medieval _____ routes connected distant kingdoms.",
             "What activity brought new goods and ideas to Europe? _____"
+          ]
+        },
+        {
+          "word": "VILLAGE",
+          "translations": {
+            "en": "VILLAGE",
+            "tr": "KÖY"
+          },
+          "sentences": [
+            "A medieval _____ was home to farmers and craftsmen.",
+            "Where did most people live in the Middle Ages? In a _____"
+          ]
+        },
+        {
+          "word": "CHURCH",
+          "translations": {
+            "en": "CHURCH",
+            "tr": "KİLİSE"
+          },
+          "sentences": [
+            "The _____ was the center of community life.",
+            "What building was the tallest in most medieval towns? The _____"
+          ]
+        },
+        {
+          "word": "FEAST",
+          "translations": {
+            "en": "FEAST",
+            "tr": "ŞÖLEN"
+          },
+          "sentences": [
+            "A _____ was held to celebrate special occasions.",
+            "What event brought people together for food and music? A _____"
+          ]
+        },
+        {
+          "word": "HERALD",
+          "translations": {
+            "en": "HERALD",
+            "tr": "TELLAL"
+          },
+          "sentences": [
+            "A _____ delivered important messages for the king.",
+            "Who announced news and proclamations in the town square? The _____"
+          ]
+        },
+        {
+          "word": "TOURNAMENT",
+          "translations": {
+            "en": "TOURNAMENT",
+            "tr": "TURNUVA"
+          },
+          "sentences": [
+            "A _____ was a contest of skill for knights.",
+            "What event featured jousting and sword fights? The _____"
           ]
         }
       ]
@@ -342,6 +452,61 @@
             "Printed _____ made knowledge available to more people.",
             "What once cost as much as a house? A _____"
           ]
+        },
+        {
+          "word": "SCULPTURE",
+          "translations": {
+            "en": "SCULPTURE",
+            "tr": "HEYKEL"
+          },
+          "sentences": [
+            "Renaissance _____ showed realistic human forms.",
+            "What art form used marble to create lifelike figures? _____"
+          ]
+        },
+        {
+          "word": "PERSPECTIVE",
+          "translations": {
+            "en": "PERSPECTIVE",
+            "tr": "PERSPEKTİF"
+          },
+          "sentences": [
+            "Artists used _____ to make paintings look more real.",
+            "What technique made objects appear farther away? _____"
+          ]
+        },
+        {
+          "word": "HUMANISM",
+          "translations": {
+            "en": "HUMANISM",
+            "tr": "HÜMANİZM"
+          },
+          "sentences": [
+            "_____ focused on human potential and achievements.",
+            "What philosophy valued individual thought and creativity? _____"
+          ]
+        },
+        {
+          "word": "INVENTION",
+          "translations": {
+            "en": "INVENTION",
+            "tr": "İCAT"
+          },
+          "sentences": [
+            "The Renaissance was a time of great _____.",
+            "What word describes new creations that changed the world? _____"
+          ]
+        },
+        {
+          "word": "ARCHITECTURE",
+          "translations": {
+            "en": "ARCHITECTURE",
+            "tr": "MİMARLIK"
+          },
+          "sentences": [
+            "Renaissance _____ used symmetry and proportion.",
+            "What art form created beautiful buildings and domes? _____"
+          ]
         }
       ]
     },
@@ -456,6 +621,61 @@
           "sentences": [
             "_____ workers were common in early factories.",
             "Who worked in dangerous factory conditions? _____ workers"
+          ]
+        },
+        {
+          "word": "TEXTILE",
+          "translations": {
+            "en": "TEXTILE",
+            "tr": "TEKSTİL"
+          },
+          "sentences": [
+            "The _____ industry was one of the first to be mechanized.",
+            "What industry made cloth and clothing? The _____ industry"
+          ]
+        },
+        {
+          "word": "RAILWAY",
+          "translations": {
+            "en": "RAILWAY",
+            "tr": "DEMİRYOLU"
+          },
+          "sentences": [
+            "The _____ system connected cities and towns.",
+            "What transportation system changed how goods were moved? The _____"
+          ]
+        },
+        {
+          "word": "INVENTION",
+          "translations": {
+            "en": "INVENTION",
+            "tr": "İCAT"
+          },
+          "sentences": [
+            "The Industrial Revolution was a time of great _____.",
+            "What word describes new creations that changed the world? _____"
+          ]
+        },
+        {
+          "word": "LABOR",
+          "translations": {
+            "en": "LABOR",
+            "tr": "EMEK"
+          },
+          "sentences": [
+            "Factory _____ was often hard and dangerous.",
+            "What did workers provide in exchange for wages? _____"
+          ]
+        },
+        {
+          "word": "UNION",
+          "translations": {
+            "en": "UNION",
+            "tr": "SENDİKA"
+          },
+          "sentences": [
+            "Workers formed a _____ to fight for better conditions.",
+            "What organization protected workers' rights? A _____"
           ]
         }
       ]
@@ -572,6 +792,61 @@
             "Greek _____ laid the foundation for modern knowledge.",
             "What field studied stars and mathematics in ancient Greece? _____"
           ]
+        },
+        {
+          "word": "ACROPOLIS",
+          "translations": {
+            "en": "ACROPOLIS",
+            "tr": "AKROPOL"
+          },
+          "sentences": [
+            "The _____ was the high city in Athens.",
+            "What hilltop was the center of ancient Athens? The _____"
+          ]
+        },
+        {
+          "word": "OLIVE",
+          "translations": {
+            "en": "OLIVE",
+            "tr": "ZEYTİN"
+          },
+          "sentences": [
+            "The _____ tree was sacred to the Greeks.",
+            "What plant provided food, oil, and wood? The _____ tree"
+          ]
+        },
+        {
+          "word": "ZEUS",
+          "translations": {
+            "en": "ZEUS",
+            "tr": "ZEUS"
+          },
+          "sentences": [
+            "_____ was the king of the Greek gods.",
+            "Who ruled from Mount Olympus? _____"
+          ]
+        },
+        {
+          "word": "ATHLETE",
+          "translations": {
+            "en": "ATHLETE",
+            "tr": "ATLET"
+          },
+          "sentences": [
+            "An _____ trained for the Olympic games.",
+            "Who competed in running and wrestling? An _____"
+          ]
+        },
+        {
+          "word": "MARATHON",
+          "translations": {
+            "en": "MARATHON",
+            "tr": "MARATON"
+          },
+          "sentences": [
+            "The _____ race comes from an ancient Greek story.",
+            "What long-distance race has its origins in Greece? The _____"
+          ]
         }
       ]
     },
@@ -687,8 +962,416 @@
             "The word _____ originally meant 'pirate' or 'raider'.",
             "What did Vikings call themselves when they went raiding? _____"
           ]
+        },
+        {
+          "word": "LONGSHIP",
+          "translations": {
+            "en": "LONGSHIP",
+            "tr": "UZUN GEMİ"
+          },
+          "sentences": [
+            "The Viking _____ was fast and could sail in shallow waters.",
+            "What ship allowed Vikings to travel far and raid quickly? The _____"
+          ]
+        },
+        {
+          "word": "ODIN",
+          "translations": {
+            "en": "ODIN",
+            "tr": "ODİN"
+          },
+          "sentences": [
+            "_____ was the chief god in Norse mythology.",
+            "Which god had two ravens named Huginn and Muninn? _____"
+          ]
+        },
+        {
+          "word": "MEAD",
+          "translations": {
+            "en": "MEAD",
+            "tr": "BAL ŞARABI"
+          },
+          "sentences": [
+            "Vikings drank _____ made from honey.",
+            "What alcoholic drink was popular at Viking feasts? _____"
+          ]
+        },
+        {
+          "word": "SHIELD",
+          "translations": {
+            "en": "SHIELD",
+            "tr": "KALKAN"
+          },
+          "sentences": [
+            "A Viking warrior carried a round _____ for protection.",
+            "What defensive item was often painted with symbols? The _____"
+          ]
+        },
+        {
+          "word": "NORSE",
+          "translations": {
+            "en": "NORSE",
+            "tr": "İSKANDİNAV"
+          },
+          "sentences": [
+            "The _____ people lived in Scandinavia.",
+            "What culture is associated with Vikings? The _____ culture"
+          ]
+        }
+      ]
+    },
+    {
+      "era": "Feudal Japan",
+      "words": [
+        {
+          "word": "SAMURAI",
+          "translations": {
+            "en": "SAMURAI",
+            "tr": "SAMURAY"
+          },
+          "sentences": [
+            "The _____ were skilled warriors who followed a strict code.",
+            "Who served as the military nobility in feudal Japan? The _____"
+          ]
+        },
+        {
+          "word": "SHOGUN",
+          "translations": {
+            "en": "SHOGUN",
+            "tr": "ŞOGUN"
+          },
+          "sentences": [
+            "The _____ was the military leader of Japan.",
+            "Who had more power than the emperor in feudal Japan? The _____"
+          ]
+        },
+        {
+          "word": "KATANA",
+          "translations": {
+            "en": "KATANA",
+            "tr": "KATANA"
+          },
+          "sentences": [
+            "A _____ was the long sword carried by samurai.",
+            "What curved sword was the symbol of a samurai? The _____"
+          ]
+        },
+        {
+          "word": "DAIMYO",
+          "translations": {
+            "en": "DAIMYO",
+            "tr": "DAİMYO"
+          },
+          "sentences": [
+            "A _____ was a powerful land-owning lord.",
+            "Who ruled over large territories in feudal Japan? The _____"
+          ]
+        },
+        {
+          "word": "BUSHIDO",
+          "translations": {
+            "en": "BUSHIDO",
+            "tr": "BUSHİDO"
+          },
+          "sentences": [
+            "_____ was the code of honor followed by samurai.",
+            "What code emphasized loyalty, courage, and discipline? _____"
+          ]
+        },
+        {
+          "word": "NINJA",
+          "translations": {
+            "en": "NINJA",
+            "tr": "NİNJA"
+          },
+          "sentences": [
+            "A _____ was a skilled spy and assassin.",
+            "Who used stealth and disguise to complete missions? The _____"
+          ]
+        },
+        {
+          "word": "TEA",
+          "translations": {
+            "en": "TEA",
+            "tr": "ÇAY"
+          },
+          "sentences": [
+            "The _____ ceremony was an important cultural practice.",
+            "What drink was central to Japanese rituals? _____"
+          ]
+        },
+        {
+          "word": "ZEN",
+          "translations": {
+            "en": "ZEN",
+            "tr": "ZEN"
+          },
+          "sentences": [
+            "_____ Buddhism influenced Japanese art and culture.",
+            "What philosophy focused on meditation and simplicity? _____"
+          ]
+        },
+        {
+          "word": "PAGODA",
+          "translations": {
+            "en": "PAGODA",
+            "tr": "PAGODA"
+          },
+          "sentences": [
+            "A _____ is a tiered tower with curved roofs.",
+            "What type of building is common in Japanese temples? A _____"
+          ]
+        },
+        {
+          "word": "KIMONO",
+          "translations": {
+            "en": "KIMONO",
+            "tr": "KİMONO"
+          },
+          "sentences": [
+            "A _____ is a traditional Japanese robe.",
+            "What clothing item is worn with a wide belt? The _____"
+          ]
+        },
+        {
+          "word": "GEISHA",
+          "translations": {
+            "en": "GEISHA",
+            "tr": "GEYŞA"
+          },
+          "sentences": [
+            "A _____ was a trained entertainer and artist.",
+            "Who performed music, dance, and tea ceremonies? The _____"
+          ]
+        },
+        {
+          "word": "DOJO",
+          "translations": {
+            "en": "DOJO",
+            "tr": "DOJO"
+          },
+          "sentences": [
+            "A _____ is a training hall for martial arts.",
+            "Where did samurai practice swordsmanship? The _____"
+          ]
+        },
+        {
+          "word": "HAIKU",
+          "translations": {
+            "en": "HAIKU",
+            "tr": "HAİKU"
+          },
+          "sentences": [
+            "A _____ is a short poem with three lines.",
+            "What type of poetry captures nature and emotions? A _____"
+          ]
+        },
+        {
+          "word": "SHINTO",
+          "translations": {
+            "en": "SHINTO",
+            "tr": "ŞİNTO"
+          },
+          "sentences": [
+            "_____ is the traditional religion of Japan.",
+            "What belief system focuses on nature spirits? _____"
+          ]
+        },
+        {
+          "word": "SUSHI",
+          "translations": {
+            "en": "SUSHI",
+            "tr": "SUŞİ"
+          },
+          "sentences": [
+            "_____ is a traditional Japanese dish made with rice and fish.",
+            "What food is often served with soy sauce and wasabi? _____"
+          ]
+        }
+      ]
+    },
+    {
+      "era": "Ottoman Empire",
+      "words": [
+        {
+          "word": "SULTAN",
+          "translations": {
+            "en": "SULTAN",
+            "tr": "SULTAN"
+          },
+          "sentences": [
+            "The _____ was the ruler of the Ottoman Empire.",
+            "Who was the head of both government and religion? The _____"
+          ]
+        },
+        {
+          "word": "JANISSARY",
+          "translations": {
+            "en": "JANISSARY",
+            "tr": "YENİÇERİ"
+          },
+          "sentences": [
+            "The _____ were elite soldiers of the Ottoman army.",
+            "Who were the Sultan's personal bodyguards? The _____"
+          ]
+        },
+        {
+          "word": "MOSQUE",
+          "translations": {
+            "en": "MOSQUE",
+            "tr": "CAMİ"
+          },
+          "sentences": [
+            "A _____ is a place of worship for Muslims.",
+            "What building has a minaret and a dome? The _____"
+          ]
+        },
+        {
+          "word": "BAZAAR",
+          "translations": {
+            "en": "BAZAAR",
+            "tr": "PAZAR"
+          },
+                    "sentences": [
+            "The _____ was a busy marketplace in Ottoman cities.",
+            "Where did people buy and sell goods in the Ottoman Empire? The _____"
+          ]
+        },
+        {
+          "word": "TURBAN",
+          "translations": {
+            "en": "TURBAN",
+            "tr": "TÜRBAN"
+          },
+          "sentences": [
+            "The _____ was a traditional headwear for Ottoman men.",
+            "What head covering was commonly worn by Ottoman officials? The _____"
+          ]
+        },
+        {
+          "word": "MINARET",
+          "translations": {
+            "en": "MINARET",
+            "tr": "MİNARE"
+          },
+          "sentences": [
+            "The _____ was a tall tower used to call people to prayer.",
+            "What part of a mosque is used for the call to prayer? The _____"
+          ]
+        },
+        {
+          "word": "CARAVAN",
+          "translations": {
+            "en": "CARAVAN",
+            "tr": "KERVAN"
+          },
+          "sentences": [
+            "A _____ carried goods across the desert.",
+            "What group of travelers moved goods along trade routes? The _____"
+          ]
+        },
+        {
+          "word": "HAMMAM",
+          "translations": {
+            "en": "HAMMAM",
+            "tr": "HAMAM"
+          },
+          "sentences": [
+            "The _____ was a public bathhouse in Ottoman cities.",
+            "Where did people go to bathe and socialize? The _____"
+          ]
+        },
+        {
+          "word": "TUGRA",
+          "translations": {
+            "en": "TUGRA",
+            "tr": "TUĞRA"
+          },
+          "sentences": [
+            "The _____ was the Sultan's official signature.",
+            "What symbol represented the Sultan's authority? The _____"
+          ]
+        },
+        {
+          "word": "COFFEE",
+          "translations": {
+            "en": "COFFEE",
+            "tr": "KAHVE"
+          },
+          "sentences": [
+            "_____ became popular in the Ottoman Empire.",
+            "What drink was first introduced to Europe through the Ottomans? _____"
+          ]
+        },
+        {
+          "word": "TULIP",
+          "translations": {
+            "en": "TULIP",
+            "tr": "LALE"
+          },
+          "sentences": [
+            "The _____ was a symbol of the Ottoman Empire.",
+            "What flower became famous during the Tulip Era? The _____"
+          ]
+        },
+        {
+          "word": "KILIM",
+          "translations": {
+            "en": "KILIM",
+            "tr": "KİLİM"
+          },
+          "sentences": [
+            "A _____ is a traditional woven rug.",
+            "What type of carpet was made by Ottoman artisans? The _____"
+          ]
+        },
+        {
+          "word": "DIVAN",
+          "translations": {
+            "en": "DIVAN",
+            "tr": "DİVAN"
+          },
+          "sentences": [
+            "The _____ was the council of the Ottoman Empire.",
+            "Where did the Sultan meet with his advisors? The _____"
+          ]
+        },
+        {
+          "word": "KAFTAN",
+          "translations": {
+            "en": "KAFTAN",
+            "tr": "KAFTAN"
+          },
+          "sentences": [
+            "A _____ was a long robe worn by Ottoman royalty.",
+            "What clothing item was a symbol of status in the Ottoman court? The _____"
+          ]
+        },
+        {
+          "word": "SEBIL",
+          "translations": {
+            "en": "SEBIL",
+            "tr": "SEBİL"
+          },
+          "sentences": [
+            "A _____ was a public fountain for drinking water.",
+            "What structure provided water to people in Ottoman cities? The _____"
+          ]
+        },
+        {
+          "word": "BOSPHORUS",
+          "translations": {
+            "en": "BOSPHORUS",
+            "tr": "BOĞAZ"
+          },
+          "sentences": [
+            "The _____ is the strait that connects the Black Sea to the Sea of Marmara.",
+            "What waterway runs through Istanbul? The _____"
+          ]
         }
       ]
     }
   ]
 }
+
+           

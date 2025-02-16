@@ -136,6 +136,12 @@ public class TranslatedUI : MonoBehaviour
             case "vikingage":
                 translationKey = "viking_age";
                 break;
+            case "ottomanempire":
+                translationKey = "ottoman_empire";
+                break;
+            case "feudaljapan":
+                translationKey = "feudal_japan";
+                break;
             default:
                 translationKey = parentName + "_button";
                 break;

@@ -581,8 +581,8 @@ public class GridManager : MonoBehaviour
         // Calculate dynamic cell size before generating grid
         CalculateDynamicCellSize();
 
-        const float SPAWN_DELAY = 0.2f;
-        const float WAVE_DELAY = 0.5f;
+        const float SPAWN_DELAY = 1f;
+        const float WAVE_DELAY = 1f;
         int index = 0;
 
         // Center the grid in the container

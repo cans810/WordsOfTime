@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 using System;
 using UnityEngine.UI;
 using System.Collections;
+using UnityEngine.Networking;
 
 public class GameManager : MonoBehaviour
 {
@@ -22,7 +23,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    [SerializeField] private List<string> eraList = new List<string>() { "Ancient Egypt", "Ancient Greece", "Medieval Europe", "Renaissance", "Industrial Revolution","Viking Age" };
+    [SerializeField] private List<string> eraList = new List<string>() { "Ancient Egypt", "Ancient Greece", "Medieval Europe", "Renaissance", "Industrial Revolution","Viking Age","Ottoman Empire","Feudal Japan" };
     [SerializeField] private List<Sprite> eraImages = new List<Sprite>();
     
     private string currentEra;
@@ -63,9 +64,9 @@ public class GameManager : MonoBehaviour
     // Store hint usage separately (using English base words)
     private Dictionary<string, HashSet<int>> usedHints = new Dictionary<string, HashSet<int>>();
 
-    public const int POINTS_PER_WORD = 100;
-    public const int HINT_COST = 50;
-    public const int SECOND_HINT_COST = 100;
+    public const int POINTS_PER_WORD = 250;
+    public const int HINT_COST = 100;
+    public const int SECOND_HINT_COST = 200;
     private const int GRID_SIZE = 6;
 
     public List<string> EraList => eraList;
@@ -99,7 +100,9 @@ public class GameManager : MonoBehaviour
         { "Renaissance", 1000 },   
         { "Industrial Revolution", 2000 }, 
         { "Ancient Greece", 3000 },
-        { "Viking Age", 4000 },      
+        { "Viking Age", 4000 },
+        { "Feudal Japan", 5000 },
+        { "Ottoman Empire", 6000 }
     };
 
     // Add language-related fields
@@ -124,7 +127,9 @@ public class GameManager : MonoBehaviour
         "Industrial Revolution",
         "Ancient Greece",
         "Renaissance",
-        "Viking Age"  // Add Viking Age
+        "Viking Age",
+        "Ottoman Empire",
+        "Feudal Japan"
     };
 
     private HashSet<string> guessedWords = new HashSet<string>();
@@ -322,19 +327,45 @@ public class GameManager : MonoBehaviour
     {
         try
         {
-            // Load English words from StreamingAssets
-            string enFilePath = Path.Combine(Application.streamingAssetsPath, "words.json");
-            if (File.Exists(enFilePath))
-            {
-                LoadLanguageWords(enFilePath, "en");
-            }
+            // Handle Android path differently
+            #if UNITY_ANDROID && !UNITY_EDITOR
+                // For English words
+                WWW enReader = new WWW(Path.Combine(Application.streamingAssetsPath, "words.json"));
+                while (!enReader.isDone) { }
+                string enJsonContent = enReader.text;
+                
+                // For Turkish words
+                WWW trReader = new WWW(Path.Combine(Application.streamingAssetsPath, "words_tr.json"));
+                while (!trReader.isDone) { }
+                string trJsonContent = trReader.text;
 
-            // Load Turkish words from StreamingAssets
-            string trFilePath = Path.Combine(Application.streamingAssetsPath, "words_tr.json");
-            if (File.Exists(trFilePath))
-            {
-                LoadLanguageWords(trFilePath, "tr");
-            }
+                // Load English words
+                if (!string.IsNullOrEmpty(enJsonContent))
+                {
+                    LoadLanguageWords(enJsonContent, "en", false);
+                }
+
+                // Load Turkish words
+                if (!string.IsNullOrEmpty(trJsonContent))
+                {
+                    LoadLanguageWords(trJsonContent, "tr", false);
+                }
+            #else
+                // Regular file loading for other platforms
+                string enFilePath = Path.Combine(Application.streamingAssetsPath, "words.json");
+                if (File.Exists(enFilePath))
+                {
+                    string enJsonContent = File.ReadAllText(enFilePath);
+                    LoadLanguageWords(enJsonContent, "en", true);
+                }
+
+                string trFilePath = Path.Combine(Application.streamingAssetsPath, "words_tr.json");
+                if (File.Exists(trFilePath))
+                {
+                    string trJsonContent = File.ReadAllText(trFilePath);
+                    LoadLanguageWords(trJsonContent, "tr", true);
+                }
+            #endif
 
             Debug.Log($"Successfully loaded words for {eraWordsPerLanguage.Count} languages");
             if (string.IsNullOrEmpty(currentEra) && eraList.Count > 0)
@@ -348,11 +379,10 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void LoadLanguageWords(string filePath, string language)
+    private void LoadLanguageWords(string jsonContent, string language, bool isFromFile)
     {
         try 
         {
-            string jsonContent = File.ReadAllText(filePath);
             var wordData = JsonUtility.FromJson<WordSetList>(jsonContent);
             
             if (!eraWordsPerLanguage.ContainsKey(language))
@@ -379,7 +409,7 @@ public class GameManager : MonoBehaviour
                     wordSentencesPerLanguage[language][internalEra][word] = new List<string>(wordEntry.sentences);
 
                     // Store translations for this word
-                    string baseWord = wordEntry.translations.en; // English version is our base
+                    string baseWord = wordEntry.translations.en;
                     if (!wordTranslations.ContainsKey(baseWord))
                     {
                         wordTranslations[baseWord] = new Dictionary<string, string>
@@ -395,7 +425,7 @@ public class GameManager : MonoBehaviour
         }
         catch (System.Exception e)
         {
-            Debug.LogError($"Error loading {language} words from {filePath}: {e.Message}");
+            Debug.LogError($"Error loading {language} words: {e.Message}");
         }
     }
 
@@ -408,7 +438,9 @@ public class GameManager : MonoBehaviour
             {"Orta Çağ Avrupası", "Medieval Europe"},
             {"Rönesans", "Renaissance"},
             {"Sanayi Devrimi", "Industrial Revolution"},
-            {"Viking Çağı", "Viking Age"}
+            {"Viking Çağı", "Viking Age"},
+            {"Osmanlı İmparatorluğu", "Ottoman Empire"},
+            {"Feodal Japonya", "Feudal Japan"}
         };
 
         if (eraMapping.ContainsKey(turkishEra))
@@ -892,7 +924,9 @@ public class GameManager : MonoBehaviour
             "medievaleurope" => "Medieval Europe",
             "renaissance" => "Renaissance",
             "industrialrevolution" => "Industrial Revolution",
-            "vikingage" => "Viking Age",  // Add Viking Age
+            "vikingage" => "Viking Age",
+            "ottomanempire" => "Ottoman Empire",
+            "feudaljapan" => "Feudal Japan",
             _ => eraName
         };
 

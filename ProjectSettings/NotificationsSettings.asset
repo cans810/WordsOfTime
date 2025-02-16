@@ -43,11 +43,11 @@
         },
         "DrawableResources": [
             {
-                "Id": "icon_0",
-                "Type": 0,
+                "Id": "icon_1",
+                "Type": 1,
                 "Asset": {
                     "fileID": 2800000,
-                    "guid": "e1c0ca80d5164fc419e330172c785d47",
+                    "guid": "5af4ffacde3042e4d951a134b86fc545",
                     "type": 3
                 }
             }

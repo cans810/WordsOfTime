@@ -10,8 +10,8 @@
             "tr": "FİRAVUN"
           },
           "sentences": [
-            "_____ Mısır'ı büyük güçle yönetti.",
-            "Antik Mısır'da dev piramitleri kim inşa etti? _____"
+            "_____ Mısır'ı büyük bir güçle yönetti.",
+            "Antik Mısır'da kim büyük piramitleri inşa ettirdi? _____"
           ]
         },
         {
@@ -22,7 +22,7 @@
           },
           "sentences": [
             "Büyük _____ taş bloklardan inşa edildi.",
-            "Firavunlar için mezar olarak kullanılan antik yapı neydi? _____"
+            "Firavunların mezarları olarak hizmet veren yapılar neydi? _____"
           ]
         },
         {
@@ -32,8 +32,8 @@
             "tr": "SFENKS"
           },
           "sentences": [
-            "_____ aslan vücutlu ve insan başlıdır.",
-            "Piramitleri hangi ünlü heykel korur? _____"
+            "_____ aslan vücutlu ve insan başlı bir heykeldir.",
+            "Piramitleri koruyan ünlü heykel nedir? _____"
           ]
         },
         {
@@ -43,8 +43,8 @@
             "tr": "MUMYA"
           },
           "sentences": [
-            "Bir _____ özel kumaşlarla sarıldı.",
-            "Ölüleri korumak için mezara ne yerleştirilirdi? _____"
+            "Bir _____ özel kumaşlara sarılırdı.",
+            "Ölüleri korumak için mezara ne konurdu? _____"
           ]
         },
         {
@@ -54,7 +54,7 @@
             "tr": "ALTIN"
           },
           "sentences": [
-            "Firavunun maskesi _____'dan yapılmıştı.",
+            "Firavunun maskesi _____ yapılmıştı.",
             "Güzel takılar yapmak için hangi değerli metal kullanılırdı? _____"
           ]
         },
@@ -65,8 +65,8 @@
             "tr": "MEZAR"
           },
           "sentences": [
-            "_____ birçok hazine barındırıyordu.",
-            "Firavun için inşa edilen özel yer neydi? _____"
+            "_____ birçok hazine barındırırdı.",
+            "Firavunlar için özel olarak inşa edilen yer neydi? _____"
           ]
         },
         {
@@ -76,8 +76,8 @@
             "tr": "NİL"
           },
           "sentences": [
-            "_____ Nehri Mısır'a su sağladı.",
-            "Antik Mısır'da tarımı mümkün kılan nehir hangisiydi? _____"
+            "_____ Nehri Mısır'a su sağlardı.",
+            "Antik Mısır'da tarımı destekleyen nehir hangisiydi? _____"
           ]
         },
         {
@@ -87,7 +87,7 @@
             "tr": "KRALİÇE"
           },
           "sentences": [
-            "_____ Mısır'ı yönetmeye yardım etti.",
+            "_____ Mısır'ı yönetmede firavuna yardım ederdi.",
             "Sarayda firavunun yanında kim yaşardı? _____"
           ]
         },
@@ -98,8 +98,8 @@
             "tr": "KUM"
           },
           "sentences": [
-            "Sıcak _____ çölü kaplıyordu.",
-            "Rüzgar çölde neyi savuruyordu? _____"
+            "Sıcak _____ çölü kaplardı.",
+            "Rüzgar çölde neyi savururdu? _____"
           ]
         },
         {
@@ -109,8 +109,63 @@
             "tr": "KEDİ"
           },
           "sentences": [
-            "Mısırlılar _____'nin kutsal olduğunu düşünüyordu.",
-            "Antik Mısır'da hangi hayvan tanrı gibi muamele görüyordu? _____"
+            "Mısırlılar _____ özel bir hayvan olarak görürdü.",
+            "Antik Mısır'da tanrı gibi kabul edilen hayvan hangisiydi? _____"
+          ]
+        },
+        {
+          "word": "SKARABE",
+          "translations": {
+            "en": "SCARAB",
+            "tr": "SKARABE"
+          },
+          "sentences": [
+            "_____ böceği yeniden doğuşun sembolüydü.",
+            "Mısırlılar hangi böceği kutsal kabul ederdi? _____"
+          ]
+        },
+        {
+          "word": "PAPİRÜS",
+          "translations": {
+            "en": "PAPYRUS",
+            "tr": "PAPİRÜS"
+          },
+          "sentences": [
+            "Antik Mısırlılar _____ üzerine yazı yazardı.",
+            "Antik Mısır'da kağıt yapımında hangi bitki kullanılırdı? _____"
+          ]
+        },
+        {
+          "word": "OSİRİS",
+          "translations": {
+            "en": "OSIRIS",
+            "tr": "OSİRİS"
+          },
+          "sentences": [
+            "_____ ölüm sonrası yaşamın tanrısıydı.",
+            "Yeşil tenli olarak tasvir edilen tanrı kimdi? _____"
+          ]
+        },
+        {
+          "word": "KANOPİK",
+          "translations": {
+            "en": "CANOPIC",
+            "tr": "KANOPİK"
+          },
+          "sentences": [
+            "_____ kavanozlar mumyaların organlarını saklardı.",
+            "Mumyalama işleminde hangi özel kaplar kullanılırdı? _____ kavanozlar"
+          ]
+        },
+        {
+          "word": "HORUS",
+          "translations": {
+            "en": "HORUS",
+            "tr": "HORUS"
+          },
+          "sentences": [
+            "_____ şahin başlı gökyüzü tanrısıydı.",
+            "Şahin olarak tasvir edilen Mısır tanrısı kimdi? _____"
           ]
         }
       ]
@@ -125,8 +180,8 @@
             "tr": "ŞATO"
           },
           "sentences": [
-            "_____ kasabaları ve soyluları istilacılardan korumak için inşa edildi.",
-            "Hangi yapının duvarları savunma için beş metre kalınlığındaydı? _____"
+            "Bir _____ kasabaları ve soyluları istilacılardan korumak için inşa edilirdi.",
+            "Savunma için kalın duvarlara sahip yapı neydi? _____"
           ]
         },
         {
@@ -136,8 +191,8 @@
             "tr": "ŞÖVALYE"
           },
           "sentences": [
-            "Bir _____ çocukluğundan itibaren savaşmak ve soylulara hizmet etmek için eğitildi.",
-            "Şövalyelik kurallarını kim takip ederdi? _____"
+            "Bir _____ çocukluktan itibaren savaşmak ve soylulara hizmet etmek için eğitilirdi.",
+            "Şövalyelik kurallarına uyan kişi kimdi? _____"
           ]
         },
         {
@@ -147,8 +202,8 @@
             "tr": "KRAL"
           },
           "sentences": [
-            "_____ tanrısal hakla yönettiğine inanılırdı.",
-            "Sadakat karşılığında soylulara toprak kim verirdi? _____"
+            "_____ tanrı tarafından seçildiğine inanılırdı.",
+            "Soylulara toprak veren kişi kimdi? _____"
           ]
         },
         {
@@ -158,7 +213,7 @@
             "tr": "KILIÇ"
           },
           "sentences": [
-            "Bir _____ yapımı aylarca sürerdi.",
+            "Orta Çağ'da bir _____ elle aylarca yapılırdı.",
             "Şövalyeliğin sembolü olan silah neydi? _____"
           ]
         },
@@ -170,7 +225,7 @@
           },
           "sentences": [
             "_____ kralın gücünü ve otoritesini temsil ederdi.",
-            "Hangi kraliyet eşyası değerli taş ve metallerle süslüydü? _____"
+            "Değerli taşlar ve metallerle süslü kraliyet eşyası neydi? _____"
           ]
         },
         {
@@ -180,8 +235,8 @@
             "tr": "KÖYLÜ"
           },
           "sentences": [
-            "Bir _____ krallık için yiyecek üretmek üzere toprakta çalışırdı.",
-            "Lordlarına ürün veya emek olarak vergi ödeyen kimdi? _____"
+            "Bir _____ krallık için yiyecek yetiştirirdi.",
+            "Lordlarına vergi ödeyen kişi kimdi? _____"
           ]
         },
         {
@@ -192,7 +247,7 @@
           },
           "sentences": [
             "Bir _____ kitapları elle kopyalayarak bilgiyi korurdu.",
-            "Manastırlarda yaşayıp çalışan kimdi? _____"
+            "Manastırlarda yaşayan ve çalışan kişi kimdi? _____"
           ]
         },
         {
@@ -202,8 +257,8 @@
             "tr": "LONCA"
           },
           "sentences": [
-            "Bir _____ yeni zanaatkarları belirli mesleklerde eğitirdi.",
-            "Meslek sırlarını koruyan organizasyon neydi? _____"
+            "Bir _____ belirli zanaatlar için yeni ustalar yetiştirirdi.",
+            "Zanaatlarının sırlarını koruyan organizasyon neydi? _____"
           ]
         },
         {
@@ -213,8 +268,8 @@
             "tr": "ZIRH"
           },
           "sentences": [
-            "Orta Çağ _____'ı demir veya çelik levhalardan yapılırdı.",
-            "Hangi koruyucu ekipman kırk beş kilo ağırlığında olabilirdi? _____"
+            "Orta Çağ _____ demir veya çelik plakalardan yapılırdı.",
+            "100 kiloya kadar çıkabilen koruma eşyası neydi? _____"
           ]
         },
         {
@@ -225,7 +280,62 @@
           },
           "sentences": [
             "Orta Çağ _____ yolları uzak krallıkları birbirine bağlardı.",
-            "Avrupa'ya yeni mal ve fikirleri ne getirdi? _____"
+            "Avrupa'ya yeni mallar ve fikirler getiren faaliyet neydi? _____"
+          ]
+        },
+        {
+          "word": "KÖY",
+          "translations": {
+            "en": "VILLAGE",
+            "tr": "KÖY"
+          },
+          "sentences": [
+            "Orta Çağ'da bir _____ çiftçiler ve zanaatkarların eviydi.",
+            "Orta Çağ'da çoğu insan nerede yaşardı? _____"
+          ]
+        },
+        {
+          "word": "KİLİSE",
+          "translations": {
+            "en": "CHURCH",
+            "tr": "KİLİSE"
+          },
+          "sentences": [
+            "_____ toplum hayatının merkeziydi.",
+            "Orta Çağ kasabalarında en yüksek yapı neydi? _____"
+          ]
+        },
+        {
+          "word": "ŞÖLEN",
+          "translations": {
+            "en": "FEAST",
+            "tr": "ŞÖLEN"
+          },
+          "sentences": [
+            "Bir _____ özel günleri kutlamak için düzenlenirdi.",
+            "İnsanları yemek ve müzik için bir araya getiren etkinlik neydi? _____"
+          ]
+        },
+        {
+          "word": "TELLAL",
+          "translations": {
+            "en": "HERALD",
+            "tr": "TELLAL"
+          },
+          "sentences": [
+            "Bir _____ kral için önemli mesajlar iletirdi.",
+            "Kasaba meydanında haberleri duyuran kişi kimdi? _____"
+          ]
+        },
+        {
+          "word": "TURNUVA",
+          "translations": {
+            "en": "TOURNAMENT",
+            "tr": "TURNUVA"
+          },
+          "sentences": [
+            "Bir _____ şövalyelerin becerilerini sergilediği bir yarışmaydı.",
+            "Cirit ve kılıç dövüşlerinin yapıldığı etkinlik neydi? _____"
           ]
         }
       ]
@@ -241,7 +351,7 @@
           },
           "sentences": [
             "Zengin _____ sınıfı Rönesans sanat hareketini finanse etti.",
-            "Avrupa pazarlarına egzotik malları kim getirdi? _____"
+            "Avrupa pazarlarına egzotik mallar getiren kişi kimdi? _____"
           ]
         },
         {
@@ -251,8 +361,8 @@
             "tr": "SANATÇI"
           },
           "sentences": [
-            "Bir _____ Rönesans döneminde insan anatomisini çalışırdı.",
-            "Doğal malzemelerden kendi boya renklerini kim karıştırırdı? _____"
+            "Bir _____ insan anatomisini incelerdi.",
+            "Kendi boya renklerini doğal malzemelerden yapan kişi kimdi? _____"
           ]
         },
         {
@@ -262,8 +372,8 @@
             "tr": "BOYA"
           },
           "sentences": [
-            "Rönesans sanatçıları _____'yı yumurta sarısı ve pigmentlerden yapardı.",
-            "Sanatta daha zengin renklere izin veren yeni icat neydi? _____"
+            "Rönesans sanatçıları _____ yumurta sarısı ve pigmentlerden yapardı.",
+            "Sanat eserlerinde daha zengin renkler sağlayan buluş neydi? _____"
           ]
         },
         {
@@ -273,8 +383,8 @@
             "tr": "HAMİ"
           },
           "sentences": [
-            "Varlıklı bir _____ sanatçıları ve eserlerini desteklerdi.",
-            "Birçok büyük sanat eserini kim sipariş etti? _____"
+            "Zengin bir _____ sanatçıları ve eserlerini desteklerdi.",
+            "Birçok büyük sanat eserini kim sipariş ederdi? _____"
           ]
         },
         {
@@ -284,8 +394,8 @@
             "tr": "MATBAA"
           },
           "sentences": [
-            "_____ yeni fikirlerin hızla yayılmasına yardımcı oldu.",
-            "Kitapları daha uygun fiyatlı yapan icat neydi? _____ makinesi"
+            "_____ yeni fikirlerin hızla yayılmasını sağladı.",
+            "Kitapları daha uygun fiyatlı hale getiren buluş neydi? _____"
           ]
         },
         {
@@ -296,7 +406,7 @@
           },
           "sentences": [
             "İlk modern _____ sistemi Rönesans İtalya'sında başladı.",
-            "Avrupa genelinde ticareti finanse eden kurum neydi? _____"
+            "Avrupa çapında ticareti finanse eden kurum neydi? _____"
           ]
         },
         {
@@ -307,7 +417,7 @@
           },
           "sentences": [
             "_____ yolları Avrupa'yı uzak Asya'ya bağladı.",
-            "Tüccarları zengin eden faaliyet neydi? _____"
+            "Birçok tüccarı zengin eden faaliyet neydi? _____"
           ]
         },
         {
@@ -318,7 +428,7 @@
           },
           "sentences": [
             "İnsanlar antik dünya hakkında _____ istiyordu.",
-            "Bilginler eski Yunanca metinleri okumak için ne yapardı? _____"
+            "Bilim adamları eski Yunan metinlerini okumak için ne yapardı? _____"
           ]
         },
         {
@@ -329,7 +439,7 @@
           },
           "sentences": [
             "_____ dünya hakkındaki eski inançlara meydan okumaya başladı.",
-            "Modern araştırmanın temelini atan alan neydi? _____"
+            "Modern araştırmaların temelini atan alan neydi? _____"
           ]
         },
         {
@@ -339,8 +449,63 @@
             "tr": "KİTAP"
           },
           "sentences": [
-            "Basılı _____ bilgiyi daha fazla insana ulaşılabilir kıldı.",
-            "Bir zamanlar bir ev kadar pahalı olan neydi? Bir _____"
+            "Basılı _____ bilgiyi daha fazla insana ulaştırdı.",
+            "Bir zamanlar bir ev fiyatına mal olan şey neydi? _____"
+          ]
+        },
+        {
+          "word": "HEYKEL",
+          "translations": {
+            "en": "SCULPTURE",
+            "tr": "HEYKEL"
+          },
+          "sentences": [
+            "Rönesans _____ gerçekçi insan formlarını gösterirdi.",
+            "Mermerden gerçekçi figürler yapan sanat dalı neydi? _____"
+          ]
+        },
+        {
+          "word": "PERSPEKTİF",
+          "translations": {
+            "en": "PERSPECTIVE",
+            "tr": "PERSPEKTİF"
+          },
+          "sentences": [
+            "Sanatçılar resimleri daha gerçekçi göstermek için _____ kullandı.",
+            "Nesneleri uzakta gibi göstermeyi sağlayan teknik neydi? _____"
+          ]
+        },
+        {
+          "word": "HÜMANİZM",
+          "translations": {
+            "en": "HUMANISM",
+            "tr": "HÜMANİZM"
+          },
+          "sentences": [
+            "_____ insan potansiyeline ve başarılarına odaklandı.",
+            "Bireysel düşünce ve yaratıcılığı değerli gören felsefe neydi? _____"
+          ]
+        },
+        {
+          "word": "İCAT",
+          "translations": {
+            "en": "INVENTION",
+            "tr": "İCAT"
+          },
+          "sentences": [
+            "Rönesans büyük _____ zamanıydı.",
+            "Dünyayı değiştiren yeni buluşları tanımlayan kelime neydi? _____"
+          ]
+        },
+        {
+          "word": "MİMARLIK",
+          "translations": {
+            "en": "ARCHITECTURE",
+            "tr": "MİMARLIK"
+          },
+          "sentences": [
+            "Rönesans _____ simetri ve orantı kullandı.",
+            "Güzel binalar ve kubbeler yapan sanat dalı neydi? _____"
           ]
         }
       ]
@@ -356,7 +521,7 @@
           },
           "sentences": [
             "_____ sistemi malların üretim şeklini değiştirdi.",
-            "İşçiler makineleri çalıştırmak için nerede toplanırdı? _____"
+            "İşçilerin makineleri çalıştırmak için toplandığı yer neresiydi? _____"
           ]
         },
         {
@@ -367,7 +532,7 @@
           },
           "sentences": [
             "_____ gücü Sanayi Devrimi'nin motorlarını çalıştırdı.",
-            "Hangi motor türü ulaşımı dönüştürdü? _____ motoru"
+            "Ulaşımı dönüştüren motor türü neydi? _____ motoru"
           ]
         },
         {
@@ -377,8 +542,8 @@
             "tr": "KÖMÜR"
           },
           "sentences": [
-            "_____ madenciliği Sanayi Devrimi'ne güç verdi.",
-            "Fabrikalardaki buhar motorlarını ne çalıştırıyordu? _____"
+            "_____ madenciliği Sanayi Devrimi'ni besledi.",
+            "Buhar motorlarını çalıştıran yakıt neydi? _____"
           ]
         },
         {
@@ -389,7 +554,7 @@
           },
           "sentences": [
             "_____ üretimi bu dönemde büyük ölçüde arttı.",
-            "Makine ve demiryolları yapmak için hangi malzeme kullanıldı? _____"
+            "Makineler ve demiryolları yapımında kullanılan malzeme neydi? _____"
           ]
         },
         {
@@ -400,7 +565,7 @@
           },
           "sentences": [
             "_____ ağı şehirleri birbirine bağladı.",
-            "Seyahati daha ucuz ve erişilebilir yapan neydi? _____"
+            "Seyahati daha ucuz ve erişilebilir hale getiren şey neydi? _____"
           ]
         },
         {
@@ -410,7 +575,7 @@
             "tr": "İŞÇİ"
           },
           "sentences": [
-            "Fabrika _____'leri genellikle günde on iki saat çalışırdı.",
+            "Fabrika _____ genellikle günde on iki saat çalışırdı.",
             "Fabrika işleri için çiftliklerden şehirlere kim taşındı? _____"
           ]
         },
@@ -421,8 +586,8 @@
             "tr": "ŞEHİR"
           },
           "sentences": [
-            "Sanayi _____'leri insanlar fabrika işi aradıkça hızla büyüdü.",
-            "Sanayileşme sırasında nüfusu ikiye katlanan neydi? _____"
+            "Sanayi _____ hızla büyüdü çünkü insanlar fabrika işi arıyordu.",
+            "Sanayileşme sırasında nüfusu ikiye katlanan yer neydi? _____"
           ]
         },
         {
@@ -432,8 +597,8 @@
             "tr": "MAKİNE"
           },
           "sentences": [
-            "Yeni _____ aletleri el üretim yöntemlerinin yerini aldı.",
-            "Birçok insanın işini yapabilen neydi? Bir _____"
+            "Yeni _____ araçları el yapımı üretim yöntemlerinin yerini aldı.",
+            "Birçok kişinin işini yapabilen şey neydi? _____"
           ]
         },
         {
@@ -443,8 +608,8 @@
             "tr": "PAMUK"
           },
           "sentences": [
-            "_____ çırçırı pamuğun temizlenmesini çok daha hızlı hale getirdi.",
-            "Hangi tür giysi üretimi daha ucuz hale geldi? _____ giysiler"
+            "_____ temizleme makinesi pamuğu daha hızlı temizledi.",
+            "Hangi kumaş türü daha ucuz hale geldi? _____ kumaş"
           ]
         },
         {
@@ -454,8 +619,63 @@
             "tr": "ÇOCUK"
           },
           "sentences": [
-            "_____ işçiler ilk fabrikalarda yaygındı.",
-            "Tehlikeli fabrika koşullarında kim çalışıyordu? _____ işçiler"
+            "_____ işçiler erken fabrikalarda yaygındı.",
+            "Tehlikeli fabrika koşullarında kim çalışırdı? _____ işçiler"
+          ]
+        },
+        {
+          "word": "TEKSTİL",
+          "translations": {
+            "en": "TEXTILE",
+            "tr": "TEKSTİL"
+          },
+          "sentences": [
+            "_____ endüstrisi ilk mekanize edilenlerden biriydi.",
+            "Kumaş ve giysi üreten endüstri neydi? _____ endüstrisi"
+          ]
+        },
+        {
+          "word": "DEMİRYOLU",
+          "translations": {
+            "en": "RAILWAY",
+            "tr": "DEMİRYOLU"
+          },
+          "sentences": [
+            "_____ sistemi şehirleri ve kasabaları birbirine bağladı.",
+            "Malların taşınma şeklini değiştiren ulaşım sistemi neydi? _____"
+          ]
+        },
+        {
+          "word": "İCAT",
+          "translations": {
+            "en": "INVENTION",
+            "tr": "İCAT"
+          },
+          "sentences": [
+            "Sanayi Devrimi büyük _____ zamanıydı.",
+            "Dünyayı değiştiren yeni buluşları tanımlayan kelime neydi? _____"
+          ]
+        },
+        {
+          "word": "EMEK",
+          "translations": {
+            "en": "LABOR",
+            "tr": "EMEK"
+          },
+          "sentences": [
+            "Fabrika _____ genellikle zor ve tehlikeliydi.",
+            "İşçiler ücret karşılığında ne sunardı? _____"
+          ]
+        },
+        {
+          "word": "SENDİKA",
+          "translations": {
+            "en": "UNION",
+            "tr": "SENDİKA"
+          },
+          "sentences": [
+            "İşçiler daha iyi koşullar için bir _____ kurdu.",
+            "İşçi haklarını koruyan organizasyon neydi? _____"
           ]
         }
       ]
@@ -470,8 +690,8 @@
             "tr": "DEMOKRASİ"
           },
           "sentences": [
-            "Atina _____'si vatandaşların önemli konularda oy kullanmasına izin verdi.",
-            "Hangi sistem gücü tek bir hükümdar yerine halka verdi? _____"
+            "Atina _____ vatandaşların önemli konularda oy kullanmasına izin verdi.",
+            "Tek bir hükümdar yerine halka güç veren sistem neydi? _____"
           ]
         },
         {
@@ -481,7 +701,7 @@
             "tr": "OLİMPİYAT"
           },
           "sentences": [
-            "Antik _____ Yunanistan'da dört yılda bir düzenlenirdi.",
+            "Antik _____ her dört yılda bir Yunanistan'da düzenlenirdi.",
             "Zeus onuruna düzenlenen etkinlikler neydi? _____"
           ]
         },
@@ -492,8 +712,8 @@
             "tr": "TİYATRO"
           },
           "sentences": [
-            "Yunan _____ tragedya ve komedi oyunlarını icat etti.",
-            "Aktörlerin duyguları göstermek için maske taktığı yer neresiydi? _____"
+            "Yunan _____ trajedi ve komedi oyunlarını icat etti.",
+            "Aktörlerin duygularını göstermek için maskeler taktığı yer neresiydi? _____"
           ]
         },
         {
@@ -504,7 +724,7 @@
           },
           "sentences": [
             "_____ güçlü ordusuyla ünlüydü.",
-            "Hangi şehir yedi yaşından itibaren erkek çocukları savaşçı olarak yetiştirirdi? _____"
+            "Hangi şehir yedi yaşından itibaren erkekleri savaşçı olarak yetiştirdi? _____"
           ]
         },
         {
@@ -514,8 +734,8 @@
             "tr": "ATİNA"
           },
           "sentences": [
-            "_____ demokrasinin doğum yeriydi.",
-            "Sanat, öğrenme ve felsefenin merkezi olan şehir hangisiydi? _____"
+            "_____ demokrasinin doğduğu yerdi.",
+            "Hangi şehir sanat, öğrenim ve felsefenin merkeziydi? _____"
           ]
         },
         {
@@ -526,7 +746,7 @@
           },
           "sentences": [
             "Bir Yunan _____ hayat ve gerçek hakkında sorular sorardı.",
-            "Öğrencilerine soru sorarak kim öğretirdi? _____"
+            "Öğrencilerine sorular sorarak öğreten kişi kimdi? _____"
           ]
         },
         {
@@ -536,8 +756,8 @@
             "tr": "ÇÖMLEK"
           },
           "sentences": [
-            "Yunan _____ resimli sahnelerle hikayeler anlatırdı.",
-            "Antik Yunan kültürü hakkında bize ne bilgi veriyor? _____"
+            "Yunan _____ boyanmış sahnelerle hikayeler anlatırdı.",
+            "Antik Yunan kültürü hakkında bilgi edinmemizi sağlayan şey neydi? _____"
           ]
         },
         {
@@ -547,8 +767,8 @@
             "tr": "TAPINAK"
           },
           "sentences": [
-            "Bir Yunan _____ tanrıları onurlandırmak için inşa edildi.",
-            "Yüksek sütunları ve mermer basamakları olan bina neydi? _____"
+            "Bir Yunan _____ tanrıları onurlandırmak için inşa edilirdi.",
+            "Uzun sütunları ve mermer basamakları olan bina neydi? _____"
           ]
         },
         {
@@ -558,8 +778,8 @@
             "tr": "MİT"
           },
           "sentences": [
-            "Yunan _____ hikayeleri çevrelerindeki dünyayı açıklıyordu.",
-            "Tanrılar ve kahramanların yer aldığı hikayeler neydi? _____"
+            "Yunan _____ hikayeleri etraflarındaki dünyayı açıklardı.",
+            "Tanrılar ve kahramanlarla ilgili hikayeler neydi? _____"
           ]
         },
         {
@@ -570,7 +790,62 @@
           },
           "sentences": [
             "Yunan _____ modern bilginin temelini attı.",
-            "Antik Yunan'da yıldızları ve matematiği inceleyen alan neydi? _____"
+            "Antik Yunanistan'da yıldızları ve matematiği inceleyen alan neydi? _____"
+          ]
+        },
+        {
+          "word": "AKROPOL",
+          "translations": {
+            "en": "ACROPOLIS",
+            "tr": "AKROPOL"
+          },
+          "sentences": [
+            "_____ Atina'nın yüksek şehriydi.",
+            "Antik Atina'nın merkezi olan tepe neydi? _____"
+          ]
+        },
+        {
+          "word": "ZEYTİN",
+          "translations": {
+            "en": "OLIVE",
+            "tr": "ZEYTİN"
+          },
+          "sentences": [
+            "_____ ağacı Yunanlar için kutsaldı.",
+            "Yiyecek, yağ ve odun sağlayan bitki neydi? _____ ağacı"
+          ]
+        },
+        {
+          "word": "ZEUS",
+          "translations": {
+            "en": "ZEUS",
+            "tr": "ZEUS"
+          },
+          "sentences": [
+            "_____ Yunan tanrılarının kralıydı.",
+            "Olimpos Dağı'ndan kim hükmederdi? _____"
+          ]
+        },
+        {
+          "word": "ATLET",
+          "translations": {
+            "en": "ATHLETE",
+            "tr": "ATLET"
+          },
+          "sentences": [
+            "Bir _____ Olimpiyat oyunları için antrenman yapardı.",
+            "Koşu ve güreş yarışmalarında kim yarışırdı? _____"
+          ]
+        },
+        {
+          "word": "MARATON",
+          "translations": {
+            "en": "MARATHON",
+            "tr": "MARATON"
+          },
+          "sentences": [
+            "_____ yarışı antik bir Yunan hikayesinden gelir.",
+            "Yunanistan'da kökeni olan uzun mesafe yarışı neydi? _____"
           ]
         }
       ]
@@ -585,8 +860,8 @@
             "tr": "AKIN"
           },
           "sentences": [
-            "Bir Viking _____ı kıyı kasabalarına yapılan hızlı bir saldırıydı.",
-            "Vikingler servet ve kaynak toplamak için ne yapardı? _____"
+            "Bir Viking _____ kıyı kasabalarına hızlı bir saldırıydı.",
+            "Vikingler zenginlik ve kaynak toplamak için ne yapardı? _____"
           ]
         },
         {
@@ -596,8 +871,8 @@
             "tr": "MİĞFER"
           },
           "sentences": [
-            "Bir Viking savaşçısının _____i savaşta kafasını korurdu.",
-            "Genellikle boynuzlarla gösterilen ama gerçeklerinde olmayan zırh parçası nedir? _____"
+            "Bir Viking savaşçısının _____ kafasını korurdu.",
+            "Gerçekte olmasa da genellikle boynuzlu olarak tasvir edilen zırh parçası neydi? _____"
           ]
         },
         {
@@ -607,8 +882,8 @@
             "tr": "RUNLAR"
           },
           "sentences": [
-            "Vikingler hikayeler anlatmak için taşlara _____ kazırdı.",
-            "Viking yazı sistemine ne denirdi? _____"
+            "Vikingler taşa _____ oyarak hikayeler anlatırdı.",
+            "Viking yazı sistemi neydi? _____"
           ]
         },
         {
@@ -618,8 +893,8 @@
             "tr": "FİYORT"
           },
           "sentences": [
-            "Bir _____, dik kayalıklarla çevrili uzun, dar bir koydur.",
-            "Norveç'te Viking yerleşimlerini şekillendiren coğrafi özellik nedir? _____"
+            "Bir _____ dik kayalıklarla çevrili uzun ve dar bir koydur.",
+            "Norveç'te Viking yerleşimlerini şekillendiren coğrafi özellik neydi? _____"
           ]
         },
         {
@@ -629,7 +904,7 @@
             "tr": "VALHALLA"
           },
           "sentences": [
-            "Vikingler savaşçıların öldükten sonra _____'ya gittiğine inanırdı.",
+            "Vikingler savaşçıların öldükten sonra _____ gittiğine inanırdı.",
             "Odin'in büyük salonunun adı neydi? _____"
           ]
         },
@@ -640,19 +915,19 @@
             "tr": "THOR"
           },
           "sentences": [
-            "_____ İskandinav mitolojisinde gök gürültüsünün tanrısıydı.",
+            "_____ İskandinav mitolojisinde gök gürültüsü tanrısıydı.",
             "Mjölnir adlı çekici taşıyan tanrı kimdi? _____"
           ]
         },
         {
-          "word": "BERSERKER",
+          "word": "BESERKER",
           "translations": {
-            "en": "BERSERKER",
-            "tr": "BERSERKER"
+            "en": "BESERKER",
+            "tr": "BESERKER"
           },
           "sentences": [
-            "Bir _____ trans halinde savaşan vahşi bir Viking savaşçısıydı.",
-            "Savaş çılgınlığıyla bilinen savaşçı türü neydi? _____"
+            "Bir _____ trans halinde savaşan korkusuz bir Viking savaşçısıydı.",
+            "Vahşi savaş öfkesiyle tanınan savaşçı türü neydi? _____"
           ]
         },
         {
@@ -663,7 +938,7 @@
           },
           "sentences": [
             "Bir _____ kahramanların hikayelerini anlatan Viking şairiydi.",
-            "Viking tarihini şiir ve şarkılarla kim korurdu? _____"
+            "Viking tarihini şiirler ve şarkılarla koruyan kişi kimdi? _____"
           ]
         },
         {
@@ -673,22 +948,430 @@
             "tr": "BALTA"
           },
           "sentences": [
-            "Viking savaşçısının _____sı hem bir alet hem de silahtı.",
+            "Bir Viking savaşçısının _____ hem alet hem de silahtı.",
             "Viking savaşçıları tarafından yaygın olarak kullanılan silah neydi? _____"
           ]
         },
         {
-          "word": "VİKİNG",
+          "word": "VIKING",
           "translations": {
             "en": "VIKINGR",
-            "tr": "VİKİNG"
+            "tr": "VIKING"
           },
           "sentences": [
-            "_____ kelimesi başlangıçta 'korsan' veya 'yağmacı' anlamına geliyordu.",
-            "Vikingler yağma yaparken kendilerine ne derlerdi? _____"
+            "_____ kelimesi aslında 'korsan' veya 'akıncı' anlamına geliyordu.",
+            "Vikingler akın yaparken kendilerine ne diyordu? _____"
+          ]
+        },
+        {
+          "word": "UZUN GEMİ",
+          "translations": {
+            "en": "LONGSHIP",
+            "tr": "UZUN GEMİ"
+          },
+          "sentences": [
+            "Viking _____ hızlıydı ve sığ sularda seyredebilirdi.",
+            "Vikinglerin uzaklara seyahat etmesini ve akınlar yapmasını sağlayan gemi neydi? _____"
+          ]
+        },
+        {
+          "word": "ODİN",
+          "translations": {
+            "en": "ODIN",
+            "tr": "ODİN"
+          },
+          "sentences": [
+            "_____ İskandinav mitolojisinde baş tanrıydı.",
+            "Huginn ve Muninn adlı iki kuzgunu olan tanrı kimdi? _____"
+          ]
+        },
+        {
+          "word": "BAL ŞARABI",
+          "translations": {
+            "en": "MEAD",
+            "tr": "BAL ŞARABI"
+          },
+          "sentences": [
+            "Vikingler baldan yapılan _____ içerdi.",
+            "Viking şölenlerinde popüler olan alkollü içecek neydi? _____"
+          ]
+        },
+        {
+          "word": "KALKAN",
+          "translations": {
+            "en": "SHIELD",
+            "tr": "KALKAN"
+          },
+          "sentences": [
+            "Bir Viking savaşçısı korunmak için yuvarlak bir _____ taşırdı.",
+            "Üzerinde semboller bulunan savunma eşyası neydi? _____"
+          ]
+        },
+        {
+          "word": "İSKANDİNAV",
+          "translations": {
+            "en": "NORSE",
+            "tr": "İSKANDİNAV"
+          },
+          "sentences": [
+            "_____ halkı İskandinavya'da yaşardı.",
+            "Vikinglerle ilişkilendirilen kültür neydi? _____ kültürü"
+          ]
+        }
+      ]
+    },
+    {
+      "era": "Feodal Japonya",
+      "words": [
+        {
+          "word": "SAMURAY",
+          "translations": {
+            "en": "SAMURAI",
+            "tr": "SAMURAY"
+          },
+          "sentences": [
+            "_____ katı bir koda uyan yetenekli savaşçılardı.",
+            "Feodal Japonya'da askeri soyluluğu kim temsil ederdi? _____"
+          ]
+        },
+        {
+          "word": "ŞOGUN",
+          "translations": {
+            "en": "SHOGUN",
+            "tr": "ŞOGUN"
+          },
+          "sentences": [
+            "_____ Japonya'nın askeri lideriydi.",
+            "Feodal Japonya'da imparatordan daha fazla güce sahip olan kişi kimdi? _____"
+          ]
+        },
+        {
+          "word": "KATANA",
+          "translations": {
+            "en": "KATANA",
+            "tr": "KATANA"
+          },
+          "sentences": [
+            "Bir _____ samurayların taşıdığı uzun kılıçtı.",
+            "Samurayların sembolü olan kavisli kılıç neydi? _____"
+          ]
+        },
+        {
+          "word": "DAİMYO",
+          "translations": {
+            "en": "DAIMYO",
+            "tr": "DAİMYO"
+          },
+          "sentences": [
+            "Bir _____ büyük topraklara sahip güçlü bir lorddu.",
+            "Feodal Japonya'da geniş bölgeleri kim yönetirdi? _____"
+          ]
+        },
+        {
+          "word": "BUSHİDO",
+          "translations": {
+            "en": "BUSHIDO",
+            "tr": "BUSHİDO"
+          },
+          "sentences": [
+            "_____ samurayların uyduğu onur koduydu.",
+            "Sadakat, cesaret ve disiplini vurgulayan kod neydi? _____"
+          ]
+        },
+        {
+          "word": "NİNJA",
+          "translations": {
+            "en": "NINJA",
+            "tr": "NİNJA"
+          },
+          "sentences": [
+            "Bir _____ yetenekli bir casus ve suikastçıydı.",
+            "Gizlilik ve kamuflaj kullanarak görevlerini tamamlayan kişi kimdi? _____"
+          ]
+        },
+        {
+          "word": "ÇAY",
+          "translations": {
+            "en": "TEA",
+            "tr": "ÇAY"
+          },
+          "sentences": [
+            "_____ seremonisi önemli bir kültürel uygulamaydı.",
+            "Japon ritüellerinin merkezinde hangi içecek vardı? _____"
+          ]
+        },
+        {
+          "word": "ZEN",
+          "translations": {
+            "en": "ZEN",
+            "tr": "ZEN"
+          },
+          "sentences": [
+            "_____ Budizmi Japon sanatını ve kültürünü etkiledi.",
+            "Meditasyon ve sadelik üzerine odaklanan felsefe neydi? _____"
+          ]
+        },
+        {
+          "word": "PAGODA",
+          "translations": {
+            "en": "PAGODA",
+            "tr": "PAGODA"
+          },
+          "sentences": [
+            "Bir _____ kavisli çatıları olan katlı bir kuledir.",
+            "Japon tapınaklarında yaygın olan yapı türü neydi? _____"
+          ]
+        },
+        {
+          "word": "KİMONO",
+          "translations": {
+            "en": "KIMONO",
+            "tr": "KİMONO"
+          },
+          "sentences": [
+            "Bir _____ geleneksel bir Japon giysisidir.",
+            "Geniş bir kuşakla giyilen kıyafet neydi? _____"
+          ]
+        },
+        {
+          "word": "GEYŞA",
+          "translations": {
+            "en": "GEISHA",
+            "tr": "GEYŞA"
+          },
+          "sentences": [
+            "Bir _____ eğitimli bir sanatçı ve eğlendiriciydi.",
+            "Müzik, dans ve çay seremonileri yapan kişi kimdi? _____"
+          ]
+        },
+        {
+          "word": "DOJO",
+          "translations": {
+            "en": "DOJO",
+            "tr": "DOJO"
+          },
+          "sentences": [
+            "Bir _____ dövüş sanatları için bir eğitim salonuydu.",
+            "Samuraylar kılıç kullanmayı nerede öğrenirdi? _____"
+          ]
+        },
+        {
+          "word": "HAİKU",
+          "translations": {
+            "en": "HAIKU",
+            "tr": "HAİKU"
+          },
+          "sentences": [
+            "Bir _____ üç satırlık kısa bir şiirdir.",
+            "Doğayı ve duyguları yakalayan şiir türü neydi? _____"
+          ]
+        },
+        {
+          "word": "ŞİNTO",
+          "translations": {
+            "en": "SHINTO",
+            "tr": "ŞİNTO"
+          },
+          "sentences": [
+            "_____ Japonya'nın geleneksel dinidir.",
+            "Doğa ruhlarına odaklanan inanç sistemi neydi? _____"
+          ]
+        },
+        {
+          "word": "SUŞİ",
+          "translations": {
+            "en": "SUSHI",
+            "tr": "SUŞİ"
+          },
+          "sentences": [
+            "_____ pirinç ve balıktan yapılan geleneksel bir Japon yemeğidir.",
+            "Soya sosu ve wasabi ile servis edilen yemek neydi? _____"
+          ]
+        }
+      ]
+    },
+    {
+      "era": "Osmanlı İmparatorluğu",
+      "words": [
+        {
+          "word": "SULTAN",
+          "translations": {
+            "en": "SULTAN",
+            "tr": "SULTAN"
+          },
+          "sentences": [
+            "_____ Osmanlı İmparatorluğu'nun hükümdarıydı.",
+            "Hem devlet hem de dinin başı kimdi? _____"
+          ]
+        },
+        {
+          "word": "YENİÇERİ",
+          "translations": {
+            "en": "JANISSARY",
+            "tr": "YENİÇERİ"
+          },
+          "sentences": [
+            "_____ Osmanlı ordusunun seçkin askerleriydi.",
+            "Sultanın kişisel muhafızları kimlerdi? _____"
+          ]
+        },
+        {
+          "word": "CAMİ",
+          "translations": {
+            "en": "MOSQUE",
+            "tr": "CAMİ"
+          },
+          "sentences": [
+            "Bir _____ Müslümanların ibadet ettiği yerdir.",
+            "Minare ve kubbesi olan bina neydi? _____"
+          ]
+        },
+        {
+          "word": "PAZAR",
+          "translations": {
+            "en": "BAZAAR",
+            "tr": "PAZAR"
+          },
+          "sentences": [
+            "_____ Osmanlı şehirlerinde hareketli bir ticaret merkeziydi.",
+            "İnsanların alışveriş yaptığı yer neresiydi? _____"
+          ]
+        },
+        {
+          "word": "TÜRBAN",
+          "translations": {
+            "en": "TURBAN",
+            "tr": "TÜRBAN"
+          },
+          "sentences": [
+            "_____ Osmanlı erkekleri için geleneksel bir başlıktı.",
+            "Osmanlı yetkilileri tarafından yaygın olarak giyilen başlık neydi? _____"
+          ]
+        },
+        {
+          "word": "MİNARE",
+          "translations": {
+            "en": "MINARET",
+            "tr": "MİNARE"
+          },
+          "sentences": [
+            "_____ insanları namaza çağırmak için kullanılan uzun bir kuledir.",
+            "Caminin hangi kısmı ezan okumak için kullanılırdı? _____"
+          ]
+        },
+        {
+          "word": "KERVAN",
+          "translations": {
+            "en": "CARAVAN",
+            "tr": "KERVAN"
+          },
+          "sentences": [
+            "Bir _____ çölde mal taşırdı.",
+            "Ticaret yollarında mal taşıyan grup neydi? _____"
+          ]
+        },
+        {
+          "word": "HAMAM",
+          "translations": {
+            "en": "HAMMAM",
+            "tr": "HAMAM"
+          },
+          "sentences": [
+            "_____ Osmanlı şehirlerinde halka açık bir hamamdı.",
+            "İnsanların yıkanıp sosyalleştiği yer neresiydi? _____"
+          ]
+        },
+        {
+          "word": "TUĞRA",
+          "translations": {
+            "en": "TUGRA",
+            "tr": "TUĞRA"
+          },
+          "sentences": [
+            "_____ Sultan'ın resmi imzasıydı.",
+            "Sultan'ın otoritesini temsil eden sembol neydi? _____"
+          ]
+        },
+        {
+          "word": "KAHVE",
+          "translations": {
+            "en": "COFFEE",
+            "tr": "KAHVE"
+          },
+          "sentences": [
+            "_____ Osmanlı İmparatorluğu'nda popüler hale geldi.",
+            "Avrupa'ya Osmanlılar aracılığıyla tanıtılan içecek neydi? _____"
+          ]
+        },
+        {
+          "word": "LALE",
+          "translations": {
+            "en": "TULIP",
+            "tr": "LALE"
+          },
+          "sentences": [
+            "_____ Osmanlı İmparatorluğu'nun bir sembolüydü.",
+            "Lale Devri'nde ünlü olan çiçek neydi? _____"
+          ]
+        },
+        {
+          "word": "KİLİM",
+          "translations": {
+            "en": "KILIM",
+            "tr": "KİLİM"
+          },
+          "sentences": [
+            "Bir _____ geleneksel dokunmuş bir halıdır.",
+            "Osmanlı zanaatkarları tarafından yapılan halı türü neydi? _____"
+          ]
+        },
+        {
+          "word": "DİVAN",
+          "translations": {
+            "en": "DIVAN",
+            "tr": "DİVAN"
+          },
+          "sentences": [
+            "_____ Osmanlı İmparatorluğu'nun danışma meclisiydi.",
+            "Sultan'ın danışmanlarıyla buluştuğu yer neresiydi? _____"
+          ]
+        },
+        {
+          "word": "KAFTAN",
+          "translations": {
+            "en": "KAFTAN",
+            "tr": "KAFTAN"
+          },
+          "sentences": [
+            "Bir _____ Osmanlı sarayında statü sembolüydü.",
+            "Osmanlı sarayında statüyü temsil eden giysi neydi? _____"
+          ]
+        },
+        {
+          "word": "SEBİL",
+          "translations": {
+            "en": "SEBIL",
+            "tr": "SEBİL"
+          },
+          "sentences": [
+            "Bir _____ halka içme suyu sağlayan bir çeşmeydi.",
+            "Osmanlı şehirlerinde insanlara su sağlayan yapı neydi? _____"
+          ]
+        },
+        {
+          "word": "BOĞAZ",
+          "translations": {
+            "en": "BOSPHORUS",
+            "tr": "BOĞAZ"
+          },
+          "sentences": [
+            "_____ Karadeniz'i Marmara Denizi'ne bağlayan su yoludur.",
+            "İstanbul'dan geçen su yolu neydi? _____"
           ]
         }
       ]
     }
   ]
 }
+
+           
