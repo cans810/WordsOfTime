@@ -29,5 +29,11 @@ konulmalı, daha sonra da, oyuncu oyuna girdiğinde gerçek gridler bu dictionar
 //reklam koymayı yap
 
 > bildirim koymayı test et
-> çark tam yuvarlak değil gibi onu düzelt
-> ödül verildiğinde, ok a tıkladığı zaman verilen ödül puansa puan ekleme animasyonu yap
+// çark tam yuvarlak değil gibi onu düzelt
+// feudal japan satın alınamıyor onu düzelt
+> spin çevirilince ses çıkartabilirsin
+// yeni gelen objelere çevirileri ekle
+> wave şeklinde olması gerek letter animasyonlarının
+> cümleleri daha öğretici yapabilirsin
+> aynı point animasyonunu oyununun asıl yerine, kelime bilince ekle.
+> save dosyasını encrypt et
