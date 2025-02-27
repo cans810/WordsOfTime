@@ -9,6 +9,7 @@
             "en": "PHARAOH",
             "tr": "FİRAVUN"
           },
+          "difficulty": "easy",
           "sentences": [
             "_____ Mısır'ı büyük bir güçle yönetti.",
             "Antik Mısır'da kim büyük piramitleri inşa ettirdi? _____"
@@ -21,6 +22,7 @@
             "en": "PYRAMID",
             "tr": "PİRAMİT"
           },
+          "difficulty": "easy",
           "sentences": [
             "Büyük _____ taş bloklardan inşa edildi.",
             "Firavunların mezarları olarak hizmet veren yapılar neydi? _____"
@@ -33,6 +35,7 @@
             "en": "SPHINX",
             "tr": "SFENKS"
           },
+          "difficulty": "normal",
           "sentences": [
             "_____ aslan vücutlu ve insan başlı bir heykeldir.",
             "Piramitleri koruyan ünlü heykel nedir? _____"
@@ -45,6 +48,7 @@
             "en": "MUMMY",
             "tr": "MUMYA"
           },
+          "difficulty": "easy",
           "sentences": [
             "Bir _____ özel kumaşlara sarılırdı.",
             "Ölüleri korumak için mezara ne konurdu? _____"
@@ -57,8 +61,9 @@
             "en": "GOLD",
             "tr": "ALTIN"
           },
+          "difficulty": "easy",
           "sentences": [
-            "Firavunun maskesi _____ yapılmıştı.",
+            "Firavunun maskesi _____dan yapılmıştı.",
             "Güzel takılar yapmak için hangi değerli metal kullanılırdı? _____"
           ],
           "didYouKnow": "Kral Tutankhamun'un ölüm maskesi 24 pound saf altından yapılmıştır. Antik Mısırlılar altının güneş tanrısı Ra'nın eti olduğuna inanırdı!"
@@ -69,8 +74,9 @@
             "en": "TOMB",
             "tr": "MEZAR"
           },
+          "difficulty": "normal",
           "sentences": [
-            "_____ birçok hazine barındırırdı.",
+            "_____lar birçok hazine barındırırdı.",
             "Firavunlar için özel olarak inşa edilen yer neydi? _____"
           ],
           "didYouKnow": "Firavunlar, tahta çıkar çıkmaz mezarlarını inşa etmeye başlarlardı. Bazı mezarların tamamlanması 20 yıldan fazla sürerdi!"
@@ -81,6 +87,7 @@
             "en": "NILE",
             "tr": "NİL"
           },
+          "difficulty": "easy",
           "sentences": [
             "_____ Nehri Mısır'a su sağlardı.",
             "Antik Mısır'da tarımı destekleyen nehir hangisiydi? _____"
@@ -93,6 +100,7 @@
             "en": "QUEEN",
             "tr": "KRALİÇE"
           },
+          "difficulty": "easy",
           "sentences": [
             "_____ Mısır'ı yönetmede firavuna yardım ederdi.",
             "Sarayda firavunun yanında kim yaşardı? _____"
@@ -105,6 +113,7 @@
             "en": "SAND",
             "tr": "KUM"
           },
+          "difficulty": "easy",
           "sentences": [
             "Sıcak _____ çölü kaplardı.",
             "Rüzgar çölde neyi savururdu? _____"
@@ -117,8 +126,9 @@
             "en": "CAT",
             "tr": "KEDİ"
           },
+          "difficulty": "easy",
           "sentences": [
-            "Mısırlılar _____ özel bir hayvan olarak görürdü.",
+            "Mısırlılar _____yi özel bir hayvan olarak görürdü.",
             "Antik Mısır'da tanrı gibi kabul edilen hayvan hangisiydi? _____"
           ],
           "didYouKnow": "Antik Mısır'da bir kediyi öldürmek ölümle cezalandırılırdı. Aile kedisi öldüğünde, evdeki herkes yas tutmak için kaşlarını traş ederdi!"
@@ -129,6 +139,7 @@
             "en": "SCARAB",
             "tr": "SKARABE"
           },
+          "difficulty": "normal",
           "sentences": [
             "_____ böceği yeniden doğuşun sembolüydü.",
             "Mısırlılar hangi böceği kutsal kabul ederdi? _____"
@@ -141,6 +152,7 @@
             "en": "PAPYRUS",
             "tr": "PAPİRÜS"
           },
+          "difficulty": "normal",
           "sentences": [
             "Antik Mısırlılar _____ üzerine yazı yazardı.",
             "Antik Mısır'da kağıt yapımında hangi bitki kullanılırdı? _____"
@@ -153,6 +165,7 @@
             "en": "OSIRIS",
             "tr": "OSİRİS"
           },
+          "difficulty": "hard",
           "sentences": [
             "_____ ölüm sonrası yaşamın tanrısıydı.",
             "Yeşil tenli olarak tasvir edilen tanrı kimdi? _____"
@@ -165,6 +178,7 @@
             "en": "CANOPIC",
             "tr": "KANOPİK"
           },
+          "difficulty": "hard",
           "sentences": [
             "_____ kavanozlar mumyaların organlarını saklardı.",
             "Mumyalama işleminde hangi özel kaplar kullanılırdı? _____ kavanozlar"
@@ -177,6 +191,7 @@
             "en": "HORUS",
             "tr": "HORUS"
           },
+          "difficulty": "normal",
           "sentences": [
             "_____ şahin başlı gökyüzü tanrısıydı.",
             "Şahin olarak tasvir edilen Mısır tanrısı kimdi? _____"
@@ -194,6 +209,7 @@
             "en": "CASTLE",
             "tr": "ŞATO"
           },
+          "difficulty": "easy",
           "sentences": [
             "Bir _____ kasabaları ve soyluları istilacılardan korumak için inşa edilirdi.",
             "Savunma için kalın duvarlara sahip yapı neydi? _____"
@@ -206,6 +222,7 @@
             "en": "KNIGHT",
             "tr": "ŞÖVALYE"
           },
+          "difficulty": "easy",
           "sentences": [
             "Bir _____ çocukluktan itibaren savaşmak ve soylulara hizmet etmek için eğitilirdi.",
             "Şövalyelik kurallarına uyan kişi kimdi? _____"
@@ -218,6 +235,7 @@
             "en": "KING",
             "tr": "KRAL"
           },
+          "difficulty": "easy",
           "sentences": [
             "_____ tanrı tarafından seçildiğine inanılırdı.",
             "Soylulara toprak veren kişi kimdi? _____"
@@ -230,8 +248,9 @@
             "en": "SWORD",
             "tr": "KILIÇ"
           },
+          "difficulty": "easy",
           "sentences": [
-            "Orta Çağ'da bir _____ elle aylarca yapılırdı.",
+            "Orta Çağ'da yaygın bir silah olan _____, elle aylarca yapılırdı.",
             "Şövalyeliğin sembolü olan silah neydi? _____"
           ],
           "didYouKnow": "Orta Çağ kılıç ustaları, güçlü ve esnek bıçaklar yapmak için çeliği yüzlerce kez katlardı. Birçok kılıcın ismi vardı ve büyülü güçlere sahip olduğuna inanılırdı!"
@@ -242,6 +261,7 @@
             "en": "CROWN",
             "tr": "TAÇ"
           },
+          "difficulty": "easy",
           "sentences": [
             "_____ kralın gücünü ve otoritesini temsil ederdi.",
             "Değerli taşlar ve metallerle süslü kraliyet eşyası neydi? _____"
@@ -254,6 +274,7 @@
             "en": "PEASANT",
             "tr": "KÖYLÜ"
           },
+          "difficulty": "normal",
           "sentences": [
             "Bir _____ krallık için yiyecek yetiştirirdi.",
             "Lordlarına vergi ödeyen kişi kimdi? _____"
@@ -266,6 +287,7 @@
             "en": "MONK",
             "tr": "KEŞİŞ"
           },
+          "difficulty": "normal",
           "sentences": [
             "Bir _____ kitapları elle kopyalayarak bilgiyi korurdu.",
             "Manastırlarda yaşayan ve çalışan kişi kimdi? _____"
@@ -278,6 +300,7 @@
             "en": "GUILD",
             "tr": "LONCA"
           },
+          "difficulty": "hard",
           "sentences": [
             "Bir _____ belirli zanaatlar için yeni ustalar yetiştirirdi.",
             "Zanaatlarının sırlarını koruyan organizasyon neydi? _____"
@@ -290,8 +313,9 @@
             "en": "ARMOR",
             "tr": "ZIRH"
           },
+          "difficulty": "normal",
           "sentences": [
-            "Orta Çağ _____ demir veya çelik plakalardan yapılırdı.",
+            "Orta Çağ _____ları demir veya çelik plakalardan yapılırdı.",
             "100 kiloya kadar çıkabilen koruma eşyası neydi? _____"
           ],
           "didYouKnow": "Şövalyeler tam zırhlarıyla koşabilir, ata binebilir ve hatta takla atabilirdi. Her zırh özel olarak yapılır ve modern bir itfaiyeci ekipmanı kadar esnekti!"
@@ -302,6 +326,7 @@
             "en": "FEUDALISM",
             "tr": "FEODALİZM"
           },
+          "difficulty": "hard",
           "sentences": [
             "_____ Orta Çağ Avrupası'nın sosyal sistemini oluşturuyordu.",
             "Toplumu lordlar, vasallar ve köylüler olarak düzenleyen sistem neydi? _____"
@@ -314,6 +339,7 @@
             "en": "VILLAGE",
             "tr": "KÖY"
           },
+          "difficulty": "easy",
           "sentences": [
             "Orta Çağ'da bir _____ çiftçiler ve zanaatkarların eviydi.",
             "Orta Çağ'da çoğu insan nerede yaşardı? _____"
@@ -326,6 +352,7 @@
             "en": "CHURCH",
             "tr": "KİLİSE"
           },
+          "difficulty": "easy",
           "sentences": [
             "_____ toplum hayatının merkeziydi.",
             "Orta Çağ kasabalarında en yüksek yapı neydi? _____"
@@ -338,6 +365,7 @@
             "en": "FEAST",
             "tr": "ŞÖLEN"
           },
+          "difficulty": "normal",
           "sentences": [
             "Bir _____ özel günleri kutlamak için düzenlenirdi.",
             "İnsanları yemek ve müzik için bir araya getiren etkinlik neydi? _____"
@@ -350,6 +378,7 @@
             "en": "HERALD",
             "tr": "TELLAL"
           },
+          "difficulty": "hard",
           "sentences": [
             "Bir _____ kral için önemli mesajlar iletirdi.",
             "Kasaba meydanında haberleri duyuran kişi kimdi? _____"
@@ -362,6 +391,7 @@
             "en": "TOURNAMENT",
             "tr": "TURNUVA"
           },
+          "difficulty": "normal",
           "sentences": [
             "Bir _____ şövalyelerin becerilerini sergilediği bir yarışmaydı.",
             "Cirit ve kılıç dövüşlerinin yapıldığı etkinlik neydi? _____"
@@ -379,6 +409,7 @@
             "en": "MERCHANT",
             "tr": "TÜCCAR"
           },
+          "difficulty": "normal",
           "sentences": [
             "Zengin _____ sınıfı Rönesans sanat hareketini finanse etti.",
             "Avrupa pazarlarına egzotik mallar getiren kişi kimdi? _____"
@@ -391,6 +422,7 @@
             "en": "ARTIST",
             "tr": "SANATÇI"
           },
+          "difficulty": "easy",
           "sentences": [
             "Bir _____ insan anatomisini incelerdi.",
             "Kendi boya renklerini doğal malzemelerden yapan kişi kimdi? _____"
@@ -403,8 +435,9 @@
             "en": "PAINT",
             "tr": "BOYA"
           },
+          "difficulty": "easy",
           "sentences": [
-            "Rönesans sanatçıları _____ yumurta sarısı ve pigmentlerden yapardı.",
+            "Rönesans sanatçıları _____ları yumurta sarısı ve pigmentlerden yapardı.",
             "Sanat eserlerinde daha zengin renkler sağlayan buluş neydi? _____"
           ],
           "didYouKnow": "Rönesans sanatçıları, temperadan daha yavaş kuruyan yağlı boyalar geliştirdi. Bu, daha detaylı çalışmalara ve renklerin karıştırılmasına olanak sağladı!"
@@ -415,6 +448,7 @@
             "en": "PATRON",
             "tr": "HAMİ"
           },
+          "difficulty": "normal",
           "sentences": [
             "Zengin bir _____ sanatçıları ve eserlerini desteklerdi.",
             "Birçok büyük sanat eserini kim sipariş ederdi? _____"
@@ -427,6 +461,7 @@
             "en": "PRINT",
             "tr": "MATBAA"
           },
+          "difficulty": "normal",
           "sentences": [
             "_____ yeni fikirlerin hızla yayılmasını sağladı.",
             "Kitapları daha uygun fiyatlı hale getiren buluş neydi? _____"
@@ -439,6 +474,7 @@
             "en": "BANK",
             "tr": "BANKA"
           },
+          "difficulty": "normal",
           "sentences": [
             "İlk modern _____ sistemi Rönesans İtalya'sında başladı.",
             "Avrupa çapında ticareti finanse eden kurum neydi? _____"
@@ -451,6 +487,7 @@
             "en": "TRADE",
             "tr": "TİCARET"
           },
+          "difficulty": "normal",
           "sentences": [
             "_____ yolları Avrupa'yı uzak Asya'ya bağladı.",
             "Birçok tüccarı zengin eden faaliyet neydi? _____"
@@ -458,16 +495,17 @@
           "didYouKnow": "Venedik, ticaret sayesinde o kadar zenginleşti ki tüccarlar depolarını mermerden yaptırdı, diğer şehirler ise hala ahşap kullanıyordu!"
         },
         {
-          "word": "ÖĞRENMEK",
+          "word": "ANATOMİ",
           "translations": {
-            "en": "LEARN",
-            "tr": "ÖĞRENMEK"
+            "en": "ANATOMY",
+            "tr": "ANATOMİ"
           },
+          "difficulty": "hard",
           "sentences": [
-            "İnsanlar antik dünya hakkında _____ istiyordu.",
-            "Bilim adamları eski Yunan metinlerini okumak için ne yapardı? _____"
+            "Rönesans sanatçıları insan vücudunu daha gerçekçi çizebilmek için _____ çalıştı.",
+            "Leonardo da Vinci'nin çizimlerinde insan _____ detayları nasıl yer alırdı?"
           ],
-          "didYouKnow": "Hümanist bilim adamları, manastır kütüphanelerinde saklanan binlerce antik Yunan ve Roma metnini yeniden keşfetti. Bu, klasik öğrenmenin yeniden canlanmasını sağladı!"
+          "didYouKnow": "Leonardo da Vinci, insan anatomisini daha iyi anlamak için 30'dan fazla gizli otopsi yaptı. Bu çalışmalar, tıp ve sanat alanında devrim yarattı!"
         },
         {
           "word": "BİLİM",
@@ -475,8 +513,9 @@
             "en": "SCIENCE",
             "tr": "BİLİM"
           },
+          "difficulty": "easy",
           "sentences": [
-            "_____ dünya hakkındaki eski inançlara meydan okumaya başladı.",
+            "_____, dünya hakkındaki eski inançlara meydan okumaya başladı.",
             "Modern araştırmaların temelini atan alan neydi? _____"
           ],
           "didYouKnow": "Galileo gibi Rönesans bilim adamları, fikirlerini test etmek için deneyler kullandı. Bu, bilimsel yöntemin başlangıcı oldu!"
@@ -487,8 +526,9 @@
             "en": "BOOK",
             "tr": "KİTAP"
           },
+          "difficulty": "easy",
           "sentences": [
-            "Basılı _____ bilgiyi daha fazla insana ulaştırdı.",
+            "Basılı _____lar bilgiyi daha fazla insana ulaştırdı.",
             "Bir zamanlar bir ev fiyatına mal olan şey neydi? _____"
           ],
           "didYouKnow": "Matbaadan önce kitaplar o kadar değerliydi ki, kütüphanelerde hırsızlığı önlemek için zincirlenirdi!"
@@ -499,8 +539,9 @@
             "en": "SCULPTURE",
             "tr": "HEYKEL"
           },
+          "difficulty": "normal",
           "sentences": [
-            "Rönesans _____ gerçekçi insan formlarını gösterirdi.",
+            "Rönesans _____i gerçekçi insan formlarını gösterirdi.",
             "Mermerden gerçekçi figürler yapan sanat dalı neydi? _____"
           ],
           "didYouKnow": "Michelangelo'nun Davut heykeli, diğer heykeltıraşların kusurlu bulduğu tek bir mermer bloktan yontuldu. Tamamlanması üç yıl sürdü!"
@@ -511,6 +552,7 @@
             "en": "PERSPECTIVE",
             "tr": "PERSPEKTİF"
           },
+          "difficulty": "hard",
           "sentences": [
             "Sanatçılar resimleri daha gerçekçi göstermek için _____ kullandı.",
             "Nesneleri uzakta gibi göstermeyi sağlayan teknik neydi? _____"
@@ -523,6 +565,7 @@
             "en": "HUMANISM",
             "tr": "HÜMANİZM"
           },
+          "difficulty": "hard",
           "sentences": [
             "_____ insan potansiyeline ve başarılarına odaklandı.",
             "Bireysel düşünce ve yaratıcılığı değerli gören felsefe neydi? _____"
@@ -535,8 +578,9 @@
             "en": "INVENTION",
             "tr": "İCAT"
           },
+          "difficulty": "easy",
           "sentences": [
-            "Rönesans büyük _____ zamanıydı.",
+            "Rönesans büyük _____ların zamanıydı.",
             "Dünyayı değiştiren yeni buluşları tanımlayan kelime neydi? _____"
           ],
           "didYouKnow": "Rönesans, buhar motoru, iplik eğirme makinesi ve dokuma tezgahı gibi icatlarla toplumu dönüştürdü!"
@@ -547,8 +591,9 @@
             "en": "ARCHITECTURE",
             "tr": "MİMARLIK"
           },
+          "difficulty": "normal",
           "sentences": [
-            "Rönesans _____ simetri ve orantı kullandı.",
+            "Michelangelo ve Brunelleschi gibi sanatçılar _____ alanında nasıl devrim yarattı?",
             "Güzel binalar ve kubbeler yapan sanat dalı neydi? _____"
           ],
           "didYouKnow": "Rönesans mimarları, klasik teknikleri yeniden keşfetmek için antik Roma binalarını inceledi. Bu, kubbelerin ve kemerlerin gelişmesine yol açtı!"
@@ -564,6 +609,7 @@
             "en": "FACTORY",
             "tr": "FABRİKA"
           },
+          "difficulty": "easy",
           "sentences": [
             "_____ sistemi malların üretim şeklini değiştirdi.",
             "İşçilerin makineleri çalıştırmak için toplandığı yer neresiydi? _____"
@@ -576,9 +622,10 @@
             "en": "STEAM",
             "tr": "BUHAR"
           },
+          "difficulty": "normal",
           "sentences": [
             "_____ gücü Sanayi Devrimi'nin motorlarını çalıştırdı.",
-            "Ulaşımı dönüştüren motor türü neydi? _____ motoru"
+            "Ulaşımı ilerleten motor türü neydi? _____ motoru"
           ],
           "didYouKnow": "İlk pratik buhar motoru 1712'de Thomas Newcomen tarafından icat edildi, ancak James Watt'ın iyileştirmeleri onu yaygın olarak kullanışlı hale getirdi!"
         },
@@ -588,6 +635,7 @@
             "en": "COAL",
             "tr": "KÖMÜR"
           },
+          "difficulty": "easy",
           "sentences": [
             "_____ madenciliği Sanayi Devrimi'ni besledi.",
             "Buhar motorlarını çalıştıran yakıt neydi? _____"
@@ -600,6 +648,7 @@
             "en": "IRON",
             "tr": "DEMİR"
           },
+          "difficulty": "normal",
           "sentences": [
             "_____ üretimi bu dönemde büyük ölçüde arttı.",
             "Makineler ve demiryolları yapımında kullanılan malzeme neydi? _____"
@@ -612,6 +661,7 @@
             "en": "TRAIN",
             "tr": "TREN"
           },
+          "difficulty": "easy",
           "sentences": [
             "_____ ağı şehirleri birbirine bağladı.",
             "Seyahati daha ucuz ve erişilebilir hale getiren şey neydi? _____"
@@ -624,8 +674,9 @@
             "en": "WORKER",
             "tr": "İŞÇİ"
           },
+          "difficulty": "easy",
           "sentences": [
-            "Fabrika _____ genellikle günde on iki saat çalışırdı.",
+            "Fabrika _____leri genellikle günde on iki saat çalışırdı.",
             "Fabrika işleri için çiftliklerden şehirlere kim taşındı? _____"
           ],
           "didYouKnow": "Fabrika işçileri, çocuklar dahil, genellikle 14-16 saatlik tehlikeli koşullarda çalışırdı ve hiçbir güvenlik düzenlemesi yoktu!"
@@ -636,9 +687,10 @@
             "en": "CITY",
             "tr": "ŞEHİR"
           },
+          "difficulty": "easy",
           "sentences": [
-            "Sanayi _____ hızla büyüdü çünkü insanlar fabrika işi arıyordu.",
-            "Sanayileşme sırasında nüfusu ikiye katlanan yer neydi? _____"
+            "Sanayi _____leri hızla büyüdü çünkü insanlar fabrika işi arıyordu.",
+            "Sanayileşme sırasında nüfusu ikiye katlanan yerler nerelerdi? _____"
           ],
           "didYouKnow": "Manchester ve Birmingham gibi şehirler hızla büyüdü, ancak aşırı kalabalıklaşma kötü sanitasyona ve hastalık salgınlarına yol açtı!"
         },
@@ -648,6 +700,7 @@
             "en": "MACHINE",
             "tr": "MAKİNE"
           },
+          "difficulty": "normal",
           "sentences": [
             "Yeni _____ araçları el yapımı üretim yöntemlerinin yerini aldı.",
             "Birçok kişinin işini yapabilen şey neydi? _____"
@@ -660,6 +713,7 @@
             "en": "COTTON",
             "tr": "PAMUK"
           },
+          "difficulty": "normal",
           "sentences": [
             "_____ temizleme makinesi pamuğu daha hızlı temizledi.",
             "Hangi kumaş türü daha ucuz hale geldi? _____ kumaş"
@@ -672,6 +726,7 @@
             "en": "CHILD",
             "tr": "ÇOCUK"
           },
+          "difficulty": "normal",
           "sentences": [
             "_____ işçiler erken fabrikalarda yaygındı.",
             "Tehlikeli fabrika koşullarında kim çalışırdı? _____ işçiler"
@@ -684,6 +739,7 @@
             "en": "TEXTILE",
             "tr": "TEKSTİL"
           },
+          "difficulty": "normal",
           "sentences": [
             "_____ endüstrisi ilk mekanize edilenlerden biriydi.",
             "Kumaş ve giysi üreten endüstri neydi? _____ endüstrisi"
@@ -696,6 +752,7 @@
             "en": "RAILWAY",
             "tr": "DEMİRYOLU"
           },
+          "difficulty": "normal",
           "sentences": [
             "_____ sistemi şehirleri ve kasabaları birbirine bağladı.",
             "Malların taşınma şeklini değiştiren ulaşım sistemi neydi? _____"
@@ -703,16 +760,17 @@
           "didYouKnow": "İlk kamu demiryolu 1825'te İngiltere'de açıldı. 1850'ye gelindiğinde, İngiltere'de 6.000 milden fazla demiryolu vardı!"
         },
         {
-          "word": "LOKOMOTİF",
+          "word": "INVENTION",
           "translations": {
-            "en": "LOCOMOTIVE",
-            "tr": "LOKOMOTİF"
+            "en": "INVENTION",
+            "tr": "İCAT"
           },
+          "difficulty": "normal",
           "sentences": [
-            "_____ insanların ve malların ülkeler arasında taşınma şeklini değiştirdi.",
-            "Ulaşımı dönüştüren buharlı makine neydi? _____"
+            "The Industrial Revolution was a time of great _____.",
+            "What word describes new creations that changed the world? _____"
           ],
-          "didYouKnow": "İlk buharlı lokomotifler Rönesans döneminde geliştirildi, ancak yaygın olarak kullanılmaları Sanayi Devrimi'ne kadar gerçekleşmedi!"
+          "didYouKnow": "The Industrial Revolution saw inventions like the steam engine, spinning jenny, and power loom transform society!"
         },
         {
           "word": "EMEK",
@@ -721,10 +779,10 @@
             "tr": "EMEK"
           },
           "sentences": [
-            "Fabrika _____ genellikle zor ve tehlikeliydi.",
-            "İşçiler ücret karşılığında ne sunardı? _____"
+            "Sanayi Devrimi'nde işçilerin _____ koşulları genellikle çok zordu.",
+            "Üretim süreçlerinde insan _____nın yerini makineler nasıl aldı?"
           ],
-          "didYouKnow": "İşçi sendikaları, daha iyi çalışma koşulları için mücadele etti ve çalışma saatlerini sınırlayan ve çocuk işçiliğini yasaklayan yasaların çıkmasını sağladı!"
+          "didYouKnow": "Sanayi Devrimi sırasında işçiler, günde 14-16 saat çalışmak zorunda kalıyordu. Bu zorlu koşullar, işçi hakları hareketlerinin doğmasına neden oldu!"
         },
         {
           "word": "SENDİKA",
@@ -749,8 +807,9 @@
             "en": "DEMOCRACY",
             "tr": "DEMOKRASİ"
           },
+          "difficulty": "normal",
           "sentences": [
-            "Atina _____ vatandaşların önemli konularda oy kullanmasına izin verdi.",
+            "Atina'da _____, vatandaşların önemli konularda oy kullanmasına izin verdi.",
             "Tek bir hükümdar yerine halka güç veren sistem neydi? _____"
           ],
           "didYouKnow": "Atina demokrasisi doğrudandı, temsili değildi. Vatandaşlar yasalar ve politikalar üzerinde doğrudan oy kullanırdı, seçilmiş temsilciler aracılığıyla değil!"
@@ -761,8 +820,9 @@
             "en": "OLYMPICS",
             "tr": "OLİMPİYAT"
           },
+          "difficulty": "easy",
           "sentences": [
-            "Antik _____ her dört yılda bir Yunanistan'da düzenlenirdi.",
+            "Antik _____lar her dört yılda bir Yunanistan'da düzenlenirdi.",
             "Zeus onuruna düzenlenen etkinlikler neydi? _____"
           ],
           "didYouKnow": "Antik Olimpiyatlar 1.000 yıldan fazla sürdü, MÖ 776'dan MS 393'e kadar. Kazananlar madalya yerine zeytin dalları alırdı!"
@@ -773,8 +833,9 @@
             "en": "THEATER",
             "tr": "TİYATRO"
           },
+          "difficulty": "normal",
           "sentences": [
-            "Yunan _____ trajedi ve komedi oyunlarını icat etti.",
+            "Yunan _____ları trajedi ve komedi oyunlarını icat etti.",
             "Aktörlerin duygularını göstermek için maskeler taktığı yer neresiydi? _____"
           ],
           "didYouKnow": "Antik Yunan tiyatroları 15.000 kişiye kadar seyirci alabiliyordu. Maskeler, aktörlerin seslerini yükseltmelerine ve birden fazla rol oynamalarına yardımcı olurdu!"
@@ -785,6 +846,7 @@
             "en": "SPARTA",
             "tr": "SPARTA"
           },
+          "difficulty": "normal",
           "sentences": [
             "_____ güçlü ordusuyla ünlüydü.",
             "Hangi şehir yedi yaşından itibaren erkekleri savaşçı olarak yetiştirdi? _____"
@@ -797,6 +859,7 @@
             "en": "ATHENS",
             "tr": "ATİNA"
           },
+          "difficulty": "easy",
           "sentences": [
             "_____ demokrasinin doğduğu yerdi.",
             "Hangi şehir sanat, öğrenim ve felsefenin merkeziydi? _____"
@@ -809,8 +872,9 @@
             "en": "PHILOSOPHER",
             "tr": "FİLOZOF"
           },
+          "difficulty": "normal",
           "sentences": [
-            "Bir Yunan _____ hayat ve gerçek hakkında sorular sorardı.",
+            "Bir Yunan _____u hayat ve gerçek hakkında sorular sorardı.",
             "Öğrencilerine sorular sorarak öğreten kişi kimdi? _____"
           ],
           "didYouKnow": "Ünlü Yunan filozof Sokrates hiçbir şey yazmamıştır. Onun fikirlerini öğrencisi Plato'nun yazılarından öğreniyoruz!"
@@ -821,8 +885,9 @@
             "en": "POTTERY",
             "tr": "ÇÖMLEK"
           },
+          "difficulty": "normal",
           "sentences": [
-            "Yunan _____ boyanmış sahnelerle hikayeler anlatırdı.",
+            "Yunanlarda _____ler boyanmış sahnelerle hikayeler anlatırdı.",
             "Antik Yunan kültürü hakkında bilgi edinmemizi sağlayan şey neydi? _____"
           ],
           "didYouKnow": "Yunan çömlekleri genellikle mitlerden ve günlük yaşamdan sahnelerle süslenirdi. Siyah figür ve kırmızı figür stilleri ünlüdür!"
@@ -833,8 +898,9 @@
             "en": "TEMPLE",
             "tr": "TAPINAK"
           },
+          "difficulty": "normal",
           "sentences": [
-            "Bir Yunan _____ tanrıları onurlandırmak için inşa edilirdi.",
+            "Yunan _____ları tanrıları onurlandırmak için inşa edilirdi.",
             "Uzun sütunları ve mermer basamakları olan bina neydi? _____"
           ],
           "didYouKnow": "Yunan tapınakları parlak renklerle boyanırdı, bugün gördüğümüz gibi beyaz değildi. Boya binlerce yıl içinde solmuştur!"
@@ -845,6 +911,7 @@
             "en": "MYTH",
             "tr": "MİT"
           },
+          "difficulty": "normal",
           "sentences": [
             "Yunan _____ hikayeleri etraflarındaki dünyayı açıklardı.",
             "Tanrılar ve kahramanlarla ilgili hikayeler neydi? _____"
@@ -852,16 +919,17 @@
           "didYouKnow": "Yunan mitleri başlangıçta sözlü olarak aktarılırdı. Homeros'un İlyada ve Odysseia destanları ilk yazıya geçirilenlerdir!"
         },
         {
-          "word": "BİLİM",
+          "word": "MATEMATİK",
           "translations": {
-            "en": "SCIENCE",
-            "tr": "BİLİM"
+            "en": "MATHEMATICS",
+            "tr": "MATEMATİK"
           },
+          "difficulty": "hard",
           "sentences": [
-            "Yunan _____ modern bilginin temelini attı.",
-            "Antik Yunanistan'da yıldızları ve matematiği inceleyen alan neydi? _____"
+            "Pisagor ve Öklid gibi bilim insanları _____ alanında nasıl devrim yarattı?",
+            "Antik Yunan'da sayılar ve şekiller üzerine çalışan alan neydi? _____"
           ],
-          "didYouKnow": "Arşimet gibi antik Yunan bilim adamları, bugün hala kullanılan matematik ve fizik keşifleri yaptı!"
+          "didYouKnow": "Pisagor teoremi, antik Yunan matematikçisi Pisagor tarafından keşfedildi ve bugün hala geometri derslerinde öğretiliyor!"
         },
         {
           "word": "AKROPOL",
@@ -869,6 +937,7 @@
             "en": "ACROPOLIS",
             "tr": "AKROPOL"
           },
+          "difficulty": "normal",
           "sentences": [
             "_____ Atina'nın yüksek şehriydi.",
             "Antik Atina'nın merkezi olan tepe neydi? _____"
@@ -881,6 +950,7 @@
             "en": "OLIVE",
             "tr": "ZEYTİN"
           },
+          "difficulty": "easy",
           "sentences": [
             "_____ ağacı Yunanlar için kutsaldı.",
             "Yiyecek, yağ ve odun sağlayan bitki neydi? _____ ağacı"
@@ -893,6 +963,7 @@
             "en": "ZEUS",
             "tr": "ZEUS"
           },
+          "difficulty": "easy",
           "sentences": [
             "_____ Yunan tanrılarının kralıydı.",
             "Olimpos Dağı'ndan kim hükmederdi? _____"
@@ -905,6 +976,7 @@
             "en": "ATHLETE",
             "tr": "ATLET"
           },
+          "difficulty": "easy",
           "sentences": [
             "Bir _____ Olimpiyat oyunları için antrenman yapardı.",
             "Koşu ve güreş yarışmalarında kim yarışırdı? _____"
@@ -917,6 +989,7 @@
             "en": "MARATHON",
             "tr": "MARATON"
           },
+          "difficulty": "normal",
           "sentences": [
             "_____ yarışı antik bir Yunan hikayesinden gelir.",
             "Yunanistan'da kökeni olan uzun mesafe yarışı neydi? _____"
@@ -934,8 +1007,9 @@
             "en": "RAID",
             "tr": "AKIN"
           },
+          "difficulty": "normal",
           "sentences": [
-            "Bir Viking _____ kıyı kasabalarına hızlı bir saldırıydı.",
+            "Bir Viking _____ı kıyı kasabalarına hızlı bir saldırıydı.",
             "Vikingler zenginlik ve kaynak toplamak için ne yapardı? _____"
           ],
           "didYouKnow": "Viking akınları genellikle yaz aylarında, denizlerin sakin olduğu zamanlarda yapılırdı. Manastırları hedef alırlardı çünkü zengin ve savunmasızdılar!"
@@ -946,20 +1020,22 @@
             "en": "HELMET",
             "tr": "MİĞFER"
           },
+          "difficulty": "easy",
           "sentences": [
-            "Bir Viking savaşçısının _____ kafasını korurdu.",
+            "Bir Viking savaşçısının _____i kafasını korurdu.",
             "Gerçekte olmasa da genellikle boynuzlu olarak tasvir edilen zırh parçası neydi? _____"
           ],
           "didYouKnow": "Viking miğferlerinin aslında boynuzları yoktu! Bu efsane, 19. yüzyıl sanatçıları tarafından yaratıldı. Gerçek miğferler basit ve pratiktir!"
         },
         {
-          "word": "RUNLAR",
+          "word": "RUN",
           "translations": {
             "en": "RUNES",
-            "tr": "RUNLAR"
+            "tr": "RUN"
           },
+          "difficulty": "hard",
           "sentences": [
-            "Vikingler taşa _____ oyarak hikayeler anlatırdı.",
+            "Vikingler taşa _____lar oyarak hikayeler anlatırdı.",
             "Viking yazı sistemi neydi? _____"
           ],
           "didYouKnow": "Runların büyülü güçleri olduğuna inanılırdı. Vikingler onları korunma, iyileşme ve hatta düşmanlarını lanetlemek için kullanırdı!"
@@ -970,6 +1046,7 @@
             "en": "FJORD",
             "tr": "FİYORT"
           },
+          "difficulty": "normal",
           "sentences": [
             "Bir _____ dik kayalıklarla çevrili uzun ve dar bir koydur.",
             "Norveç'te Viking yerleşimlerini şekillendiren coğrafi özellik neydi? _____"
@@ -982,8 +1059,9 @@
             "en": "VALHALLA",
             "tr": "VALHALLA"
           },
+          "difficulty": "hard",
           "sentences": [
-            "Vikingler savaşçıların öldükten sonra _____ gittiğine inanırdı.",
+            "Vikingler savaşçıların öldükten sonra _____ya gittiğine inanırdı.",
             "Odin'in büyük salonunun adı neydi? _____"
           ],
           "didYouKnow": "Valhalla'da savaşçılar gün boyu savaşır ve şölen yapar, gece olunca iyileşirlerdi. Tanrıların son savaşı Ragnarok'a hazırlanırlardı!"
@@ -994,6 +1072,7 @@
             "en": "THOR",
             "tr": "THOR"
           },
+          "difficulty": "normal",
           "sentences": [
             "_____ İskandinav mitolojisinde gök gürültüsü tanrısıydı.",
             "Mjölnir adlı çekici taşıyan tanrı kimdi? _____"
@@ -1006,6 +1085,7 @@
             "en": "BESERKER",
             "tr": "BESERKER"
           },
+          "difficulty": "hard",
           "sentences": [
             "Bir _____ trans halinde savaşan korkusuz bir Viking savaşçısıydı.",
             "Vahşi savaş öfkesiyle tanınan savaşçı türü neydi? _____"
@@ -1018,6 +1098,7 @@
             "en": "SKALD",
             "tr": "OZAN"
           },
+          "difficulty": "hard",
           "sentences": [
             "Bir _____ kahramanların hikayelerini anlatan Viking şairiydi.",
             "Viking tarihini şiirler ve şarkılarla koruyan kişi kimdi? _____"
@@ -1030,8 +1111,9 @@
             "en": "AXE",
             "tr": "BALTA"
           },
+          "difficulty": "normal",
           "sentences": [
-            "Bir Viking savaşçısının _____ hem alet hem de silahtı.",
+            "Bir Viking savaşçısının _____sı hem alet hem de silahtı.",
             "Viking savaşçıları tarafından yaygın olarak kullanılan silah neydi? _____"
           ],
           "didYouKnow": "Viking baltaları o kadar iyi yapılmıştı ki bir kalkanı veya miğferi tek bir darbeyle parçalayabilirdi. Aynı zamanda odun kesmek için de kullanılırdı!"
@@ -1042,6 +1124,7 @@
             "en": "VIKINGR",
             "tr": "VIKING"
           },
+          "difficulty": "normal",
           "sentences": [
             "_____ kelimesi aslında 'korsan' veya 'akıncı' anlamına geliyordu.",
             "Vikingler akın yaparken kendilerine ne diyordu? _____"
@@ -1049,16 +1132,17 @@
           "didYouKnow": "Tüm İskandinav halkı Viking değildi. 'Viking' terimi özellikle akınlara veya ticaret seferlerine çıkanları ifade ederdi!"
         },
         {
-          "word": "UZUN GEMİ",
+          "word": "LOKI",
           "translations": {
-            "en": "LONGSHIP",
-            "tr": "UZUN GEMİ"
+            "en": "LOKI",
+            "tr": "LOKI"
           },
+          "difficulty": "hard",
           "sentences": [
-            "Viking _____ hızlıydı ve sığ sularda seyredebilirdi.",
-            "Vikinglerin uzaklara seyahat etmesini ve akınlar yapmasını sağlayan gemi neydi? _____"
+            "Viking mitolojisinde hile ve şakalarıyla ünlü tanrı kimdi? _____",
+            "_____ hem tanrıların dostu hem de düşmanı olarak bilinirdi."
           ],
-          "didYouKnow": "Viking uzun gemileri o kadar iyi tasarlanmıştı ki sadece 3 fit suda bile seyredebilirlerdi. Bu, nehirlerden iç bölgelere kadar gitmelerine ve düşmanlarını şaşırtmalarına olanak sağlardı!"
+          "didYouKnow": "Loki, Viking mitolojisinde hilekâr bir tanrıdır. Hem tanrıların dostu hem de düşmanı olarak bilinir ve birçok efsanede kilit bir rol oynar!"
         },
         {
           "word": "ODİN",
@@ -1066,6 +1150,7 @@
             "en": "ODIN",
             "tr": "ODİN"
           },
+          "difficulty": "normal",
           "sentences": [
             "_____ İskandinav mitolojisinde baş tanrıydı.",
             "Huginn ve Muninn adlı iki kuzgunu olan tanrı kimdi? _____"
@@ -1073,16 +1158,17 @@
           "didYouKnow": "Odin, bilgelik için bir gözünü feda etti. Kuzgunları Huginn (Düşünce) ve Muninn (Hafıza) dünyayı dolaşır ve ona haber getirirdi!"
         },
         {
-          "word": "BAL ŞARABI",
+          "word": "SAGA",
           "translations": {
-            "en": "MEAD",
-            "tr": "BAL ŞARABI"
+            "en": "SAGA",
+            "tr": "SAGA"
           },
+          "difficulty": "hard",
           "sentences": [
-            "Vikingler baldan yapılan _____ içerdi.",
-            "Viking şölenlerinde popüler olan alkollü içecek neydi? _____"
+            "Vikinglerin kahramanlık hikayelerini anlatan uzun şiirler ne olarak adlandırılırdı? _____",
+            "_____lar Viking kültüründe nesilden nesile aktarılan efsanelerdi."
           ],
-          "didYouKnow": "Bal şarabı Vikingler için o kadar önemliydi ki 'tanrıların içeceği' olarak adlandırılırdı. Şölenlerde ve kutlamalarda boynuzlardan servis edilirdi!"
+          "didYouKnow": "Sagalar, Vikinglerin kahramanlık hikayelerini, maceralarını ve mitolojik olaylarını anlatan uzun şiirlerdir. Bu hikayeler, Viking kültürünün ve tarihinin önemli bir parçasıdır!"
         },
         {
           "word": "KALKAN",
@@ -1090,6 +1176,7 @@
             "en": "SHIELD",
             "tr": "KALKAN"
           },
+          "difficulty": "normal",
           "sentences": [
             "Bir Viking savaşçısı korunmak için yuvarlak bir _____ taşırdı.",
             "Üzerinde semboller bulunan savunma eşyası neydi? _____"
@@ -1102,6 +1189,7 @@
             "en": "NORSE",
             "tr": "İSKANDİNAV"
           },
+          "difficulty": "normal",
           "sentences": [
             "_____ halkı İskandinavya'da yaşardı.",
             "Vikinglerle ilişkilendirilen kültür neydi? _____ kültürü"
@@ -1119,8 +1207,9 @@
             "en": "SAMURAI",
             "tr": "SAMURAY"
           },
+          "difficulty": "normal",
           "sentences": [
-            "_____ katı bir koda uyan yetenekli savaşçılardı.",
+            "_____lar, katı bir koda uyan yetenekli savaşçılardı.",
             "Feodal Japonya'da askeri soyluluğu kim temsil ederdi? _____"
           ],
           "didYouKnow": "Samuray, 'hizmet eden' anlamına gelir. Sadece savaşçı değil, aynı zamanda bilgin, sanatçı ve yöneticiydiler!"
@@ -1131,6 +1220,7 @@
             "en": "SHOGUN",
             "tr": "ŞOGUN"
           },
+          "difficulty": "normal",
           "sentences": [
             "_____ Japonya'nın askeri lideriydi.",
             "Feodal Japonya'da imparatordan daha fazla güce sahip olan kişi kimdi? _____"
@@ -1143,6 +1233,7 @@
             "en": "KATANA",
             "tr": "KATANA"
           },
+          "difficulty": "normal",
           "sentences": [
             "Bir _____ samurayların taşıdığı uzun kılıçtı.",
             "Samurayların sembolü olan kavisli kılıç neydi? _____"
@@ -1155,6 +1246,7 @@
             "en": "DAIMYO",
             "tr": "DAİMYO"
           },
+          "difficulty": "normal",
           "sentences": [
             "Bir _____ büyük topraklara sahip güçlü bir lorddu.",
             "Feodal Japonya'da geniş bölgeleri kim yönetirdi? _____"
@@ -1167,6 +1259,7 @@
             "en": "BUSHIDO",
             "tr": "BUSHİDO"
           },
+          "difficulty": "normal",
           "sentences": [
             "_____ samurayların uyduğu onur koduydu.",
             "Sadakat, cesaret ve disiplini vurgulayan kod neydi? _____"
@@ -1179,6 +1272,7 @@
             "en": "NINJA",
             "tr": "NİNJA"
           },
+          "difficulty": "easy",
           "sentences": [
             "Bir _____ yetenekli bir casus ve suikastçıydı.",
             "Gizlilik ve kamuflaj kullanarak görevlerini tamamlayan kişi kimdi? _____"
@@ -1191,6 +1285,7 @@
             "en": "TEA",
             "tr": "ÇAY"
           },
+          "difficulty": "easy",
           "sentences": [
             "_____ seremonisi önemli bir kültürel uygulamaydı.",
             "Japon ritüellerinin merkezinde hangi içecek vardı? _____"
@@ -1203,8 +1298,9 @@
             "en": "ZEN",
             "tr": "ZEN"
           },
+          "difficulty": "hard",
           "sentences": [
-            "_____ Budizmi Japon sanatını ve kültürünü etkiledi.",
+            "_____ Budizmi, Japon sanatını ve kültürünü etkiledi.",
             "Meditasyon ve sadelik üzerine odaklanan felsefe neydi? _____"
           ],
           "didYouKnow": "Zen Budizmi, meditasyon ve öz disiplin yoluyla aydınlanmaya ulaşılabileceğini öğretir. Samuray kültürünü büyük ölçüde etkilemiştir!"
@@ -1215,6 +1311,7 @@
             "en": "PAGODA",
             "tr": "PAGODA"
           },
+          "difficulty": "hard",
           "sentences": [
             "Bir _____ kavisli çatıları olan katlı bir kuledir.",
             "Japon tapınaklarında yaygın olan yapı türü neydi? _____"
@@ -1227,6 +1324,7 @@
             "en": "KIMONO",
             "tr": "KİMONO"
           },
+          "difficulty": "easy",
           "sentences": [
             "Bir _____ geleneksel bir Japon giysisidir.",
             "Geniş bir kuşakla giyilen kıyafet neydi? _____"
@@ -1239,6 +1337,7 @@
             "en": "GEISHA",
             "tr": "GEYŞA"
           },
+          "difficulty": "normal",
           "sentences": [
             "Bir _____ eğitimli bir sanatçı ve eğlendiriciydi.",
             "Müzik, dans ve çay seremonileri yapan kişi kimdi? _____"
@@ -1251,6 +1350,7 @@
             "en": "DOJO",
             "tr": "DOJO"
           },
+          "difficulty": "normal",
           "sentences": [
             "Bir _____ dövüş sanatları için bir eğitim salonuydu.",
             "Samuraylar kılıç kullanmayı nerede öğrenirdi? _____"
@@ -1263,6 +1363,7 @@
             "en": "HAIKU",
             "tr": "HAİKU"
           },
+          "difficulty": "normal",
           "sentences": [
             "Bir _____ üç satırlık kısa bir şiirdir.",
             "Doğayı ve duyguları yakalayan şiir türü neydi? _____"
@@ -1275,6 +1376,7 @@
             "en": "SHINTO",
             "tr": "ŞİNTO"
           },
+          "difficulty": "normal",
           "sentences": [
             "_____ Japonya'nın geleneksel dinidir.",
             "Doğa ruhlarına odaklanan inanç sistemi neydi? _____"
@@ -1287,6 +1389,7 @@
             "en": "SUSHI",
             "tr": "SUŞİ"
           },
+          "difficulty": "easy",
           "sentences": [
             "_____ pirinç ve balıktan yapılan geleneksel bir Japon yemeğidir.",
             "Soya sosu ve wasabi ile servis edilen yemek neydi? _____"
@@ -1304,6 +1407,7 @@
             "en": "SULTAN",
             "tr": "SULTAN"
           },
+          "difficulty": "normal",
           "sentences": [
             "_____ Osmanlı İmparatorluğu'nun hükümdarıydı.",
             "Hem devlet hem de dinin başı kimdi? _____"
@@ -1316,6 +1420,7 @@
             "en": "JANISSARY",
             "tr": "YENİÇERİ"
           },
+          "difficulty": "normal",
           "sentences": [
             "_____ Osmanlı ordusunun seçkin askerleriydi.",
             "Sultanın kişisel muhafızları kimlerdi? _____"
@@ -1328,6 +1433,7 @@
             "en": "MOSQUE",
             "tr": "CAMİ"
           },
+          "difficulty": "easy",
           "sentences": [
             "Bir _____ Müslümanların ibadet ettiği yerdir.",
             "Minare ve kubbesi olan bina neydi? _____"
@@ -1340,23 +1446,25 @@
             "en": "BAZAAR",
             "tr": "PAZAR"
           },
+          "difficulty": "normal",
           "sentences": [
-            "_____ Osmanlı şehirlerinde hareketli bir ticaret merkeziydi.",
+            "_____, Osmanlı şehirlerinde hareketli bir ticaret merkeziydi.",
             "İnsanların alışveriş yaptığı yer neresiydi? _____"
           ],
           "didYouKnow": "İstanbul'daki Kapalıçarşı, dünyanın en eski ve en büyük kapalı pazarlarından biridir. 4.000'den fazla dükkan ve 61 sokak içerir!"
         },
         {
-          "word": "TÜRBAN",
+          "word": "SARIK",
           "translations": {
             "en": "TURBAN",
-            "tr": "TÜRBAN"
+            "tr": "SARIK"
           },
+          "difficulty": "normal",
           "sentences": [
-            "_____ Osmanlı erkekleri için geleneksel bir başlıktı.",
-            "Osmanlı yetkilileri tarafından yaygın olarak giyilen başlık neydi? _____"
+            "_ Osmanlı'da din adamları ve yüksek rütbelilerce kullanılan bir başlıktı.",
+            "Osmanlı'da statüyü ve mesleği belirten geleneksel başlık neydi? _____"
           ],
-          "didYouKnow": "Bir türbanın stili ve rengi, bir kişinin rütbesini ve mesleğini gösterirdi. Sadece sultan beyaz türban giyebilirdi!"
+          "didYouKnow": "Sarık, Osmanlı döneminde sadece bir başlık değil, aynı zamanda kişinin statüsünü, mesleğini ve dini konumunu gösteren önemli bir semboldü. Renkleri ve şekilleri kişinin kimliği hakkında bilgi verirdi!"
         },
         {
           "word": "MİNARE",
@@ -1364,8 +1472,9 @@
             "en": "MINARET",
             "tr": "MİNARE"
           },
+          "difficulty": "normal",
           "sentences": [
-            "_____ insanları namaza çağırmak için kullanılan uzun bir kuledir.",
+            "_____, insanları namaza çağırmak için kullanılan uzun bir kuledir.",
             "Caminin hangi kısmı ezan okumak için kullanılırdı? _____"
           ],
           "didYouKnow": "İstanbul'daki Sultanahmet Camii'nin altı minaresi vardır, bu o zamanlar alışılmadık bir durumdu. Sultan, eleştirilerden kaçınmak için Mekke'deki Kabe'ye yedinci bir minare yaptırmak zorunda kaldı!"
@@ -1376,6 +1485,7 @@
             "en": "CARAVAN",
             "tr": "KERVAN"
           },
+          "difficulty": "normal",
           "sentences": [
             "Bir _____ çölde mal taşırdı.",
             "Ticaret yollarında mal taşıyan grup neydi? _____"
@@ -1388,9 +1498,10 @@
             "en": "HAMMAM",
             "tr": "HAMAM"
           },
+          "difficulty": "normal",
           "sentences": [
-            "_____ Osmanlı şehirlerinde halka açık bir hamamdı.",
-            "İnsanların yıkanıp sosyalleştiği yer neresiydi? _____"
+            "Osmanlı döneminde insanların temizlenip sosyalleştiği yerler nasıl adlandırılırdı? _____",
+            "_____lar, Osmanlı şehirlerinde günlük yaşamın vazgeçilmez bir parçasıydı."
           ],
           "didYouKnow": "Osmanlı hamamları sadece yıkanmak için değil, aynı zamanda sosyalleşmek ve iş yapmak için de kullanılırdı. Günlük yaşamın önemli bir parçasıydı!"
         },
@@ -1400,6 +1511,7 @@
             "en": "TUGRA",
             "tr": "TUĞRA"
           },
+          "difficulty": "hard",
           "sentences": [
             "_____ Sultan'ın resmi imzasıydı.",
             "Sultan'ın otoritesini temsil eden sembol neydi? _____"
@@ -1412,8 +1524,9 @@
             "en": "COFFEE",
             "tr": "KAHVE"
           },
+          "difficulty": "easy",
           "sentences": [
-            "_____ Osmanlı İmparatorluğu'nda popüler hale geldi.",
+            "_____, Osmanlı İmparatorluğu'nda popüler hale geldi.",
             "Avrupa'ya Osmanlılar aracılığıyla tanıtılan içecek neydi? _____"
           ],
           "didYouKnow": "Dünyadaki ilk kahvehane 1554'te İstanbul'da açıldı. Kahve o kadar önemliydi ki bir kadın, kocası ona yeterince kahve sağlamazsa boşanabilirdi!"
@@ -1424,6 +1537,7 @@
             "en": "TULIP",
             "tr": "LALE"
           },
+          "difficulty": "normal",
           "sentences": [
             "_____ Osmanlı İmparatorluğu'nun bir sembolüydü.",
             "Lale Devri'nde ünlü olan çiçek neydi? _____"
@@ -1436,6 +1550,7 @@
             "en": "KILIM",
             "tr": "KİLİM"
           },
+          "difficulty": "normal",
           "sentences": [
             "Bir _____ geleneksel dokunmuş bir halıdır.",
             "Osmanlı zanaatkarları tarafından yapılan halı türü neydi? _____"
@@ -1448,6 +1563,7 @@
             "en": "DIVAN",
             "tr": "DİVAN"
           },
+          "difficulty": "hard",
           "sentences": [
             "_____ Osmanlı İmparatorluğu'nun danışma meclisiydi.",
             "Sultan'ın danışmanlarıyla buluştuğu yer neresiydi? _____"
@@ -1460,6 +1576,7 @@
             "en": "KAFTAN",
             "tr": "KAFTAN"
           },
+          "difficulty": "normal",
           "sentences": [
             "Bir _____ Osmanlı sarayında statü sembolüydü.",
             "Osmanlı sarayında statüyü temsil eden giysi neydi? _____"
@@ -1472,6 +1589,7 @@
             "en": "SEBIL",
             "tr": "SEBİL"
           },
+          "difficulty": "hard",
           "sentences": [
             "Bir _____ halka içme suyu sağlayan bir çeşmeydi.",
             "Osmanlı şehirlerinde insanlara su sağlayan yapı neydi? _____"
@@ -1484,8 +1602,9 @@
             "en": "BOSPHORUS",
             "tr": "BOĞAZ"
           },
+          "difficulty": "normal",
           "sentences": [
-            "_____ Karadeniz'i Marmara Denizi'ne bağlayan su yoludur.",
+            "_____, Karadeniz'i Marmara Denizi'ne bağlayan su yoludur.",
             "İstanbul'dan geçen su yolu neydi? _____"
           ],
           "didYouKnow": "Boğaz, dünyanın en işlek su yollarından biridir. Avrupa ve Asya'yı birbirinden ayırır ve binlerce yıldır stratejik öneme sahiptir!"

@@ -9,6 +9,7 @@
             "en": "PHARAOH",
             "tr": "FİRAVUN"
           },
+          "difficulty": "easy",
           "sentences": [
             "The _____ ruled over Egypt with great power.",
             "Who built the huge pyramids in ancient Egypt? The _____"
@@ -21,6 +22,7 @@
             "en": "PYRAMID",
             "tr": "PİRAMİT"
           },
+          "difficulty": "easy",
           "sentences": [
             "The great _____ was built from stone blocks.",
             "What ancient structure served as a tomb for the pharaoh? The _____"
@@ -33,6 +35,7 @@
             "en": "SPHINX",
             "tr": "SFENKS"
           },
+          "difficulty": "normal",
           "sentences": [
             "The _____ has a lion's body and human head.",
             "What famous statue guards the pyramids? The _____"
@@ -45,11 +48,12 @@
             "en": "MUMMY",
             "tr": "MUMYA"
           },
+          "difficulty": "easy",
           "sentences": [
-            "A _____ was wrapped in special cloth.",
-            "What was placed inside the tomb to preserve the dead? The _____"
+            "A _____ is a preserved body wrapped in cloth.",
+            "What was created to protect the pharaoh's body in the afterlife? A _____"
           ],
-          "didYouKnow": "The mummification process took 70 days to complete. The brain was removed through the nose using a special hook!"
+          "didYouKnow": "The mummification process took 70 days! The brain was removed through the nose, and the organs were stored in special jars called canopic jars."
         },
         {
           "word": "GOLD",
@@ -57,11 +61,12 @@
             "en": "GOLD",
             "tr": "ALTIN"
           },
+          "difficulty": "easy",
           "sentences": [
             "The pharaoh's mask was made of _____.",
-            "What precious metal was used to make beautiful jewelry? _____"
+            "What precious metal was used in ancient Egyptian jewelry? _____"
           ],
-          "didYouKnow": "King Tutankhamun's death mask was made from 24 pounds of pure gold. Ancient Egyptians believed gold was the flesh of the sun god Ra!"
+          "didYouKnow": "The ancient Egyptians believed gold was the flesh of the gods. It was used in jewelry, statues, and even to decorate tombs!"
         },
         {
           "word": "TOMB",
@@ -69,11 +74,12 @@
             "en": "TOMB",
             "tr": "MEZAR"
           },
+          "difficulty": "normal",
           "sentences": [
-            "The _____ held many treasures.",
-            "What special place was built for the pharaoh? The _____"
+            "The pharaoh's _____ was filled with treasures.",
+            "Where were the pharaohs buried? In a _____"
           ],
-          "didYouKnow": "Pharaohs began building their tombs as soon as they became ruler. Some tombs took over 20 years to complete!"
+          "didYouKnow": "The tombs in the Valley of the Kings were filled with treasures to help the pharaohs in the afterlife. Many were robbed in ancient times!"
         },
         {
           "word": "NILE",
@@ -81,11 +87,12 @@
             "en": "NILE",
             "tr": "NİL"
           },
+          "difficulty": "easy",
           "sentences": [
-            "The _____ River gave water to Egypt.",
-            "Which river helped grow food in ancient Egypt? The _____"
+            "The _____ River was the lifeblood of ancient Egypt.",
+            "What river provided water and fertile soil to ancient Egypt? The _____"
           ],
-          "didYouKnow": "The Nile flooded every year, leaving behind rich black soil perfect for farming. Egyptians called this soil 'Kemet' - the Black Land!"
+          "didYouKnow": "The Nile is the longest river in the world, stretching over 4,000 miles. Ancient Egyptians called it 'Ar' or 'Black,' because of the rich black soil it left behind after flooding."
         },
         {
           "word": "QUEEN",
@@ -93,11 +100,12 @@
             "en": "QUEEN",
             "tr": "KRALİÇE"
           },
+          "difficulty": "easy",
           "sentences": [
-            "The _____ helped rule Egypt.",
-            "Who lived in the palace alongside the pharaoh? The _____"
+            "The _____ ruled alongside the pharaoh.",
+            "Who was the most famous female ruler of ancient Egypt? The _____"
           ],
-          "didYouKnow": "Cleopatra was the last active ruler of ancient Egypt. She could speak seven languages and was a brilliant mathematician!"
+          "didYouKnow": "Queen Hatshepsut was one of the most successful pharaohs of ancient Egypt. She ruled for over 20 years and built many monuments!"
         },
         {
           "word": "SAND",
@@ -105,11 +113,12 @@
             "en": "SAND",
             "tr": "KUM"
           },
+          "difficulty": "easy",
           "sentences": [
-            "Hot _____ covered the desert.",
-            "What did the wind blow across the desert? _____"
+            "The desert _____ covered much of Egypt.",
+            "What covered the land outside the Nile Valley? _____"
           ],
-          "didYouKnow": "The sand in the Egyptian desert can reach temperatures of 176°F (80°C) during the day. Ancient Egyptians used sandals made from papyrus to walk on it!"
+          "didYouKnow": "The Sahara Desert, which covers most of Egypt, is the largest hot desert in the world. It was once a lush, green land thousands of years ago!"
         },
         {
           "word": "CAT",
@@ -117,11 +126,12 @@
             "en": "CAT",
             "tr": "KEDİ"
           },
+          "difficulty": "easy",
           "sentences": [
-            "The Egyptians thought the _____ was special.",
-            "Which animal was treated like a god in ancient Egypt? The _____"
+            "The ancient Egyptians worshipped the _____.",
+            "What animal was considered sacred in ancient Egypt? The _____"
           ],
-          "didYouKnow": "Killing a cat in ancient Egypt was punishable by death. When a family cat died, everyone in the house would shave their eyebrows as a sign of mourning!"
+          "didYouKnow": "Cats were so sacred in ancient Egypt that killing one, even accidentally, was punishable by death. They were believed to bring good luck!"
         },
         {
           "word": "SCARAB",
@@ -129,11 +139,12 @@
             "en": "SCARAB",
             "tr": "SKARABE"
           },
+          "difficulty": "normal",
           "sentences": [
-            "The _____ beetle was a symbol of rebirth in ancient Egypt.",
-            "What insect was considered sacred by the Egyptians? The _____"
+            "The _____ was a symbol of rebirth in ancient Egypt.",
+            "What beetle was considered sacred by the ancient Egyptians? The _____"
           ],
-          "didYouKnow": "Scarab beetles roll balls of dung across the ground. Egyptians saw this as a symbol of the sun god Ra rolling the sun across the sky!"
+          "didYouKnow": "Scarab beetles were associated with the sun god Ra. They were often used in jewelry and amulets to protect the wearer."
         },
         {
           "word": "PAPYRUS",
@@ -141,11 +152,12 @@
             "en": "PAPYRUS",
             "tr": "PAPİRÜS"
           },
+          "difficulty": "normal",
           "sentences": [
-            "Ancient Egyptians wrote on _____ made from reeds.",
+            "The ancient Egyptians wrote on _____.",
             "What plant was used to make paper in ancient Egypt? _____"
           ],
-          "didYouKnow": "Papyrus sheets were made by layering strips of the plant crosswise and pounding them flat. Some Egyptian papyrus documents have survived for over 4,500 years!"
+          "didYouKnow": "Papyrus was made from the stem of the papyrus plant. It was used for writing, making boats, and even sandals!"
         },
         {
           "word": "OSIRIS",
@@ -153,11 +165,12 @@
             "en": "OSIRIS",
             "tr": "OSİRİS"
           },
+          "difficulty": "hard",
           "sentences": [
-            "_____ was the Egyptian god of the afterlife.",
-            "Which god was often shown with green skin? _____"
+            "_____ was the god of the afterlife.",
+            "Who was the ancient Egyptian god of the dead? _____"
           ],
-          "didYouKnow": "Osiris was depicted with green skin because it was the color of rebirth and vegetation. He was believed to have taught humans agriculture!"
+          "didYouKnow": "Osiris was one of the most important gods in ancient Egypt. He was killed by his brother Seth but was brought back to life by his wife Isis."
         },
         {
           "word": "CANOPIC",
@@ -165,11 +178,12 @@
             "en": "CANOPIC",
             "tr": "KANOPİK"
           },
+          "difficulty": "hard",
           "sentences": [
-            "_____ jars held the organs of mummies.",
-            "What special containers were used in mummification? _____ jars"
+            "The _____ jars held the organs of the mummy.",
+            "What jars were used to store the organs during mummification? _____ jars"
           ],
-          "didYouKnow": "Each Canopic jar had a different god's head as its lid: human, baboon, jackal, and falcon. Each protected a specific organ!"
+          "didYouKnow": "Canopic jars were often decorated with the heads of the four sons of Horus. Each jar held a different organ: liver, lungs, stomach, and intestines."
         },
         {
           "word": "HORUS",
@@ -177,11 +191,12 @@
             "en": "HORUS",
             "tr": "HORUS"
           },
+          "difficulty": "normal",
           "sentences": [
             "_____ was the falcon-headed god of the sky.",
-            "Which Egyptian god was often shown as a falcon? _____"
+            "Who was the ancient Egyptian god of the sky? _____"
           ],
-          "didYouKnow": "The Eye of Horus was a powerful symbol of protection. Ancient Egyptians used mathematical fractions based on different parts of the Eye symbol!"
+          "didYouKnow": "Horus was often depicted as a falcon or a man with a falcon's head. He was the son of Osiris and Isis and was associated with kingship."
         }
       ]
     },
@@ -194,6 +209,7 @@
             "en": "CASTLE",
             "tr": "ŞATO"
           },
+          "difficulty": "easy",
           "sentences": [
             "A _____ was built to protect towns and nobles from invaders.",
             "What structure had walls fifteen feet thick for defense? The _____"
@@ -206,6 +222,7 @@
             "en": "KNIGHT",
             "tr": "ŞÖVALYE"
           },
+          "difficulty": "easy",
           "sentences": [
             "A _____ trained from childhood to fight and serve nobles.",
             "Who followed a code of honor called chivalry? The _____"
@@ -218,6 +235,7 @@
             "en": "KING",
             "tr": "KRAL"
           },
+          "difficulty": "easy",
           "sentences": [
             "The _____ was believed to rule by divine right.",
             "Who granted land to nobles in exchange for loyalty? The _____"
@@ -230,6 +248,7 @@
             "en": "SWORD",
             "tr": "KILIÇ"
           },
+          "difficulty": "easy",
           "sentences": [
             "A medieval _____ took months to craft by hand.",
             "What weapon was a symbol of knighthood? The _____"
@@ -242,6 +261,7 @@
             "en": "CROWN",
             "tr": "TAÇ"
           },
+          "difficulty": "easy",
           "sentences": [
             "The _____ represented the king's power and authority.",
             "What royal item contained precious gems and metals? The _____"
@@ -254,6 +274,7 @@
             "en": "PEASANT",
             "tr": "KÖYLÜ"
           },
+          "difficulty": "normal",
           "sentences": [
             "A _____ worked the land to grow food for the kingdom.",
             "Who paid taxes to their lord in crops or labor? The _____"
@@ -266,6 +287,7 @@
             "en": "MONK",
             "tr": "KEŞİŞ"
           },
+          "difficulty": "normal",
           "sentences": [
             "A _____ preserved knowledge by copying books by hand.",
             "Who lived and worked in monasteries? The _____"
@@ -278,6 +300,7 @@
             "en": "GUILD",
             "tr": "LONCA"
           },
+          "difficulty": "hard",
           "sentences": [
             "A _____ trained new craftsmen in specific trades.",
             "What organization protected the secrets of their craft? The _____"
@@ -290,6 +313,7 @@
             "en": "ARMOR",
             "tr": "ZIRH"
           },
+          "difficulty": "normal",
           "sentences": [
             "Medieval _____ was made from iron or steel plates.",
             "What protection could weigh up to 100 pounds? _____"
@@ -302,6 +326,7 @@
             "en": "FEUDALISM",
             "tr": "FEODALİZM"
           },
+          "difficulty": "hard",
           "sentences": [
             "_____ was the social system of medieval Europe.",
             "What system organized society into lords, vassals, and peasants? _____"
@@ -314,6 +339,7 @@
             "en": "VILLAGE",
             "tr": "KÖY"
           },
+          "difficulty": "easy",
           "sentences": [
             "A medieval _____ was home to farmers and craftsmen.",
             "Where did most people live in the Middle Ages? In a _____"
@@ -326,6 +352,7 @@
             "en": "CHURCH",
             "tr": "KİLİSE"
           },
+          "difficulty": "easy",
           "sentences": [
             "The _____ was the center of community life.",
             "What building was the tallest in most medieval towns? The _____"
@@ -338,6 +365,7 @@
             "en": "FEAST",
             "tr": "ŞÖLEN"
           },
+          "difficulty": "normal",
           "sentences": [
             "A _____ was held to celebrate special occasions.",
             "What event brought people together for food and music? A _____"
@@ -350,6 +378,7 @@
             "en": "HERALD",
             "tr": "TELLAL"
           },
+          "difficulty": "hard",
           "sentences": [
             "A _____ delivered important messages for the king.",
             "Who announced news and proclamations in the town square? The _____"
@@ -362,6 +391,7 @@
             "en": "TOURNAMENT",
             "tr": "TURNUVA"
           },
+          "difficulty": "normal",
           "sentences": [
             "A _____ was a contest of skill for knights.",
             "What event featured jousting and sword fights? The _____"
@@ -379,6 +409,7 @@
             "en": "MERCHANT",
             "tr": "TÜCCAR"
           },
+          "difficulty": "normal",
           "sentences": [
             "The wealthy _____ class helped fund the Renaissance art movement.",
             "Who brought exotic goods to European markets? The _____"
@@ -391,6 +422,7 @@
             "en": "ARTIST",
             "tr": "SANATÇI"
           },
+          "difficulty": "easy",
           "sentences": [
             "An _____ during the Renaissance studied human anatomy.",
             "Who mixed their own paint colors from natural materials? The _____"
@@ -403,6 +435,7 @@
             "en": "PAINT",
             "tr": "BOYA"
           },
+          "difficulty": "easy",
           "sentences": [
             "Renaissance artists made _____ from egg yolk and pigments.",
             "What new invention allowed for richer colors in artwork? _____"
@@ -415,6 +448,7 @@
             "en": "PATRON",
             "tr": "HAMİ"
           },
+          "difficulty": "normal",
           "sentences": [
             "A wealthy _____ would support artists and their work.",
             "Who commissioned many great works of art? The _____"
@@ -427,6 +461,7 @@
             "en": "PRINT",
             "tr": "MATBAA"
           },
+          "difficulty": "normal",
           "sentences": [
             "The printing _____ helped spread new ideas quickly.",
             "What invention made books more affordable? The _____ press"
@@ -439,6 +474,7 @@
             "en": "BANK",
             "tr": "BANKA"
           },
+          "difficulty": "normal",
           "sentences": [
             "The first modern _____ system started in Renaissance Italy.",
             "What institution helped fund trade across Europe? The _____"
@@ -451,6 +487,7 @@
             "en": "TRADE",
             "tr": "TİCARET"
           },
+          "difficulty": "normal",
           "sentences": [
             "_____ routes connected Europe with distant Asia.",
             "What activity made many merchants wealthy? _____"
@@ -458,16 +495,17 @@
           "didYouKnow": "Venice became so rich from trade that its merchants used marble to build their warehouses, while other cities were still using wood!"
         },
         {
-          "word": "LEARN",
+          "word": "ANATOMY",
           "translations": {
-            "en": "LEARN",
-            "tr": "ÖĞRENMEK"
+            "en": "ANATOMY",
+            "tr": "ANATOMİ"
           },
+          "difficulty": "hard",
           "sentences": [
-            "People wanted to _____ about the ancient world.",
-            "What did scholars do to read old Greek texts? _____"
+            "Renaissance artists studied _____ to draw the human body more realistically.",
+            "How did Leonardo da Vinci's drawings include detailed human _____?"
           ],
-          "didYouKnow": "Humanist scholars rediscovered thousands of ancient Greek and Roman texts hidden in monastery libraries, sparking a revival of classical learning!"
+          "didYouKnow": "Leonardo da Vinci performed over 30 secret autopsies to better understand human anatomy. These studies revolutionized both medicine and art!"
         },
         {
           "word": "SCIENCE",
@@ -475,6 +513,7 @@
             "en": "SCIENCE",
             "tr": "BİLİM"
           },
+          "difficulty": "easy",
           "sentences": [
             "_____ began to challenge old beliefs about the world.",
             "What field laid the foundation for modern research? _____"
@@ -487,6 +526,7 @@
             "en": "BOOK",
             "tr": "KİTAP"
           },
+          "difficulty": "easy",
           "sentences": [
             "Printed _____ made knowledge available to more people.",
             "What once cost as much as a house? A _____"
@@ -499,6 +539,7 @@
             "en": "SCULPTURE",
             "tr": "HEYKEL"
           },
+          "difficulty": "normal",
           "sentences": [
             "Renaissance _____ showed realistic human forms.",
             "What art form used marble to create lifelike figures? _____"
@@ -511,6 +552,7 @@
             "en": "PERSPECTIVE",
             "tr": "PERSPEKTİF"
           },
+          "difficulty": "hard",
           "sentences": [
             "Artists used _____ to make paintings look more real.",
             "What technique made objects appear farther away? _____"
@@ -523,6 +565,7 @@
             "en": "HUMANISM",
             "tr": "HÜMANİZM"
           },
+          "difficulty": "hard",
           "sentences": [
             "_____ focused on human potential and achievements.",
             "What philosophy valued individual thought and creativity? _____"
@@ -535,6 +578,7 @@
             "en": "LOCOMOTIVE",
             "tr": "LOKOMOTİF"
           },
+          "difficulty": "normal",
           "sentences": [
             "The _____ changed how people and goods moved across countries.",
             "What steam-powered machine transformed transportation? The _____"
@@ -547,6 +591,7 @@
             "en": "ARCHITECTURE",
             "tr": "MİMARLIK"
           },
+          "difficulty": "normal",
           "sentences": [
             "Renaissance _____ used symmetry and proportion.",
             "What art form created beautiful buildings and domes? _____"
@@ -564,6 +609,7 @@
             "en": "FACTORY",
             "tr": "FABRİKA"
           },
+          "difficulty": "easy",
           "sentences": [
             "The _____ system revolutionized how goods were produced.",
             "Where did workers gather to operate machinery? The _____"
@@ -576,6 +622,7 @@
             "en": "STEAM",
             "tr": "BUHAR"
           },
+          "difficulty": "normal",
           "sentences": [
             "_____ power drove the engines of the Industrial Revolution.",
             "What type of engine transformed transportation? The _____ engine"
@@ -588,6 +635,7 @@
             "en": "COAL",
             "tr": "KÖMÜR"
           },
+          "difficulty": "easy",
           "sentences": [
             "_____ mining fueled the Industrial Revolution.",
             "What powered the steam engines in factories? _____"
@@ -600,6 +648,7 @@
             "en": "IRON",
             "tr": "DEMİR"
           },
+          "difficulty": "normal",
           "sentences": [
             "_____ production increased greatly during this period.",
             "What material was used to make machines and railways? _____"
@@ -612,6 +661,7 @@
             "en": "TRAIN",
             "tr": "TREN"
           },
+          "difficulty": "easy",
           "sentences": [
             "The _____ network connected cities across countries.",
             "What made travel cheaper and more accessible? The _____"
@@ -624,6 +674,7 @@
             "en": "WORKER",
             "tr": "İŞÇİ"
           },
+          "difficulty": "easy",
           "sentences": [
             "Factory _____ often worked twelve hours each day.",
             "Who moved from farms to cities for factory jobs? _____"
@@ -636,6 +687,7 @@
             "en": "CITY",
             "tr": "ŞEHİR"
           },
+          "difficulty": "easy",
           "sentences": [
             "Industrial _____ grew rapidly as people sought factory work.",
             "What doubled in population during industrialization? The _____"
@@ -648,6 +700,7 @@
             "en": "MACHINE",
             "tr": "MAKİNE"
           },
+          "difficulty": "normal",
           "sentences": [
             "New _____ tools replaced hand production methods.",
             "What could do the work of many people? A _____"
@@ -660,6 +713,7 @@
             "en": "COTTON",
             "tr": "PAMUK"
           },
+          "difficulty": "normal",
           "sentences": [
             "The _____ gin made cleaning cotton much faster.",
             "What type of clothing became cheaper to produce? _____ clothing"
@@ -672,6 +726,7 @@
             "en": "CHILD",
             "tr": "ÇOCUK"
           },
+          "difficulty": "normal",
           "sentences": [
             "_____ workers were common in early factories.",
             "Who worked in dangerous factory conditions? _____ workers"
@@ -684,6 +739,7 @@
             "en": "TEXTILE",
             "tr": "TEKSTİL"
           },
+          "difficulty": "normal",
           "sentences": [
             "The _____ industry was one of the first to be mechanized.",
             "What industry made cloth and clothing? The _____ industry"
@@ -696,6 +752,7 @@
             "en": "RAILWAY",
             "tr": "DEMİRYOLU"
           },
+          "difficulty": "normal",
           "sentences": [
             "The _____ system connected cities and towns.",
             "What transportation system changed how goods were moved? The _____"
@@ -703,16 +760,17 @@
           "didYouKnow": "The first public railway opened in 1825 in England. By 1850, Britain had over 6,000 miles of track!"
         },
         {
-          "word": "INVENTION",
+          "word": "İCAT",
           "translations": {
             "en": "INVENTION",
             "tr": "İCAT"
           },
+          "difficulty": "easy",
           "sentences": [
-            "The Industrial Revolution was a time of great _____.",
-            "What word describes new creations that changed the world? _____"
+            "Rönesans büyük _____ların zamanıydı.",
+            "Dünyayı değiştiren yeni buluşları tanımlayan kelime neydi? _____"
           ],
-          "didYouKnow": "The Industrial Revolution saw inventions like the steam engine, spinning jenny, and power loom transform society!"
+          "didYouKnow": "Rönesans, buhar motoru, iplik eğirme makinesi ve dokuma tezgahı gibi icatlarla toplumu dönüştürdü!"
         },
         {
           "word": "LABOR",
@@ -720,6 +778,7 @@
             "en": "LABOR",
             "tr": "EMEK"
           },
+          "difficulty": "normal",
           "sentences": [
             "Factory _____ was often hard and dangerous.",
             "What did workers provide in exchange for wages? _____"
@@ -732,6 +791,7 @@
             "en": "UNION",
             "tr": "SENDİKA"
           },
+          "difficulty": "hard",
           "sentences": [
             "Workers formed a _____ to fight for better conditions.",
             "What organization protected workers' rights? A _____"
@@ -749,6 +809,7 @@
             "en": "DEMOCRACY",
             "tr": "DEMOKRASİ"
           },
+          "difficulty": "normal",
           "sentences": [
             "Athenian _____ allowed citizens to vote on important matters.",
             "What system gave power to the people rather than a single ruler? _____"
@@ -761,6 +822,7 @@
             "en": "OLYMPICS",
             "tr": "OLİMPİYAT"
           },
+          "difficulty": "easy",
           "sentences": [
             "The ancient _____ were held every four years in Greece.",
             "What events were held in honor of Zeus? The _____"
@@ -773,6 +835,7 @@
             "en": "THEATER",
             "tr": "TİYATRO"
           },
+          "difficulty": "normal",
           "sentences": [
             "Greek _____ invented tragedy and comedy plays.",
             "Where did actors wear masks to show emotions? The _____"
@@ -785,6 +848,7 @@
             "en": "SPARTA",
             "tr": "SPARTA"
           },
+          "difficulty": "normal",
           "sentences": [
             "_____ was famous for its powerful army.",
             "Which city trained boys to be warriors from age seven? _____"
@@ -797,6 +861,7 @@
             "en": "ATHENS",
             "tr": "ATİNA"
           },
+          "difficulty": "easy",
           "sentences": [
             "_____ was the birthplace of democracy.",
             "Which city was a center of art, learning, and philosophy? _____"
@@ -809,6 +874,7 @@
             "en": "PHILOSOPHER",
             "tr": "FİLOZOF"
           },
+          "difficulty": "normal",
           "sentences": [
             "A Greek _____ asked questions about life and truth.",
             "Who taught their students through asking questions? The _____"
@@ -821,6 +887,7 @@
             "en": "POTTERY",
             "tr": "ÇÖMLEK"
           },
+          "difficulty": "normal",
           "sentences": [
             "Greek _____ told stories through painted scenes.",
             "What helps us learn about ancient Greek culture? _____"
@@ -833,6 +900,7 @@
             "en": "TEMPLE",
             "tr": "TAPINAK"
           },
+          "difficulty": "normal",
           "sentences": [
             "A Greek _____ was built to honor the gods.",
             "What building had tall columns and marble steps? The _____"
@@ -845,6 +913,7 @@
             "en": "MYTH",
             "tr": "MİT"
           },
+          "difficulty": "normal",
           "sentences": [
             "Greek _____ stories explained the world around them.",
             "What type of stories featured gods and heroes? _____"
@@ -852,16 +921,17 @@
           "didYouKnow": "The Greek myths were originally passed down orally. Homer's Iliad and Odyssey were the first to be written down!"
         },
         {
-          "word": "SCIENCE",
+          "word": "MATHEMATICS",
           "translations": {
-            "en": "SCIENCE",
-            "tr": "BİLİM"
+            "en": "MATHEMATICS",
+            "tr": "MATEMATİK"
           },
+          "difficulty": "hard",
           "sentences": [
-            "Greek _____ laid the foundation for modern knowledge.",
-            "What field studied stars and mathematics in ancient Greece? _____"
+            "How did scientists like Pythagoras and Euclid revolutionize the field of _____?",
+            "In ancient Greece, what was the field that studied numbers and shapes? _____"
           ],
-          "didYouKnow": "Ancient Greek scientists like Archimedes made discoveries in math and physics that are still used today!"
+          "didYouKnow": "The Pythagorean theorem was discovered by the ancient Greek mathematician Pythagoras and is still taught in geometry classes today!"
         },
         {
           "word": "ACROPOLIS",
@@ -869,6 +939,7 @@
             "en": "ACROPOLIS",
             "tr": "AKROPOL"
           },
+          "difficulty": "normal",
           "sentences": [
             "The _____ was the high city in Athens.",
             "What hilltop was the center of ancient Athens? The _____"
@@ -881,6 +952,7 @@
             "en": "OLIVE",
             "tr": "ZEYTİN"
           },
+          "difficulty": "easy",
           "sentences": [
             "The _____ tree was sacred to the Greeks.",
             "What plant provided food, oil, and wood? The _____ tree"
@@ -893,6 +965,7 @@
             "en": "ZEUS",
             "tr": "ZEUS"
           },
+          "difficulty": "easy",
           "sentences": [
             "_____ was the king of the Greek gods.",
             "Who ruled from Mount Olympus? _____"
@@ -905,6 +978,7 @@
             "en": "ATHLETE",
             "tr": "ATLET"
           },
+          "difficulty": "easy",
           "sentences": [
             "An _____ trained for the Olympic games.",
             "Who competed in running and wrestling? An _____"
@@ -917,6 +991,7 @@
             "en": "MARATHON",
             "tr": "MARATON"
           },
+          "difficulty": "normal",
           "sentences": [
             "The _____ race comes from an ancient Greek story.",
             "What long-distance race has its origins in Greece? The _____"
@@ -934,6 +1009,7 @@
             "en": "RAID",
             "tr": "AKIN"
           },
+          "difficulty": "normal",
           "sentences": [
             "A Viking _____ was a quick attack on coastal towns.",
             "What did Vikings do to gather wealth and resources? A _____"
@@ -946,6 +1022,7 @@
             "en": "HELMET",
             "tr": "MİĞFER"
           },
+          "difficulty": "easy",
           "sentences": [
             "A Viking warrior's _____ protected his head in battle.",
             "What armor piece is often shown with horns, though real ones didn't have them? The _____"
@@ -956,8 +1033,9 @@
           "word": "RUNES",
           "translations": {
             "en": "RUNES",
-            "tr": "RUNLAR"
+            "tr": "RUN"
           },
+          "difficulty": "hard",
           "sentences": [
             "Vikings carved _____ into stone to tell stories.",
             "What was the Viking writing system called? _____"
@@ -970,6 +1048,7 @@
             "en": "FJORD",
             "tr": "FİYORT"
           },
+          "difficulty": "normal",
           "sentences": [
             "A _____ is a long, narrow inlet with steep cliffs.",
             "What geological feature shaped Viking settlements in Norway? The _____"
@@ -982,6 +1061,7 @@
             "en": "VALHALLA",
             "tr": "VALHALLA"
           },
+          "difficulty": "hard",
           "sentences": [
             "Vikings believed warriors went to _____ after death.",
             "What was the great hall of Odin called in Norse mythology? _____"
@@ -994,6 +1074,7 @@
             "en": "THOR",
             "tr": "THOR"
           },
+          "difficulty": "normal",
           "sentences": [
             "_____ was the Norse god of thunder.",
             "Which god carried a hammer called Mjölnir? _____"
@@ -1006,6 +1087,7 @@
             "en": "BESERKER",
             "tr": "BESERKER"
           },
+          "difficulty": "hard",
           "sentences": [
             "A _____ was a fierce Viking warrior who fought in a trance.",
             "What type of warrior was known for their wild battle rage? The _____"
@@ -1018,6 +1100,7 @@
             "en": "SKALD",
             "tr": "OZAN"
           },
+          "difficulty": "hard",
           "sentences": [
             "A _____ was a Viking poet who told stories of heroes.",
             "Who preserved Viking history through poems and songs? The _____"
@@ -1030,6 +1113,7 @@
             "en": "AXE",
             "tr": "BALTA"
           },
+          "difficulty": "normal",
           "sentences": [
             "A Viking warrior's _____ was both a tool and weapon.",
             "What weapon was commonly used by Viking warriors? The _____"
@@ -1042,6 +1126,7 @@
             "en": "VIKINGR",
             "tr": "VIKING"
           },
+          "difficulty": "normal",
           "sentences": [
             "The word _____ originally meant 'pirate' or 'raider'.",
             "What did Vikings call themselves when they went raiding? _____"
@@ -1049,16 +1134,17 @@
           "didYouKnow": "Not all Norse people were Vikings. The term 'Viking' specifically referred to those who went on raids or trading expeditions!"
         },
         {
-          "word": "LONGSHIP",
+          "word": "LOKI",
           "translations": {
-            "en": "LONGSHIP",
-            "tr": "UZUN GEMİ"
+            "en": "LOKI",
+            "tr": "LOKI"
           },
+          "difficulty": "hard",
           "sentences": [
-            "The Viking _____ was fast and could sail in shallow waters.",
-            "What ship allowed Vikings to travel far and raid quickly? The _____"
+            "In Norse mythology, who was the god famous for his tricks and pranks? _____",
+            "_____ was known as both a friend and an enemy of the gods."
           ],
-          "didYouKnow": "Viking longships were so well-designed that they could sail in just 3 feet of water, allowing them to travel up rivers and surprise their enemies!"
+          "didYouKnow": "Loki is a trickster god in Norse mythology. He is known as both a friend and an enemy of the gods and plays a key role in many legends!"
         },
         {
           "word": "ODIN",
@@ -1066,6 +1152,7 @@
             "en": "ODIN",
             "tr": "ODİN"
           },
+          "difficulty": "normal",
           "sentences": [
             "_____ was the chief god in Norse mythology.",
             "Which god had two ravens named Huginn and Muninn? _____"
@@ -1073,16 +1160,17 @@
           "didYouKnow": "Odin sacrificed one of his eyes for wisdom. His ravens, Huginn (Thought) and Muninn (Memory), flew across the world to bring him news!"
         },
         {
-          "word": "MEAD",
+          "word": "SAGA",
           "translations": {
-            "en": "MEAD",
-            "tr": "BAL ŞARABI"
+            "en": "SAGA",
+            "tr": "SAGA"
           },
+          "difficulty": "hard",
           "sentences": [
-            "Vikings drank _____ made from honey.",
-            "What alcoholic drink was popular at Viking feasts? _____"
+            "What were the long poems that told the heroic stories of the Vikings called? _____",
+            "_____s were legends passed down from generation to generation in Viking culture."
           ],
-          "didYouKnow": "Mead was so important to Vikings that it was called 'the drink of the gods'. It was often served in horns at feasts and celebrations!"
+          "didYouKnow": "Sagas are long poems that tell the heroic stories, adventures, and mythological events of the Vikings. These stories are an important part of Viking culture and history!"
         },
         {
           "word": "SHIELD",
@@ -1090,6 +1178,7 @@
             "en": "SHIELD",
             "tr": "KALKAN"
           },
+          "difficulty": "normal",
           "sentences": [
             "A Viking warrior carried a round _____ for protection.",
             "What defensive item was often painted with symbols? The _____"
@@ -1102,6 +1191,7 @@
             "en": "NORSE",
             "tr": "İSKANDİNAV"
           },
+          "difficulty": "normal",
           "sentences": [
             "The _____ people lived in Scandinavia.",
             "What culture is associated with Vikings? The _____ culture"
@@ -1119,6 +1209,7 @@
             "en": "SAMURAI",
             "tr": "SAMURAY"
           },
+          "difficulty": "normal",
           "sentences": [
             "The _____ were skilled warriors who followed a strict code.",
             "Who served as the military nobility in feudal Japan? The _____"
@@ -1131,6 +1222,7 @@
             "en": "SHOGUN",
             "tr": "ŞOGUN"
           },
+          "difficulty": "normal",
           "sentences": [
             "The _____ was the military leader of Japan.",
             "Who had more power than the emperor in feudal Japan? The _____"
@@ -1143,6 +1235,7 @@
             "en": "KATANA",
             "tr": "KATANA"
           },
+          "difficulty": "normal",
           "sentences": [
             "A _____ was the long sword carried by samurai.",
             "What curved sword was the symbol of a samurai? The _____"
@@ -1155,6 +1248,7 @@
             "en": "DAIMYO",
             "tr": "DAİMYO"
           },
+          "difficulty": "normal",
           "sentences": [
             "A _____ was a powerful land-owning lord.",
             "Who ruled over large territories in feudal Japan? The _____"
@@ -1167,6 +1261,7 @@
             "en": "BUSHIDO",
             "tr": "BUSHİDO"
           },
+          "difficulty": "normal",
           "sentences": [
             "_____ was the code of honor followed by samurai.",
             "What code emphasized loyalty, courage, and discipline? _____"
@@ -1179,6 +1274,7 @@
             "en": "NINJA",
             "tr": "NİNJA"
           },
+          "difficulty": "easy",
           "sentences": [
             "A _____ was a skilled spy and assassin.",
             "Who used stealth and disguise to complete missions? The _____"
@@ -1191,6 +1287,7 @@
             "en": "TEA",
             "tr": "ÇAY"
           },
+          "difficulty": "easy",
           "sentences": [
             "The _____ ceremony was an important cultural practice.",
             "What drink was central to Japanese rituals? _____"
@@ -1203,6 +1300,7 @@
             "en": "ZEN",
             "tr": "ZEN"
           },
+          "difficulty": "hard",
           "sentences": [
             "_____ Buddhism influenced Japanese art and culture.",
             "What philosophy focused on meditation and simplicity? _____"
@@ -1215,6 +1313,7 @@
             "en": "PAGODA",
             "tr": "PAGODA"
           },
+          "difficulty": "hard",
           "sentences": [
             "A _____ is a tiered tower with curved roofs.",
             "What type of building is common in Japanese temples? A _____"
@@ -1227,6 +1326,7 @@
             "en": "KIMONO",
             "tr": "KİMONO"
           },
+          "difficulty": "easy",
           "sentences": [
             "A _____ is a traditional Japanese robe.",
             "What clothing item is worn with a wide belt? The _____"
@@ -1239,6 +1339,7 @@
             "en": "GEISHA",
             "tr": "GEYŞA"
           },
+          "difficulty": "normal",
           "sentences": [
             "A _____ was a trained entertainer and artist.",
             "Who performed music, dance, and tea ceremonies? The _____"
@@ -1251,6 +1352,7 @@
             "en": "DOJO",
             "tr": "DOJO"
           },
+          "difficulty": "normal",
           "sentences": [
             "A _____ is a training hall for martial arts.",
             "Where did samurai practice swordsmanship? The _____"
@@ -1263,6 +1365,7 @@
             "en": "HAIKU",
             "tr": "HAİKU"
           },
+          "difficulty": "normal",
           "sentences": [
             "A _____ is a short poem with three lines.",
             "What type of poetry captures nature and emotions? A _____"
@@ -1275,6 +1378,7 @@
             "en": "SHINTO",
             "tr": "ŞİNTO"
           },
+          "difficulty": "normal",
           "sentences": [
             "_____ is the traditional religion of Japan.",
             "What belief system focuses on nature spirits? _____"
@@ -1287,6 +1391,7 @@
             "en": "SUSHI",
             "tr": "SUŞİ"
           },
+          "difficulty": "easy",
           "sentences": [
             "_____ is a traditional Japanese dish made with rice and fish.",
             "What food is often served with soy sauce and wasabi? _____"
@@ -1304,6 +1409,7 @@
             "en": "SULTAN",
             "tr": "SULTAN"
           },
+          "difficulty": "normal",
           "sentences": [
             "The _____ was the ruler of the Ottoman Empire.",
             "Who was the head of both government and religion? The _____"
@@ -1316,6 +1422,7 @@
             "en": "JANISSARY",
             "tr": "YENİÇERİ"
           },
+          "difficulty": "normal",
           "sentences": [
             "The _____ were elite soldiers of the Ottoman army.",
             "Who were the Sultan's personal bodyguards? The _____"
@@ -1328,6 +1435,7 @@
             "en": "MOSQUE",
             "tr": "CAMİ"
           },
+          "difficulty": "easy",
           "sentences": [
             "A _____ is a place of worship for Muslims.",
             "What building has a minaret and a dome? The _____"
@@ -1340,6 +1448,7 @@
             "en": "BAZAAR",
             "tr": "PAZAR"
           },
+          "difficulty": "normal",
           "sentences": [
             "The _____ was a busy marketplace in Ottoman cities.",
             "Where did people buy and sell goods in the Ottoman Empire? The _____"
@@ -1350,13 +1459,14 @@
           "word": "TURBAN",
           "translations": {
             "en": "TURBAN",
-            "tr": "TÜRBAN"
+            "tr": "SARIK"
           },
+          "difficulty": "normal",
           "sentences": [
-            "The _____ was a traditional headwear for Ottoman men.",
-            "What head covering was commonly worn by Ottoman officials? The _____"
+            "The _ was a headgear worn by religious and high-ranking individuals in the Ottoman period.",
+            "What headgear in the Ottoman Empire indicated status and profession? _"
           ],
-          "didYouKnow": "The style and color of a turban indicated a person's rank and profession in the Ottoman Empire. Only the sultan could wear a white turban!"
+          "didYouKnow": "The turban was not just a headgear in the Ottoman period but also an important symbol that indicated a person's status, profession, and religious position. Its colors and shapes provided information about the wearer's identity!"
         },
         {
           "word": "MINARET",
@@ -1364,6 +1474,7 @@
             "en": "MINARET",
             "tr": "MİNARE"
           },
+          "difficulty": "normal",
           "sentences": [
             "The _____ was a tall tower used to call people to prayer.",
             "What part of a mosque is used for the call to prayer? The _____"
@@ -1376,6 +1487,7 @@
             "en": "CARAVAN",
             "tr": "KERVAN"
           },
+          "difficulty": "normal",
           "sentences": [
             "A _____ carried goods across the desert.",
             "What group of travelers moved goods along trade routes? The _____"
@@ -1388,6 +1500,7 @@
             "en": "HAMMAM",
             "tr": "HAMAM"
           },
+          "difficulty": "normal",
           "sentences": [
             "The _____ was a public bathhouse in Ottoman cities.",
             "Where did people go to bathe and socialize? The _____"
@@ -1400,6 +1513,7 @@
             "en": "TUGRA",
             "tr": "TUĞRA"
           },
+          "difficulty": "hard",
           "sentences": [
             "The _____ was the Sultan's official signature.",
             "What symbol represented the Sultan's authority? The _____"
@@ -1412,6 +1526,7 @@
             "en": "COFFEE",
             "tr": "KAHVE"
           },
+          "difficulty": "easy",
           "sentences": [
             "_____ became popular in the Ottoman Empire.",
             "What drink was first introduced to Europe through the Ottomans? _____"
@@ -1424,6 +1539,7 @@
             "en": "TULIP",
             "tr": "LALE"
           },
+          "difficulty": "normal",
           "sentences": [
             "The _____ was a symbol of the Ottoman Empire.",
             "What flower became famous during the Tulip Era? The _____"
@@ -1436,6 +1552,7 @@
             "en": "KILIM",
             "tr": "KİLİM"
           },
+          "difficulty": "normal",
           "sentences": [
             "A _____ is a traditional woven rug.",
             "What type of carpet was made by Ottoman artisans? The _____"
@@ -1448,6 +1565,7 @@
             "en": "DIVAN",
             "tr": "DİVAN"
           },
+          "difficulty": "hard",
           "sentences": [
             "The _____ was the council of the Ottoman Empire.",
             "Where did the Sultan meet with his advisors? The _____"
@@ -1460,6 +1578,7 @@
             "en": "KAFTAN",
             "tr": "KAFTAN"
           },
+          "difficulty": "normal",
           "sentences": [
             "A _____ was a long robe worn by Ottoman royalty.",
             "What clothing item was a symbol of status in the Ottoman court? The _____"
@@ -1472,6 +1591,7 @@
             "en": "SEBIL",
             "tr": "SEBİL"
           },
+          "difficulty": "hard",
           "sentences": [
             "A _____ was a public fountain for drinking water.",
             "What structure provided water to people in Ottoman cities? The _____"
@@ -1484,6 +1604,7 @@
             "en": "BOSPHORUS",
             "tr": "BOĞAZ"
           },
+          "difficulty": "normal",
           "sentences": [
             "The _____ is the strait that connects the Black Sea to the Sea of Marmara.",
             "What waterway runs through Istanbul? The _____"

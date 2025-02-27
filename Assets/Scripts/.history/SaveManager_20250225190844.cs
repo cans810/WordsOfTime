@@ -1,0 +1,1411 @@
+using UnityEngine;
+using System;
+using System.IO;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;  // Add this line for ToList()
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Text;
+using UnityEngine.Networking;
+
+[System.Serializable]
+public class UsedHintData
+{
+    public string wordKey;
+    public List<int> hintLevels;
+
+    public UsedHintData(string key, List<int> levels)
+    {
+        wordKey = key;
+        hintLevels = levels;
+    }
+}
+
+public class SaveManager : MonoBehaviour
+{
+    private static SaveManager _instance;
+    public static SaveManager Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                _instance = FindObjectOfType<SaveManager>();
+                if (_instance == null)
+                {
+                    GameObject go = new GameObject("SaveManager");
+                    _instance = go.AddComponent<SaveManager>();
+                }
+            }
+            return _instance;
+        }
+    }
+
+    public SaveData Data { get; private set; }
+    public string SavePath => Path.Combine(Application.persistentDataPath, "gamesave.json");
+    private string TXT_SAVE_PATH => Path.Combine(Application.persistentDataPath, "gamesave.txt");
+    private string BACKUP_SAVE_PATH => Path.Combine(Application.persistentDataPath, "gamesave_backup.json");
+
+    // Cooldown period for daily spin (24 hours)
+    private const int DAILY_SPIN_COOLDOWN_HOURS = 24;
+
+    // Cooldown period for rewarded ads (2 hours)
+    private const int REWARDED_AD_COOLDOWN_HOURS = 2;
+
+    // Flag to track if we've already loaded the game
+    private bool hasLoadedGame = false;
+    
+    // Flag to track if we're currently saving
+    private bool isSaving = false;
+    
+    // Flag to track if we're currently loading
+    private bool isLoading = false;
+
+    private const float AUTO_SAVE_INTERVAL = 60f; // Auto-save every 60 seconds
+    private float lastAutoSaveTime = 0f;
+
+    private void Awake()
+    {
+        if (_instance != null && _instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        _instance = this;
+        DontDestroyOnLoad(gameObject);
+        
+        // Initialize with empty data
+        Data = new SaveData();
+        
+        // Log device information for debugging
+        LogDeviceInfo();
+        
+        // Register for scene change events to save when scenes change
+        UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnSceneLoaded;
+        
+        // Initialize the save system
+        Initialize();
+        
+        Debug.Log("SaveManager initialized in Awake");
+    }
+    
+    private void OnDestroy()
+    {
+        // Unregister from scene change events
+        UnityEngine.SceneManagement.SceneManager.sceneLoaded -= OnSceneLoaded;
+        
+        // Unregister from game events
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.OnWordGuessed -= OnWordGuessed;
+            GameManager.Instance.OnPointsChanged -= OnPointsChanged;
+            GameManager.Instance.OnHintUsed -= OnHintUsed;
+            GameManager.Instance.OnEraUnlocked -= OnEraUnlocked;
+        }
+    }
+    
+    private void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene, UnityEngine.SceneManagement.LoadSceneMode mode)
+    {
+        // Save game when a new scene is loaded
+        Debug.Log($"Scene loaded: {scene.name} - saving game");
+        SaveGame();
+    }
+    
+    private void Update()
+    {
+        // Periodic auto-save
+        if (Time.time - lastAutoSaveTime > AUTO_SAVE_INTERVAL)
+        {
+            lastAutoSaveTime = Time.time;
+            Debug.Log("Auto-save triggered");
+            SaveGame();
+        }
+    }
+    
+    private void LogDeviceInfo()
+    {
+        Debug.Log($"Device Model: {SystemInfo.deviceModel}");
+        Debug.Log($"Device Name: {SystemInfo.deviceName}");
+        Debug.Log($"Device Type: {SystemInfo.deviceType}");
+        Debug.Log($"Operating System: {SystemInfo.operatingSystem}");
+        Debug.Log($"System Memory Size: {SystemInfo.systemMemorySize} MB");
+        Debug.Log($"Persistent Data Path: {Application.persistentDataPath}");
+        Debug.Log($"Is Android: {Application.platform == RuntimePlatform.Android}");
+    }
+
+    private void Start()
+    {
+        Debug.Log("SaveManager starting...");
+        
+        // Set up auto-save timer
+        lastAutoSaveTime = Time.time;
+        
+        // First register for game events
+        RegisterGameEvents();
+        
+        // Then load the game data
+        LoadGame();
+        
+        Debug.Log("SaveManager start sequence completed");
+    }
+
+    public void RegisterGameEvents()
+    {
+        if (GameManager.Instance != null)
+        {
+            Debug.Log("Registering for GameManager events");
+            
+            // Unregister first to avoid duplicate registrations
+            GameManager.Instance.OnWordGuessed -= OnWordGuessed;
+            GameManager.Instance.OnPointsChanged -= OnPointsChanged;
+            GameManager.Instance.OnHintUsed -= OnHintUsed;
+            GameManager.Instance.OnEraUnlocked -= OnEraUnlocked;
+            
+            // Subscribe to word guessed event
+            GameManager.Instance.OnWordGuessed += OnWordGuessed;
+            
+            // Subscribe to points changed event
+            GameManager.Instance.OnPointsChanged += OnPointsChanged;
+            
+            // Subscribe to hint used event
+            GameManager.Instance.OnHintUsed += OnHintUsed;
+            
+            // Subscribe to era unlocked event
+            GameManager.Instance.OnEraUnlocked += OnEraUnlocked;
+            
+            Debug.Log("Successfully registered for all GameManager events");
+        }
+        else
+        {
+            Debug.LogWarning("GameManager.Instance is null, cannot register for events yet");
+            // Try again in a second
+            Invoke("RegisterGameEvents", 1.0f);
+        }
+    }
+    
+    // Event handlers
+    private void OnWordGuessed(string word)
+    {
+        Debug.Log($"Word guessed: {word} - saving game");
+        SaveGame();
+    }
+    
+    private void OnPointsChanged(int newPoints)
+    {
+        Debug.Log($"Points changed to {newPoints} - saving game");
+        SaveGame();
+    }
+    
+    private void OnHintUsed(string wordKey, int hintLevel)
+    {
+        Debug.Log($"Hint used for {wordKey} (level {hintLevel}) - saving game");
+        SaveGame();
+    }
+    
+    private void OnEraUnlocked(string era)
+    {
+        Debug.Log($"Era unlocked: {era} - saving game");
+        SaveGame();
+    }
+
+    public void SaveGame()
+    {
+        if (isSaving)
+        {
+            Debug.Log("Save operation already in progress, skipping");
+            return;
+        }
+        
+        if (GameManager.Instance == null)
+        {
+            Debug.LogError("Cannot save game: GameManager.Instance is null");
+            return;
+        }
+
+        StartCoroutine(SaveGameCoroutine());
+    }
+    
+    private IEnumerator SaveGameCoroutine()
+    {
+        isSaving = true;
+        Debug.Log($"Starting save operation to: {SavePath}");
+        
+        string jsonData = "";
+        bool dataPreparationSuccessful = false;
+        
+        try
+        {
+            Data = new SaveData();
+            
+            // Save points and guessed words
+            Data.points = GameManager.Instance.CurrentPoints;
+            Data.guessedWords = GameManager.Instance.GetGuessedWords();
+            
+            // Save hint usage data
+            Data.usedHintsData = GameManager.Instance.GetUsedHintsData();
+            Debug.Log($"Saving {Data.usedHintsData.Count} hint records");
+            
+            // Save grid data with era information
+            List<GridData> gridDataList;
+            GameManager.Instance.SaveGridData(out gridDataList);
+            foreach (var gridData in gridDataList)
+            {
+                gridData.era = GameManager.Instance.CurrentEra; // Add era information
+            }
+            Data.preGeneratedGrids = gridDataList;
+
+            // Save solved words per era
+            Data.solvedWords = GameManager.Instance.GetAllSolvedBaseWords().ToList();
+
+            // Save game settings
+            Data.settings = GameManager.Instance.GetSettings();
+
+            // Save shuffled words
+            Dictionary<string, List<string>> shuffledWordsDict = new Dictionary<string, List<string>>();
+            foreach (var language in GameManager.Instance.eraWordsPerLanguage.Keys)
+            {
+                foreach (var era in GameManager.Instance.eraWordsPerLanguage[language].Keys)
+                {
+                    string key = $"{language}_{era}";
+                    shuffledWordsDict[key] = new List<string>(GameManager.Instance.eraWordsPerLanguage[language][era]);
+                }
+            }
+            Data.shuffledWords = shuffledWordsDict;
+
+            // Save unlocked eras
+            Data.unlockedEras = GameManager.Instance.GetUnlockedEras().ToList();
+
+            // Save ad state by creating a new AdState
+            var currentAdState = GameManager.Instance.LoadAdState();
+            Data.adState = new AdState 
+            {
+                canWatch = currentAdState.canWatch,
+                nextAvailableTime = currentAdState.nextAvailableTime
+            };
+            
+            // Convert DateTime to long for serialization
+            Data.adState.nextAvailableTimeTicks = Data.adState.nextAvailableTime.Ticks;
+            
+            Data.wordGuessCount = GameManager.Instance.wordGuessCount;
+
+            // Save no ads state
+            Data.noAdsBought = GameManager.Instance.NoAdsBought;
+
+            // Record the time when the game was saved
+            Data.lastClosedTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+            
+            // Add version info
+            Data.gameVersion = Application.version;
+
+            // Save as JSON instead of binary
+            jsonData = JsonUtility.ToJson(Data, true);
+            dataPreparationSuccessful = true;
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"Failed to save game: {e.Message}");
+            Debug.LogError($"Stack trace: {e.StackTrace}");
+            
+            // Try PlayerPrefs as a fallback for critical data
+            try {
+                PlayerPrefs.SetInt("Points", Data.points);
+                PlayerPrefs.SetInt("NoAdsBought", Data.noAdsBought ? 1 : 0);
+                PlayerPrefs.Save();
+                Debug.Log("Saved critical data to PlayerPrefs as fallback");
+            } catch (Exception prefsEx) {
+                Debug.LogError($"Failed to save to PlayerPrefs: {prefsEx.Message}");
+            }
+        }
+        
+        if (dataPreparationSuccessful)
+        {
+            // First save to a backup file
+            yield return WriteTextToFileCoroutine(BACKUP_SAVE_PATH, jsonData);
+            
+            // Then save to the main file
+            yield return WriteTextToFileCoroutine(SavePath, jsonData);
+            
+            // Save text file
+            yield return SaveGameAsTextCoroutine();
+            
+            Debug.Log($"Game saved successfully to {SavePath}!");
+            
+            // Verify the file was created
+            try
+            {
+                if (File.Exists(SavePath))
+                {
+                    Debug.Log($"Verified: Save file exists at {SavePath}");
+                    Debug.Log($"File size: {new FileInfo(SavePath).Length} bytes");
+                    
+                    // Double-check by reading the file back
+                    string verificationData = File.ReadAllText(SavePath);
+                    Debug.Log($"Verification read successful, content length: {verificationData.Length}");
+                }
+                else
+                {
+                    Debug.LogError($"Failed to verify save file at {SavePath}");
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"Error verifying save file: {e.Message}");
+            }
+        }
+        
+        isSaving = false;
+    }
+
+    // Helper method to write text to file with proper error handling
+    private IEnumerator WriteTextToFileCoroutine(string filePath, string content)
+    {
+        Debug.Log($"Writing to file: {filePath}, content length: {content.Length}");
+        
+        // Ensure directory exists
+        string directory = Path.GetDirectoryName(filePath);
+        if (!Directory.Exists(directory))
+        {
+            bool directoryCreated = false;
+            try
+            {
+                Directory.CreateDirectory(directory);
+                Debug.Log($"Created directory: {directory}");
+                directoryCreated = true;
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"Error creating directory {directory}: {e.Message}");
+            }
+            
+            // Wait a frame to ensure directory creation completes
+            if (directoryCreated)
+            {
+                yield return null;
+            }
+        }
+
+        // Special handling for Android
+        if (Application.platform == RuntimePlatform.Android)
+        {
+            // On Android, use a temporary file and then move it
+            string tempPath = filePath + ".tmp";
+            
+            bool writeSuccess = false;
+            try
+            {
+                // Write to temp file
+                using (FileStream fs = new FileStream(tempPath, FileMode.Create, FileAccess.Write))
+                {
+                    using (StreamWriter writer = new StreamWriter(fs))
+                    {
+                        writer.Write(content);
+                    }
+                }
+                writeSuccess = true;
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"Error writing to temp file {tempPath}: {e.Message}");
+                Debug.LogError($"Stack trace: {e.StackTrace}");
+                
+                // Try PlayerPrefs as a fallback
+                if (Path.GetFileName(filePath) == "gamesave.json")
+                {
+                    try {
+                        PlayerPrefs.SetString("SaveGameBackup", content);
+                        PlayerPrefs.Save();
+                        Debug.Log("Saved content to PlayerPrefs as fallback");
+                    } catch (Exception prefsEx) {
+                        Debug.LogError($"Failed to save to PlayerPrefs: {prefsEx.Message}");
+                    }
+                }
+            }
+            
+            // Wait a frame to ensure file is closed properly
+            if (writeSuccess)
+            {
+                yield return null;
+                
+                bool moveSuccess = false;
+                try
+                {
+                    // If the main file exists, delete it first
+                    if (File.Exists(filePath))
+                    {
+                        File.Delete(filePath);
+                    }
+                    
+                    // Move temp file to final location
+                    File.Move(tempPath, filePath);
+                    
+                    Debug.Log($"Successfully wrote to file on Android: {filePath}");
+                    moveSuccess = true;
+                }
+                catch (Exception e)
+                {
+                    Debug.LogError($"Error moving temp file to final location: {e.Message}");
+                }
+                
+                if (moveSuccess)
+                {
+                    yield return null;
+                }
+            }
+        }
+        else
+        {
+            // For other platforms, write directly
+            try
+            {
+                File.WriteAllText(filePath, content);
+                Debug.Log($"Successfully wrote to file: {filePath}");
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"Error writing to file {filePath}: {e.Message}");
+                Debug.LogError($"Stack trace: {e.StackTrace}");
+                
+                // Try PlayerPrefs as a fallback
+                if (Path.GetFileName(filePath) == "gamesave.json")
+                {
+                    try {
+                        PlayerPrefs.SetString("SaveGameBackup", content);
+                        PlayerPrefs.Save();
+                        Debug.Log("Saved content to PlayerPrefs as fallback");
+                    } catch (Exception prefsEx) {
+                        Debug.LogError($"Failed to save to PlayerPrefs: {prefsEx.Message}");
+                    }
+                }
+            }
+        }
+        
+        // Wait a frame to ensure file operations complete
+        yield return null;
+        
+        bool verificationSuccess = false;
+        try
+        {
+            if (File.Exists(filePath))
+            {
+                long fileSize = new FileInfo(filePath).Length;
+                Debug.Log($"Verified file exists: {filePath}, size: {fileSize} bytes");
+                verificationSuccess = true;
+            }
+            else
+            {
+                Debug.LogError($"Failed to verify file exists after writing: {filePath}");
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"Error verifying file: {e.Message}");
+        }
+    }
+
+    private IEnumerator SaveGameAsTextCoroutine()
+    {
+        Debug.Log($"Saving text file to: {TXT_SAVE_PATH}");
+        
+        StringBuilder sb = new StringBuilder();
+        sb.AppendLine($"=== Game Save - {DateTime.Now} ===");
+        sb.AppendLine($"Points: {Data.points}");
+        sb.AppendLine($"No Ads Bought: {Data.noAdsBought}");
+        sb.AppendLine($"Word Guess Count: {Data.wordGuessCount}");
+        
+        sb.AppendLine("\n=== Unlocked Eras ===");
+        foreach (var era in Data.unlockedEras)
+        {
+            sb.AppendLine($"- {era}");
+        }
+        
+        sb.AppendLine("\n=== Solved Words ===");
+        foreach (var word in Data.solvedWords)
+        {
+            sb.AppendLine($"- {word}");
+        }
+        
+        sb.AppendLine("\n=== Guessed Words ===");
+        foreach (var word in Data.guessedWords)
+        {
+            sb.AppendLine($"- {word}");
+        }
+        
+        sb.AppendLine("\n=== Used Hints ===");
+        foreach (var hint in Data.usedHintsData)
+        {
+            sb.AppendLine($"- Word: {hint.wordKey}, Levels: {string.Join(", ", hint.hintLevels)}");
+        }
+        
+        sb.AppendLine("\n=== Settings ===");
+        sb.AppendLine($"Sound Enabled: {Data.settings.soundEnabled}");
+        sb.AppendLine($"Music Enabled: {Data.settings.musicEnabled}");
+        sb.AppendLine($"Sound Volume: {Data.settings.soundVolume}");
+        sb.AppendLine($"Music Volume: {Data.settings.musicVolume}");
+        
+        sb.AppendLine("\n=== Ad State ===");
+        sb.AppendLine($"Can Watch: {Data.adState.canWatch}");
+        sb.AppendLine($"Next Available: {Data.adState.nextAvailableTime}");
+        
+        yield return WriteTextToFileCoroutine(TXT_SAVE_PATH, sb.ToString());
+        
+        Debug.Log($"Text save file created at: {TXT_SAVE_PATH}");
+    }
+
+    public void LoadGame()
+    {
+        if (isLoading)
+        {
+            Debug.Log("Load operation already in progress, skipping");
+            return;
+        }
+        
+        Debug.Log("Starting LoadGame operation");
+        
+        // Make sure we have a valid Data object
+        if (Data == null)
+        {
+            Data = new SaveData();
+        }
+        
+        StartCoroutine(LoadGameCoroutine());
+    }
+    
+    private IEnumerator LoadGameCoroutine()
+    {
+        isLoading = true;
+        Debug.Log($"Starting load operation from: {SavePath}");
+        
+        // Initialize with default data if we don't have any yet
+        if (Data == null)
+        {
+            Data = new SaveData();
+        }
+        
+        bool loadedSuccessfully = false;
+        bool mainFileExists = false;
+        bool backupFileExists = false;
+        bool prefsBackupExists = false;
+        
+        // Check which sources exist
+        try
+        {
+            mainFileExists = File.Exists(SavePath);
+            backupFileExists = File.Exists(BACKUP_SAVE_PATH);
+            prefsBackupExists = PlayerPrefs.HasKey("SaveGameBackup");
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"Error checking save sources: {e.Message}");
+        }
+        
+        // Try to load from main file
+        if (mainFileExists)
+        {
+            Debug.Log($"Found main save file at: {SavePath}");
+            bool loadResult = false;
+            yield return LoadFromFileCoroutine(SavePath, result => loadResult = result);
+            loadedSuccessfully = loadResult;
+        }
+        
+        // If main file failed, try backup
+        if (!loadedSuccessfully && backupFileExists)
+        {
+            Debug.Log($"Main save not found or failed, trying backup at: {BACKUP_SAVE_PATH}");
+            bool loadResult = false;
+            yield return LoadFromFileCoroutine(BACKUP_SAVE_PATH, result => loadResult = result);
+            loadedSuccessfully = loadResult;
+            
+            // If backup loaded successfully, restore main file
+            if (loadedSuccessfully)
+            {
+                string jsonData = JsonUtility.ToJson(Data, true);
+                yield return WriteTextToFileCoroutine(SavePath, jsonData);
+            }
+        }
+        
+        // If both files failed, try PlayerPrefs
+        if (!loadedSuccessfully && prefsBackupExists)
+        {
+            Debug.Log("No save files found or failed to load, trying PlayerPrefs backup");
+            string jsonData = PlayerPrefs.GetString("SaveGameBackup");
+            
+            if (!string.IsNullOrEmpty(jsonData))
+            {
+                bool prefsLoadSuccess = false;
+                
+                try
+                {
+                    SaveData loadedData = JsonUtility.FromJson<SaveData>(jsonData);
+                    if (loadedData != null)
+                    {
+                        Data = loadedData;
+                        // Convert long ticks back to DateTime
+                        Data.adState.nextAvailableTime = new DateTime(Data.adState.nextAvailableTimeTicks);
+                        prefsLoadSuccess = true;
+                    }
+                }
+                catch (Exception e)
+                {
+                    Debug.LogError($"Error loading from PlayerPrefs: {e.Message}");
+                }
+                
+                if (prefsLoadSuccess)
+                {
+                    // Apply the loaded data
+                    yield return ApplyLoadedDataCoroutine();
+                    
+                    // Save to file system
+                    yield return WriteTextToFileCoroutine(SavePath, jsonData);
+                    loadedSuccessfully = true;
+                }
+            }
+        }
+        
+        // If we couldn't load from any source, create a new game
+        if (!loadedSuccessfully)
+        {
+            Debug.Log("No save data found, starting new game with shuffled words");
+            Data = new SaveData();
+            
+            // Create initial text file
+            yield return SaveGameAsTextCoroutine();
+            
+            // Initialize no ads state
+            Data.noAdsBought = false;
+            
+            // Only shuffle words if this is the first time (no save file exists)
+            if (GameManager.Instance != null)
+            {
+                GameManager.Instance.ShuffleAllEraWords();
+                // Immediately save the shuffled order
+                yield return SaveGameCoroutine();
+            }
+        }
+        
+        // Try to recover from PlayerPrefs if available
+        if (!loadedSuccessfully && PlayerPrefs.HasKey("Points"))
+        {
+            Debug.Log("Attempting to recover critical data from PlayerPrefs");
+            Data = new SaveData();
+            Data.points = PlayerPrefs.GetInt("Points", 0);
+            Data.noAdsBought = PlayerPrefs.GetInt("NoAdsBought", 0) == 1;
+            
+            // Apply minimal data
+            if (GameManager.Instance != null)
+            {
+                GameManager.Instance.SetPoints(Data.points);
+                GameManager.Instance.SetNoAdsBought(Data.noAdsBought);
+            }
+        }
+        
+        // Mark that we've loaded the game
+        hasLoadedGame = true;
+        isLoading = false;
+    }
+    
+    private IEnumerator LoadFromFileCoroutine(string filePath, System.Action<bool> callback)
+    {
+        Debug.Log($"Loading from file: {filePath}");
+        
+        string jsonData = "";
+        bool readSuccess = false;
+        bool deserializeSuccess = false;
+        
+        try
+        {
+            // Special handling for Android
+            if (Application.platform == RuntimePlatform.Android)
+            {
+                using (FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+                {
+                    using (StreamReader reader = new StreamReader(fs))
+                    {
+                        jsonData = reader.ReadToEnd();
+                    }
+                }
+            }
+            else
+            {
+                jsonData = File.ReadAllText(filePath);
+            }
+            
+            Debug.Log($"Successfully read save file from {filePath}, content length: {jsonData.Length}");
+            
+            if (string.IsNullOrEmpty(jsonData))
+            {
+                Debug.LogError($"File content is empty: {filePath}");
+                callback(false);
+                yield break;
+            }
+            
+            readSuccess = true;
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"Error reading from file {filePath}: {e.Message}");
+            Debug.LogError($"Stack trace: {e.StackTrace}");
+            callback(false);
+            yield break;
+        }
+        
+        if (readSuccess)
+        {
+            try
+            {
+                // Deserialize the JSON data
+                SaveData loadedData = JsonUtility.FromJson<SaveData>(jsonData);
+                
+                if (loadedData == null)
+                {
+                    Debug.LogError($"Failed to deserialize save data from {filePath}");
+                    callback(false);
+                    yield break;
+                }
+                
+                // Update our data reference
+                Data = loadedData;
+                
+                // Convert long ticks back to DateTime
+                if (Data.adState.nextAvailableTimeTicks > 0)
+                {
+                    Data.adState.nextAvailableTime = new DateTime(Data.adState.nextAvailableTimeTicks);
+                }
+                else
+                {
+                    Data.adState.nextAvailableTime = DateTime.Now;
+                }
+                
+                Debug.Log($"Successfully loaded save data from {filePath}");
+                Debug.Log($"Loaded points: {Data.points}");
+                Debug.Log($"Loaded {Data.solvedWords?.Count ?? 0} solved words");
+                Debug.Log($"Loaded {Data.unlockedEras?.Count ?? 0} unlocked eras");
+                
+                deserializeSuccess = true;
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"Error deserializing save data from {filePath}: {e.Message}");
+                Debug.LogError($"Stack trace: {e.StackTrace}");
+                callback(false);
+                yield break;
+            }
+        }
+        
+        // Apply the loaded data to the game state outside of any try-catch block
+        if (deserializeSuccess)
+        {
+            yield return ApplyLoadedDataCoroutine();
+            callback(true);
+        }
+        else
+        {
+            callback(false);
+        }
+    }
+    
+    private IEnumerator ApplyLoadedDataCoroutine()
+    {
+        // Wait for GameManager to be available if needed
+        int attempts = 0;
+        while (GameManager.Instance == null && attempts < 10)
+        {
+            Debug.LogWarning($"Waiting for GameManager to be available (attempt {attempts+1}/10)");
+            yield return new WaitForSeconds(0.5f);
+            attempts++;
+        }
+        
+        if (GameManager.Instance == null)
+        {
+            Debug.LogError("Cannot apply loaded data: GameManager.Instance is null after waiting");
+            yield break;
+        }
+        
+        Debug.Log("=== Applying Loaded Data ===");
+        
+        try
+        {
+            // Load solved words
+            if (Data.solvedWords != null)
+            {
+                Debug.Log($"Loading {Data.solvedWords.Count} solved words");
+                GameManager.Instance.LoadSolvedBaseWords(new HashSet<string>(Data.solvedWords));
+                yield return null; // Wait a frame to prevent freezing
+            }
+            else
+            {
+                Debug.LogWarning("No solved words data found");
+            }
+
+            // Load grid data with era information
+            if (Data.preGeneratedGrids != null && Data.preGeneratedGrids.Count > 0)
+            {
+                Debug.Log($"Loading {Data.preGeneratedGrids.Count} grid data entries");
+                foreach (var gridData in Data.preGeneratedGrids)
+                {
+                    if (!string.IsNullOrEmpty(gridData.era))
+                    {
+                        Debug.Log($"Setting era to {gridData.era} for grid with word {gridData.targetWord}");
+                        GameManager.Instance.SwitchEra(gridData.era); // Set the era before loading grid
+                    }
+                }
+                GameManager.Instance.LoadGridData(Data.preGeneratedGrids);
+                yield return null; // Wait a frame to prevent freezing
+            }
+            else
+            {
+                Debug.LogWarning("No grid data found or grid data is empty");
+            }
+            
+            // Load hint usage data
+            if (Data.usedHintsData != null && Data.usedHintsData.Count > 0)
+            {
+                Debug.Log($"Loading {Data.usedHintsData.Count} hint records");
+                GameManager.Instance.LoadUsedHintsData(Data.usedHintsData);
+                yield return null; // Wait a frame to prevent freezing
+            }
+            else
+            {
+                Debug.LogWarning("No hint usage data found");
+            }
+            
+            // Load saved shuffled words if they exist
+            if (Data.shuffledWords != null && Data.shuffledWords.Count > 0)
+            {
+                Debug.Log($"Loading {Data.shuffledWords.Count} shuffled word entries");
+                foreach (var kvp in Data.shuffledWords)
+                {
+                    string[] parts = kvp.Key.Split('_');
+                    if (parts.Length == 2)
+                    {
+                        string language = parts[0];
+                        string era = parts[1];
+                        if (GameManager.Instance.eraWordsPerLanguage.ContainsKey(language) &&
+                            GameManager.Instance.eraWordsPerLanguage[language].ContainsKey(era))
+                        {
+                            GameManager.Instance.eraWordsPerLanguage[language][era] = new List<string>(kvp.Value);
+                            Debug.Log($"Loaded word order for {era} in {language}: {string.Join(", ", kvp.Value)}");
+                        }
+                    }
+                }
+                yield return null; // Wait a frame to prevent freezing
+            }
+            else
+            {
+                Debug.LogWarning("No shuffled words data found");
+            }
+
+            // Load unlocked eras
+            if (Data.unlockedEras != null && Data.unlockedEras.Count > 0)
+            {
+                Debug.Log($"Loading {Data.unlockedEras.Count} unlocked eras: {string.Join(", ", Data.unlockedEras)}");
+                GameManager.Instance.SetUnlockedEras(new HashSet<string>(Data.unlockedEras));
+            }
+            else
+            {
+                Debug.LogWarning("No unlocked eras data found, using defaults");
+                // Initialize with default unlocked eras if none were saved
+                HashSet<string> defaultEras = new HashSet<string> { "Ancient Egypt", "Medieval Europe" };
+                GameManager.Instance.SetUnlockedEras(defaultEras);
+            }
+            yield return null; // Wait a frame to prevent freezing
+
+            // Load ad state directly
+            GameManager.Instance.LoadAdState(Data.adState);
+
+            // Load no ads state
+            GameManager.Instance.SetNoAdsBought(Data.noAdsBought);
+
+            // Set points
+            Debug.Log($"Setting points to {Data.points}");
+            GameManager.Instance.SetPoints(Data.points);
+            
+            // Load game settings
+            if (Data.settings != null)
+            {
+                Debug.Log("Loading game settings");
+                GameManager.Instance.LoadSettings(Data.settings);
+            }
+            
+            // Load word guess count
+            GameManager.Instance.wordGuessCount = Data.wordGuessCount;
+            
+            // Update UI to reflect loaded data
+            GameManager.Instance.UpdatePointsDisplay();
+            
+            Debug.Log("=== Finished Applying Loaded Data ===");
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"Error applying loaded data: {e.Message}");
+            Debug.LogError($"Stack trace: {e.StackTrace}");
+        }
+    }
+
+    public void DeleteSave()
+    {
+        StartCoroutine(DeleteSaveCoroutine());
+    }
+    
+    private IEnumerator DeleteSaveCoroutine()
+    {
+        // Delete main save file
+        if (File.Exists(SavePath))
+        {
+            try
+            {
+                File.Delete(SavePath);
+                Debug.Log($"Deleted main save file: {SavePath}");
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"Error deleting main save file: {e.Message}");
+            }
+        }
+        
+        // Delete backup save file
+        if (File.Exists(BACKUP_SAVE_PATH))
+        {
+            try
+            {
+                File.Delete(BACKUP_SAVE_PATH);
+                Debug.Log($"Deleted backup save file: {BACKUP_SAVE_PATH}");
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"Error deleting backup save file: {e.Message}");
+            }
+        }
+        
+        // Delete text save file
+        if (File.Exists(TXT_SAVE_PATH))
+        {
+            try
+            {
+                File.Delete(TXT_SAVE_PATH);
+                Debug.Log($"Deleted text save file: {TXT_SAVE_PATH}");
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"Error deleting text save file: {e.Message}");
+            }
+        }
+        
+        yield return null;
+        
+        // Clear PlayerPrefs backup
+        if (PlayerPrefs.HasKey("SaveGameBackup"))
+        {
+            try
+            {
+                PlayerPrefs.DeleteKey("SaveGameBackup");
+                PlayerPrefs.DeleteKey("Points");
+                PlayerPrefs.DeleteKey("NoAdsBought");
+                PlayerPrefs.Save();
+                Debug.Log("Cleared PlayerPrefs backup data");
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"Error clearing PlayerPrefs: {e.Message}");
+            }
+        }
+        
+        Data = new SaveData();
+        Debug.Log("Save files deleted");
+    }
+
+    private void OnApplicationPause(bool pauseStatus)
+    {
+        if (pauseStatus)
+        {
+            Debug.Log("Application paused - saving game");
+            // On Android, OnApplicationPause(true) is called when the app is being closed
+            // Use a more direct save approach to ensure data is saved before the app is killed
+            if (Application.platform == RuntimePlatform.Android)
+            {
+                Debug.Log("Android platform detected, using ForceSaveGameSync");
+                ForceSaveGameSync();
+            }
+            else
+            {
+                Debug.Log("Non-Android platform, using regular SaveGame");
+                SaveGame();
+            }
+        }
+        else
+        {
+            Debug.Log("Application resumed - reloading game");
+            
+            // First register for events again in case they were lost
+            RegisterGameEvents();
+            
+            // Then reload the game data
+            LoadGame();
+            
+            // Force UI updates
+            if (GameManager.Instance != null)
+            {
+                GameManager.Instance.UpdatePointsDisplay();
+            }
+        }
+    }
+
+    private void OnApplicationQuit()
+    {
+        Debug.Log("Application quitting - saving game");
+        // OnApplicationQuit may not be reliably called on Android
+        // but we'll try to save anyway as a backup
+        ForceSaveGameSync();
+        
+        // Also save to PlayerPrefs as an extra backup
+        if (Data != null && GameManager.Instance != null)
+        {
+            try
+            {
+                PlayerPrefs.SetInt("Points", GameManager.Instance.CurrentPoints);
+                PlayerPrefs.SetInt("NoAdsBought", GameManager.Instance.NoAdsBought ? 1 : 0);
+                PlayerPrefs.Save();
+                Debug.Log("Saved critical data to PlayerPrefs on application quit");
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"Failed to save to PlayerPrefs on quit: {e.Message}");
+            }
+        }
+    }
+    
+    // Force a synchronous save when the app is closing
+    private void ForceSaveGameSync()
+    {
+        Debug.Log("Performing forced synchronous save");
+        
+        if (GameManager.Instance == null)
+        {
+            Debug.LogError("Cannot save game: GameManager.Instance is null");
+            
+            // Try to save whatever data we have
+            if (Data != null)
+            {
+                try
+                {
+                    string jsonData = JsonUtility.ToJson(Data, true);
+                    
+                    // Save to PlayerPrefs as a fallback
+                    PlayerPrefs.SetString("SaveGameBackup", jsonData);
+                    PlayerPrefs.SetInt("Points", Data.points);
+                    PlayerPrefs.SetInt("NoAdsBought", Data.noAdsBought ? 1 : 0);
+                    PlayerPrefs.Save();
+                    
+                    Debug.Log("Saved existing data to PlayerPrefs as fallback");
+                }
+                catch (Exception e)
+                {
+                    Debug.LogError($"Failed to save fallback data: {e.Message}");
+                }
+            }
+            
+            return;
+        }
+        
+        try
+        {
+            // Prepare save data
+            Data = new SaveData();
+            
+            // Save essential data
+            Data.points = GameManager.Instance.CurrentPoints;
+            Data.guessedWords = GameManager.Instance.GetGuessedWords();
+            Data.usedHintsData = GameManager.Instance.GetUsedHintsData();
+            
+            List<GridData> gridDataList;
+            GameManager.Instance.SaveGridData(out gridDataList);
+            foreach (var gridData in gridDataList)
+            {
+                gridData.era = GameManager.Instance.CurrentEra;
+            }
+            Data.preGeneratedGrids = gridDataList;
+            
+            Data.solvedWords = GameManager.Instance.GetAllSolvedBaseWords().ToList();
+            Data.settings = GameManager.Instance.GetSettings();
+            
+            // Save shuffled words
+            Dictionary<string, List<string>> shuffledWordsDict = new Dictionary<string, List<string>>();
+            foreach (var language in GameManager.Instance.eraWordsPerLanguage.Keys)
+            {
+                foreach (var era in GameManager.Instance.eraWordsPerLanguage[language].Keys)
+                {
+                    string key = $"{language}_{era}";
+                    shuffledWordsDict[key] = new List<string>(GameManager.Instance.eraWordsPerLanguage[language][era]);
+                }
+            }
+            Data.shuffledWords = shuffledWordsDict;
+            
+            Data.unlockedEras = GameManager.Instance.GetUnlockedEras().ToList();
+            
+            // Save ad state
+            var currentAdState = GameManager.Instance.LoadAdState();
+            Data.adState = new AdState 
+            {
+                canWatch = currentAdState.canWatch,
+                nextAvailableTime = currentAdState.nextAvailableTime
+            };
+            Data.adState.nextAvailableTimeTicks = Data.adState.nextAvailableTime.Ticks;
+            
+            Data.wordGuessCount = GameManager.Instance.wordGuessCount;
+            Data.noAdsBought = GameManager.Instance.NoAdsBought;
+            Data.lastClosedTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+            Data.gameVersion = Application.version;
+            
+            // Convert to JSON
+            string jsonData = JsonUtility.ToJson(Data, true);
+            
+            // Save directly to files using FileStream for better control on Android
+            if (Application.platform == RuntimePlatform.Android)
+            {
+                // Use FileStream for Android to ensure proper file flushing
+                SaveToFileAndroid(SavePath, jsonData);
+                SaveToFileAndroid(BACKUP_SAVE_PATH, jsonData);
+            }
+            else
+            {
+                // For other platforms, use standard method
+                File.WriteAllText(SavePath, jsonData);
+                File.WriteAllText(BACKUP_SAVE_PATH, jsonData);
+            }
+            
+            // Also save to PlayerPrefs as an extra backup
+            PlayerPrefs.SetString("SaveGameBackup", jsonData);
+            PlayerPrefs.SetInt("Points", Data.points);
+            PlayerPrefs.SetInt("NoAdsBought", Data.noAdsBought ? 1 : 0);
+            PlayerPrefs.Save();
+            
+            // Verify the save was successful
+            bool verificationSuccess = VerifySaveFile(SavePath, jsonData);
+            if (verificationSuccess)
+            {
+                Debug.Log("Forced synchronous save completed and verified successfully");
+            }
+            else
+            {
+                Debug.LogWarning("Save verification failed - data may not be properly saved");
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"Error during forced save: {e.Message}");
+            Debug.LogError($"Stack trace: {e.StackTrace}");
+            
+            // Last resort - save critical data to PlayerPrefs
+            try
+            {
+                PlayerPrefs.SetInt("Points", Data.points);
+                PlayerPrefs.SetInt("NoAdsBought", Data.noAdsBought ? 1 : 0);
+                PlayerPrefs.Save();
+                Debug.Log("Saved critical data to PlayerPrefs as fallback");
+            }
+            catch (Exception prefsEx)
+            {
+                Debug.LogError($"Failed to save to PlayerPrefs: {prefsEx.Message}");
+            }
+        }
+    }
+    
+    private void SaveToFileAndroid(string filePath, string content)
+    {
+        Debug.Log($"Android specific save to: {filePath}");
+        
+        try
+        {
+            // Ensure directory exists
+            string directory = Path.GetDirectoryName(filePath);
+            if (!Directory.Exists(directory))
+            {
+                Directory.CreateDirectory(directory);
+            }
+            
+            // Use a temporary file first
+            string tempPath = filePath + ".tmp";
+            
+            // Write to temp file using FileStream for better control
+            using (FileStream fs = new FileStream(tempPath, FileMode.Create, FileAccess.Write))
+            {
+                using (StreamWriter writer = new StreamWriter(fs))
+                {
+                    writer.Write(content);
+                    writer.Flush();
+                    fs.Flush();
+                }
+            }
+            
+            // If the main file exists, delete it first
+            if (File.Exists(filePath))
+            {
+                File.Delete(filePath);
+            }
+            
+            // Move temp file to final location
+            File.Move(tempPath, filePath);
+            
+            // Also save critical data to PlayerPrefs as a backup
+            PlayerPrefs.SetInt("Points", Data.points);
+            PlayerPrefs.SetInt("NoAdsBought", Data.noAdsBought ? 1 : 0);
+            PlayerPrefs.Save();
+            
+            Debug.Log($"Android save completed for: {filePath}");
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"Error saving file on Android: {e.Message}");
+            
+            // Try to save directly to the file as a fallback
+            try
+            {
+                File.WriteAllText(filePath, content);
+                Debug.Log("Fallback direct save successful");
+            }
+            catch (Exception fallbackEx)
+            {
+                Debug.LogError($"Fallback save also failed: {fallbackEx.Message}");
+                
+                // Last resort: try to save critical data to PlayerPrefs
+                try
+                {
+                    PlayerPrefs.SetInt("Points", Data.points);
+                    PlayerPrefs.SetInt("NoAdsBought", Data.noAdsBought ? 1 : 0);
+                    PlayerPrefs.Save();
+                    Debug.Log("Saved critical data to PlayerPrefs");
+                }
+                catch (Exception prefsEx)
+                {
+                    Debug.LogError($"Failed to save to PlayerPrefs: {prefsEx.Message}");
+                }
+            }
+        }
+    }
+    
+    private bool VerifySaveFile(string filePath, string expectedContent)
+    {
+        try
+        {
+            if (!File.Exists(filePath))
+            {
+                Debug.LogError($"Verification failed: File does not exist at {filePath}");
+                return false;
+            }
+            
+            string fileContent = "";
+            
+            // Read the file using FileStream for better control on Android
+            using (FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+            {
+                using (StreamReader reader = new StreamReader(fs))
+                {
+                    fileContent = reader.ReadToEnd();
+                }
+            }
+            
+            if (string.IsNullOrEmpty(fileContent))
+            {
+                Debug.LogError($"Verification failed: File is empty at {filePath}");
+                return false;
+            }
+            
+            // Check if the file size matches what we expect
+            if (fileContent.Length != expectedContent.Length)
+            {
+                Debug.LogError($"Verification failed: File size mismatch. Expected {expectedContent.Length}, got {fileContent.Length}");
+                return false;
+            }
+            
+            Debug.Log($"Save file verified at {filePath}: {fileContent.Length} bytes");
+            return true;
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"Error verifying save file: {e.Message}");
+            return false;
+        }
+    }
+
+    public void Initialize()
+    {
+        // Make sure we have valid data
+        if (Data == null)
+        {
+            Data = new SaveData();
+        }
+        
+        // Initialize timestamps if needed
+        if (Data.lastRewardedAdTimestamp == 0)
+        {
+            Data.lastRewardedAdTimestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds() - REWARDED_AD_COOLDOWN_HOURS * 3600;
+        }
+        
+        if (Data.wordGuessCount == 0)
+        {
+            Data.wordGuessCount = 0;
+        }
+
+        // Initialize lastDailySpinTimestamp if it's 0
+        if (Data.lastDailySpinTimestamp == 0)
+        {
+            Data.lastDailySpinTimestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds() - (DAILY_SPIN_COOLDOWN_HOURS * 3600);
+        }
+        
+        // Ensure we have a valid AdState
+        if (Data.adState.nextAvailableTime.Ticks == 0)
+        {
+            Data.adState = new AdState
+            {
+                canWatch = true,
+                nextAvailableTime = DateTime.Now.AddHours(-2) // Default to available
+            };
+        }
+        
+        Debug.Log("SaveManager initialization complete");
+    }
+
+    public void ResetDailySpinCooldown()
+    {
+        if (Data != null)
+        {
+            // Set the last spin timestamp to a time before the cooldown period
+            Data.lastDailySpinTimestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds() - (DAILY_SPIN_COOLDOWN_HOURS * 3600);
+            SaveGame();
+            Debug.Log("Daily spin cooldown reset");
+        }
+        else
+        {
+            Debug.LogError("SaveData is null, cannot reset cooldown");
+        }
+    }
+
+    public void OpenSaveFileLocation()
+    {
+        string path = Application.persistentDataPath;
+        Debug.Log($"Save file location: {path}");
+        
+        #if UNITY_EDITOR
+        UnityEditor.EditorUtility.RevealInFinder(path);
+        #elif UNITY_STANDALONE_WIN
+        System.Diagnostics.Process.Start("explorer.exe", "/select," + TXT_SAVE_PATH);
+        #elif UNITY_STANDALONE_OSX
+        System.Diagnostics.Process.Start("open", $"-R {TXT_SAVE_PATH}");
+        #else
+        Debug.Log($"Save file location: {path}");
+        #endif
+    }
+
+    // Add a method to check if the save system is ready
+    public bool IsSaveSystemReady()
+    {
+        return !isLoading && !isSaving && Data != null;
+    }
+    
+    // Add a method to manually trigger a save from other scripts
+    public void SaveGameImmediate()
+    {
+        Debug.Log("Immediate save requested");
+        ForceSaveGameSync();
+    }
+}

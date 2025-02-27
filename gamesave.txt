@@ -1,0 +1,34 @@
+=== Game Save - 22.02.2025 23:59:17 ===
+Points: 0
+No Ads Bought: False
+Word Guess Count: 2
+
+=== Unlocked Eras ===
+- Ancient Egypt
+- Medieval Europe
+
+=== Solved Words ===
+- NILE
+- HERALD
+- GUILD
+- MUMMY
+- SWORD
+
+=== Guessed Words ===
+- NILE
+- HERALD
+- GUILD
+- MUMMY
+- SWORD
+
+=== Used Hints ===
+
+=== Settings ===
+Sound Enabled: False
+Music Enabled: False
+Sound Volume: 1
+Music Volume: 0
+
+=== Ad State ===
+Can Watch: False
+Next Available: 23.02.2025 01:59:17

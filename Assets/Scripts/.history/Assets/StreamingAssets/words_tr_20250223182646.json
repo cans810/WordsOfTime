@@ -1,0 +1,74 @@
+{
+  "sets": [
+    {
+      "era": "Antik Mısır",
+      "words": [
+        {
+          "word": "KEDİ",
+          "translations": {
+            "en": "CAT",
+            "tr": "KEDİ"
+          },
+          "sentences": [
+            "Mısırlılar _____yi özel bir hayvan olarak görürdü.",
+            "Antik Mısır'da tanrı gibi kabul edilen hayvan hangisiydi? _____"
+          ],
+          "didYouKnow": "Antik Mısır'da bir kediyi öldürmek ölümle cezalandırılırdı. Aile kedisi öldüğünde, evdeki herkes yas tutmak için kaşlarını traş ederdi!"
+        },
+        {
+          "word": "PİRAMİT",
+          "translations": {
+            "en": "PYRAMID",
+            "tr": "PİRAMİT"
+          },
+          "sentences": [
+            "Büyük _____ler taş bloklardan inşa edildi.",
+            "Firavunların mezarları olarak hizmet veren yapılar neydi? _____ler"
+          ],
+          "didYouKnow": "Giza'daki Büyük Piramit, 2,3 milyondan fazla taş bloktan yapılmıştır ve her bir blok 2,5 ila 15 ton ağırlığındadır. Dünyanın en yüksek yapısı olma unvanını 3.800 yıl boyunca korudu!"
+        },
+        {
+          "word": "FİRAVUN",
+          "translations": {
+            "en": "PHARAOH",
+            "tr": "FİRAVUN"
+          },
+          "sentences": [
+            "_____ Mısır'ı büyük bir güçle yönetti.",
+            "Antik Mısır'da kim büyük piramitleri inşa ettirdi? _____"
+          ],
+          "didYouKnow": "Firavun kelimesi, Antik Mısır dilinde 'Büyük Ev' anlamına gelir. Firavunlar çift taç giyerlerdi: kırmızı taç Aşağı Mısır'ı, beyaz taç ise Yukarı Mısır'ı temsil ederdi!"
+        }
+      ]
+    },
+    {
+      "era": "Orta Çağ Avrupası",
+      "words": [
+        {
+          "word": "ŞÖVALYE",
+          "translations": {
+            "en": "KNIGHT",
+            "tr": "ŞÖVALYE"
+          },
+          "sentences": [
+            "Bir _____ çocukluktan itibaren savaşmak ve soylulara hizmet etmek için eğitilirdi.",
+            "Şövalyelik kurallarına uyan kişi kimdi? _____"
+          ],
+          "didYouKnow": "Bir şövalyenin tam zırhı yaklaşık 50-60 pound ağırlığındaydı, ancak o kadar iyi dağıtılmıştı ki atlarına binebilir ve etkili bir şekilde savaşabilirlerdi!"
+        },
+        {
+          "word": "KILIÇ",
+          "translations": {
+            "en": "SWORD",
+            "tr": "KILIÇ"
+          },
+          "sentences": [
+            "Orta Çağ'da bir _____ elle aylarca yapılırdı.",
+            "Şövalyeliğin sembolü olan silah neydi? _____"
+          ],
+          "didYouKnow": "Orta Çağ kılıç ustaları, güçlü ve esnek bıçaklar yapmak için çeliği yüzlerce kez katlardı. Birçok kılıcın ismi vardı ve büyülü güçlere sahip olduğuna inanılırdı!"
+        }
+      ]
+    }
+  ]
+} 
