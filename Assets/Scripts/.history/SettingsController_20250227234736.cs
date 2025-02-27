@@ -249,7 +249,7 @@ public class SettingsController : MonoBehaviour
         GameManager.Instance.SetLanguage(languages[currentLanguageIndex].code);
         UpdateLanguageDisplay();
 
-        InformSetLanguage();
+        InformSetLanguage()
         InformPanel.SetActive(true);
     }
     #endregion

@@ -572,7 +572,7 @@ public class WheelOfFortuneController : MonoBehaviour
             wheel.gameObject.SetActive(false);
             spinButton.gameObject.SetActive(false);
             trianglePicker.gameObject.SetActive(false);
-            GetComponent<Animator>().SetBool("Hide",false);
+            GetComponent<Animator>().SetBool("Hide",true);
             
             // Ensure blur is disabled
             if (canvasBlur != null)
