@@ -1528,7 +1528,7 @@
           },
           "difficulty": "easy",
           "sentences": [
-            "_____ became popular in the Ottoman Empire.",
+            "What is the beverage in the Ottoman Empire, also known as 'my black pearl', prepared with rituals? _____",
             "What drink was first introduced to Europe through the Ottomans? _____"
           ],
           "didYouKnow": "The first coffeehouse in the world opened in Istanbul in 1554. Coffee was so important that a woman could divorce her husband if he didn't provide her with enough coffee!"
@@ -1539,9 +1539,9 @@
             "en": "TULIP",
             "tr": "LALE"
           },
-          "difficulty": "normal",
+          "difficulty": "easy",
           "sentences": [
-            "The _____ was a symbol of the Ottoman Empire.",
+            "The _____ flower was a symbol of the Ottoman Empire.",
             "What flower became famous during the Tulip Era? The _____"
           ],
           "didYouKnow": "The Tulip Era (1718-1730) was a time of peace and cultural flowering in the Ottoman Empire. Tulips were so valuable that they were used as currency!"

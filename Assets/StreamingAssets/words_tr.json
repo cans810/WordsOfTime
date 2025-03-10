@@ -450,7 +450,7 @@
           },
           "difficulty": "normal",
           "sentences": [
-            "Zengin bir _____ sanatçıları ve eserlerini desteklerdi.",
+            "Zengin bir _____, sanatçıları ve eserlerini desteklerdi.",
             "Birçok büyük sanat eserini kim sipariş ederdi? _____"
           ],
           "didYouKnow": "Medici ailesi, ünlü Rönesans hamileriydi. Michelangelo da dahil olmak üzere 50'den fazla sanatçıyı desteklediler ve neredeyse bankalarını batırdılar!"
@@ -1191,7 +1191,7 @@
           },
           "difficulty": "normal",
           "sentences": [
-            "_____ halkı İskandinavya'da yaşardı.",
+            "Vikingler, _____ mitolojisinde Odin ve Thor gibi tanrılara inanırdı.",
             "Vikinglerle ilişkilendirilen kültür neydi? _____ kültürü"
           ],
           "didYouKnow": "İskandinav halkı yetenekli denizciler, tüccarlar ve zanaatkarlardı. Kuzey Amerika ve Orta Doğu'ya kadar yerleşimler kurdular!"
@@ -1461,7 +1461,7 @@
           },
           "difficulty": "normal",
           "sentences": [
-            "_ Osmanlı'da din adamları ve yüksek rütbelilerce kullanılan bir başlıktı.",
+            "_____, Osmanlı'da din adamları ve yüksek rütbelilerce kullanılan bir başlıktı.",
             "Osmanlı'da statüyü ve mesleği belirten geleneksel başlık neydi? _____"
           ],
           "didYouKnow": "Sarık, Osmanlı döneminde sadece bir başlık değil, aynı zamanda kişinin statüsünü, mesleğini ve dini konumunu gösteren önemli bir semboldü. Renkleri ve şekilleri kişinin kimliği hakkında bilgi verirdi!"
@@ -1526,8 +1526,8 @@
           },
           "difficulty": "easy",
           "sentences": [
-            "_____, Osmanlı İmparatorluğu'nda popüler hale geldi.",
-            "Avrupa'ya Osmanlılar aracılığıyla tanıtılan içecek neydi? _____"
+            "Osmanlı'da 'kara incim' olarak da anılan, özel ritüellerle pişirilen bu içecek nedir? _____",
+            "Etiyopya'dan gelen bu koyu içecek, _____ haneleri sayesinde Osmanlı sosyal hayatının merkezine oturdu."
           ],
           "didYouKnow": "Dünyadaki ilk kahvehane 1554'te İstanbul'da açıldı. Kahve o kadar önemliydi ki bir kadın, kocası ona yeterince kahve sağlamazsa boşanabilirdi!"
         },
@@ -1537,9 +1537,9 @@
             "en": "TULIP",
             "tr": "LALE"
           },
-          "difficulty": "normal",
+          "difficulty": "easy",
           "sentences": [
-            "_____ Osmanlı İmparatorluğu'nun bir sembolüydü.",
+            "_____ Osmanlı İmparatorluğu'nun bir sembolü olan bir çiçekti.",
             "Lale Devri'nde ünlü olan çiçek neydi? _____"
           ],
           "didYouKnow": "Lale Devri (1718-1730), Osmanlı İmparatorluğu'nda barış ve kültürel çiçeklenme dönemiydi. Laleler o kadar değerliydi ki para birimi olarak kullanılırdı!"
