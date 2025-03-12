@@ -310,7 +310,7 @@ public class MainMenuManager : MonoBehaviour
         {
             rewardedAd.ShowAd(() => {
                 // Reward the player
-                GameManager.Instance.AddPoints(150);
+                GameManager.Instance.AddPoints(750);
                 
                 // Set new cooldown
                 remainingCooldown = REWARDED_AD_COOLDOWN;
